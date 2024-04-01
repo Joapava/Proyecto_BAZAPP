@@ -1,0 +1,16 @@
+// ignore: file_names
+class Noticia {
+  final String urlImagenPerfil;
+  final String nombrePerfil;
+  final String cuerpoNoticia;
+  final String urlImagenNoticia;
+
+  Noticia(this.urlImagenPerfil, this.nombrePerfil, this.cuerpoNoticia, this.urlImagenNoticia);
+}
+
+// Asumiendo que tienes una lista de noticias.
+List<Noticia> noticias = [
+  
+  Noticia("https://cutt.ly/8w3Cwlmc", "Bazar Vintage", "Prueba prueba prueba", "https://cutt.ly/8w3Cwlmc")  
+];
+
