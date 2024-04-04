@@ -1,5 +1,7 @@
 // ignore: file_names
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:prueba/pages/inicio.dart';
 
 enum SampleItem { itemOne, itemTwo, itemThree, itemFour, itemFive, itemsix}
 SampleItem? selectedMenu;
@@ -369,7 +371,10 @@ class _Getopciones extends State<Getopciones>{
       SizedBox(
         height: 40,
         width: 150,
-        child: FloatingActionButton(onPressed: ()=>(),
+        child: FloatingActionButton(onPressed:(() => Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          builder: (context) => const Inicio()))),
         backgroundColor: Colors.blue,
         child: const Text("Registrar"),
         ),
@@ -380,7 +385,10 @@ class _Getopciones extends State<Getopciones>{
     return SizedBox(
       width: 150,
       height: 50,
-      child: FloatingActionButton(onPressed: ()=>(),
+      child: FloatingActionButton(onPressed: (() => Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          builder: (context) => const Inicio()))),
         backgroundColor: Colors.blue,
         child: const Text("Registrar")),
     );

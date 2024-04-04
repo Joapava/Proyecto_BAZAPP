@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prueba/pages/inicio.dart';
-import 'package:prueba/pages/registro.dart';
+import 'package:prueba/pages/prueba.dart';
 import 'package:prueba/pages/login.dart';
 
 void main(){

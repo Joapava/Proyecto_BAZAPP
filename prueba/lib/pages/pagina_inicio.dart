@@ -122,7 +122,7 @@ Widget getFotos(BuildContext context)
               mainAxisSpacing: 5,
               crossAxisSpacing: 5,
               maxCrossAxisExtent: 150,
-              children: listaImagenes(context),
+              // children: listaImagenes(context),
         ),
      );
 }
