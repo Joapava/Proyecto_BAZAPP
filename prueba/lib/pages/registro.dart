@@ -8,6 +8,8 @@ SampleItem? selectedMenu;
 
 SampleItem? giro;
 
+bool isChecked = false;
+
 class Registro extends StatefulWidget {
   const Registro({super.key});
 
@@ -16,17 +18,54 @@ class Registro extends StatefulWidget {
 }
 
 class _RegistroState extends State<Registro> {
-
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
+      backgroundColor: Colors.black,
       body: SafeArea(child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-              Getformulario(),
+            Align(
+          alignment: Alignment.topLeft,
+          ),
+          SizedBox(
+            height: 50,
+          ),
+            regreso(),
+            Texto(),
+            SizedBox(
+              height: 20,
+            ),
+            Divider(
+              endIndent: 60,
+              indent: 60,
+              thickness: .6,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Getformulario(),
           ],
         ),
       ),) 
+    );
+  }
+}
+
+class Texto extends StatelessWidget {
+  const Texto({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text('Registro', 
+      style: TextStyle(
+        fontFamily: 'Inter',
+        fontSize: 35,
+        color: Colors.white
+      ),),
     );
   }
 }
@@ -40,28 +79,35 @@ class Getformulario extends StatefulWidget{
 
 class _Getformulario extends State<Getformulario>
 {
+  bool isVisible = true;
+  bool isVisiblebtn2 = true;
   @override
   Widget build(BuildContext context){
   return Column(
     children: [
-      Align(
-          alignment: Alignment.topLeft,
-          child: Container(
-          margin: const EdgeInsets.fromLTRB(10, 30, 10, 5),
-                    child: const Text("Registro", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, fontFamily: ("Arial")),)
-                    )
+      const Row(
+        children: [
+          SizedBox(
+            width: 30,
           ),
+          Text('Nombre',
+            style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Inter',
+            fontSize: 17,
+          ),)
+        ],
+      ),
       const SizedBox(
-        height: 50,
+        height: 5,
       ),
       Container(
-        width: 295,
+        width: 400,
         height: 50,
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 227, 227, 231),
-          borderRadius: BorderRadius.circular(25),
+          color: const Color.fromARGB(115, 87, 87, 94),
+          borderRadius: BorderRadius.circular(13),
           ),
-          child: Center(
             child: SizedBox(
               width: 265,
               height: 50,
@@ -69,25 +115,42 @@ class _Getformulario extends State<Getformulario>
                 child: TextFormField(
                   keyboardType: TextInputType.name,
                   decoration: const InputDecoration(
+                      hintStyle: TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
+                      prefixIcon: Icon(Icons.account_box_rounded, color: Color.fromARGB(101, 255, 255, 255),),
                       border: InputBorder.none,
-                      hintText: 'Nombre Completo',
+                      hintText: 'Ingresa tu nombre',
                     ),
                   ),
                 ),
             ),
-          ),
       ),
       const SizedBox(
-        height: 20,
+        height: 10,
+      ),
+      const Row(
+        children: [
+          SizedBox(
+            width: 30,
+          ),
+          Text('Correo',
+            style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Inter',
+            fontSize: 17,
+          ),)
+        ],
+      ),
+      const SizedBox(
+        height: 5,
       ),
       Container(
-        width: 295,
+        width: 400,
         height: 50,
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 227, 227, 231),
-          borderRadius: BorderRadius.circular(25),
+          color: const Color.fromARGB(115, 87, 87, 94),
+          borderRadius: BorderRadius.circular(13),
           ),
-          child: Center(
+  
             child: SizedBox(
               width: 265,
               height: 50,
@@ -95,303 +158,292 @@ class _Getformulario extends State<Getformulario>
                 child: TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
+                      hintStyle: TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
                       border: InputBorder.none,
-                      hintText: 'Correo',
+                      hintText: 'Ingresa tu correo',
+                      prefixIcon: Icon(Icons.email_outlined, color: Color.fromARGB(101, 255, 255, 255),)
                     ),
                   ),
                 ),
             ),
-          ),
       ),
       const SizedBox(
-        height: 20,
+        height: 5,
+      ),
+      const Row(
+        children: [
+          SizedBox(
+            width: 30,
+          ),
+          Text('Contraseña',
+            style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Inter',
+            fontSize: 17,
+          ),)
+        ],
       ),
       Container(
-        width: 295,
+        width: 400,
         height: 50,
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 227, 227, 231),
-          borderRadius: BorderRadius.circular(25),
+          color: const Color.fromARGB(115, 87, 87, 94),
+          borderRadius: BorderRadius.circular(13),
           ),
-          child: Center(
-            child: SizedBox(
-              width: 265,
-              height: 50,
-              child: Form(
-                child: TextFormField(
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Contraseña',
-                    ),
-                  ),
-                ),
-            ),
-          ),
-      ),
-      const SizedBox(
-        height: 20,
-      ),
-      Container(
-        width: 295,
-        height: 50,
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 227, 227, 231),
-          borderRadius: BorderRadius.circular(25),
-          ),
-          child: Center(
-            child: SizedBox(
-              width: 265,
-              height: 50,
-              child: Form(
-                child: TextFormField(
-                  keyboardType: TextInputType.phone,
-                  decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Celular',
-                    ),
-                  ),
-                ),
-            ),
-          ),
-      ),
-      const SizedBox(
-        height: 20,
-      ),
-      Container(
-              width: 295,
-              height: 50,
-              decoration: BoxDecoration(
-                color: const Color(0xffF9F9FF),
-                borderRadius: BorderRadius.circular(25),
+            child: Row(
+              children: [
+                SizedBox(
+          width: 365,
+          height: 35,
+          child: Form(child: 
+            TextFormField(
+              style: const TextStyle(color: Colors.white),
+              obscureText: isVisible,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsetsDirectional.symmetric(),
+                hintText: 'Ingrese su contraseña' ,
+                hintStyle: TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
+                prefixIcon: Icon(Icons.lock_person_outlined , color: Color.fromARGB(101, 255, 255, 255)),
+                focusedBorder: InputBorder.none,
+                border: InputBorder.none
               ),
-              child: Center(
-                child: Row(
-                  children: [
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    SizedBox(
-                      width: 190,
-                      height: 50,
-                      child: Center(
-                        child: Row(
-                          children: [
-                            Text(
-                              texto(),
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Color.fromRGBO(0, 0, 0, .7)),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 35,
-                    ),
-                    PopupMenuButton<SampleItem>(
-                      initialValue: selectedMenu,
-                      icon: const Icon(Icons.arrow_drop_down),
-                      onSelected: (SampleItem item) {
-                        setState(() {
-                          selectedMenu = item;
-                        });
-                      },
-                      itemBuilder: (BuildContext context) =>
-                          <PopupMenuEntry<SampleItem>>[
-                        const PopupMenuItem<SampleItem>(
-                          value: SampleItem.itemOne,
-                          child: Text('Cliente'),
-                        ),
-                        const PopupMenuItem<SampleItem>(
-                          value: SampleItem.itemTwo,
-                          child: Text('Expositor'),
-                        ),
-
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
-        const SizedBox(
-          height: 20,
+            )
+          ),
         ),
-        Getopciones(tipo: texto())
-      ],
-  );
-  
-}
-String texto() {
-    if (selectedMenu == SampleItem.itemOne) {
-      return 'Cliente';
-    } else if (selectedMenu == SampleItem.itemTwo) {
-      return 'Expositor';
-    } else {
-      return 'Favor de especificar';
-    }
-  }
-}
-
-// ignore: non_constant_identifier_names
-String tipo_giro(){
-  if(giro == SampleItem.itemOne){
-    return 'Comida';
-  }else if(giro == SampleItem.itemTwo){
-    return 'Ropa';
-  } else if(giro == SampleItem.itemThree){
-    return 'Accesorios';
-  } else if(giro == SampleItem.itemFour){
-    return 'Bisuteria';
-  } else if(giro == SampleItem.itemFive){
-    return 'Bebidas';
-  } else if(giro == SampleItem.itemsix){
-    return 'Snacks';
-  } else {
-    return 'No especificado';
-  }
-}
-
-
-
-class Getopciones extends StatefulWidget {
-  final String tipo;
-  const Getopciones({super.key, required this.tipo});
-
-  @override
-  State<Getopciones> createState()=> _Getopciones();
-}
-
-class _Getopciones extends State<Getopciones>{
-  @override
-  Widget build(BuildContext context){
-  if(widget.tipo.compareTo('Expositor') == 0){
-    return Column(children: [
-      Container(
-              width: 295,
-              height: 50,
-              decoration: BoxDecoration(
-                color: const Color(0xffF9F9FF),
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: Center(
-                child: Row(
-                  children: [
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    SizedBox(
-                      width: 190,
-                      height: 50,
-                      child: Center(
-                        child: Row(
-                          children: [
-                            Text(
-                              tipo_giro(),
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Color.fromRGBO(0, 0, 0, .7)),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 35,
-                    ),
-                    PopupMenuButton<SampleItem>(
-                      initialValue: giro,
-                      icon: const Icon(Icons.arrow_drop_down),
-                      onSelected: (SampleItem item) {
-                        setState(() {
-                          giro = item;
-                        });
-                      },
-                      itemBuilder: (BuildContext context) =>
-                          <PopupMenuEntry<SampleItem>>[
-                        const PopupMenuItem<SampleItem>(
-                          value: SampleItem.itemOne,
-                          child: Text('Comida'),
-                        ),
-                        const PopupMenuItem<SampleItem>(
-                          value: SampleItem.itemTwo,
-                          child: Text('Ropa'),
-                        ),
-                        const PopupMenuItem<SampleItem>(
-                          value: SampleItem.itemThree,
-                          child: Text('Accesorios'),
-                        ),
-                        const PopupMenuItem<SampleItem>(
-                          value: SampleItem.itemFour,
-                          child: Text('Bisuteria'),
-                        ),
-                        const PopupMenuItem<SampleItem>(
-                          value: SampleItem.itemFive,
-                          child: Text('Bebidas'),
-                        ),
-                        const PopupMenuItem<SampleItem>(
-                          value: SampleItem.itemsix,
-                          child: Text('Snacks'),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
+          SizedBox(
+            width: 30,
+            height: 30,
+            child: FloatingActionButton(onPressed: () {
+              setState(() {
+                change(1);
+              });
+              },
+              backgroundColor: const Color.fromARGB(0, 87, 87, 95),
+              elevation: 0,
+              
+              heroTag: 'btn1',
+              child: const Icon(Icons.remove_red_eye_outlined, color: Color.fromARGB(101, 255, 255, 255)),
             ),
+            )
+              ],
+            )
+      ),
       const SizedBox(
-        height: 20,
+        height: 5,
+      ),
+      const Row(
+        children: [
+          SizedBox(
+            width: 30,
+          ),
+          Text('Verificar contraseña',
+            style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Inter',
+            fontSize: 17,
+          ),)
+        ],
       ),
       Container(
-        width: 295,
+        width: 400,
         height: 50,
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 227, 227, 231),
-          borderRadius: BorderRadius.circular(25),
+          color: const Color.fromARGB(115, 87, 87, 94),
+          borderRadius: BorderRadius.circular(13),
           ),
-          child: Center(
-            child: SizedBox(
-              width: 265,
-              height: 50,
-              child: Form(
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Nombre del negocio (opcional )',
-                    ),
-                  ),
-                ),
+            child: Row(
+              children: [
+                SizedBox(
+          width: 365,
+          height: 35,
+          child: Form(child: 
+            TextFormField(
+              style: const TextStyle(color: Colors.white),
+              obscureText: isVisiblebtn2,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsetsDirectional.symmetric(),
+                hintText: 'Vuelva a ingresar su contraseña' ,
+                hintStyle: TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
+                prefixIcon: Icon(Icons.lock_person_outlined , color: Color.fromARGB(101, 255, 255, 255)),
+                focusedBorder: InputBorder.none,
+                border: InputBorder.none
+              ),
+            )
+          ),
+        ),
+          SizedBox(
+            width: 30,
+            height: 30,
+            child: FloatingActionButton(onPressed: () {
+              setState(() {
+                change(2);
+        });
+              },
+              backgroundColor: const Color.fromARGB(0, 87, 87, 95),
+              elevation: 0,
+              
+              heroTag: 'btn2',
+              child: const Icon(Icons.remove_red_eye_outlined, color: Color.fromARGB(101, 255, 255, 255)),
             ),
-          ),
+            )
+              ],
+            )
       ),
       const SizedBox(
-        height: 20,
+        height: 5,
+      ),
+      const Row(
+        children: [
+          SizedBox(
+            width: 30,
+          ),
+          Text('Celular',
+            style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Inter',
+            fontSize: 17,
+          ),)
+        ],
+      ),
+      Container(
+  width: 400,
+  height: 50,
+  decoration: BoxDecoration(
+    color: const Color.fromARGB(115, 87, 87, 94),
+    borderRadius: BorderRadius.circular(13),
+  ),
+  child: TextFormField(
+    style: const TextStyle(color: Colors.white),
+    keyboardType: TextInputType.phone,
+    maxLength: 10, // Alinea el texto al centro
+    decoration: const InputDecoration(
+      hintStyle: TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
+      border: InputBorder.none,
+      hintText: 'Ingrese su número celular',
+      prefixIcon: Icon(Icons.phone, color: Color.fromARGB(101, 255, 255, 255),),
+      counterText: "", // Elimina el contador de longitud
+    ),
+  ),
+),
+  const SizedBox(
+    height: 15,
+  ),
+  Row(
+    children: [
+      const SizedBox(
+        width: 25,
+      ),
+    Container(
+      height: 10,
+      width: 10,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: Colors.white
+      ),
+    ),
+    const SizedBox(
+      width: 10,
+    ),
+    const Text('Debe de incluir numeros',
+    style: TextStyle(
+      fontFamily: 'Inter',
+      color: Colors.white,
+      fontSize: 15
+    ),)
+  ],),
+  Row(
+    children: [
+      const SizedBox(
+        width: 25,
+      ),
+    Container(
+      height: 10,
+      width: 10,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: Colors.white
+      ),
+    ),
+    const SizedBox(
+      width: 10,
+    ),
+    const Text('Debe de contener al menos una letra mayuscula',
+    style: TextStyle(
+      fontFamily: 'Inter',
+      color: Colors.white,
+      fontSize: 15
+    ),)
+  ],),
+      const SizedBox(
+        height: 40,
       ),
       SizedBox(
-        height: 40,
-        width: 150,
-        child: FloatingActionButton(onPressed:(() => Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          builder: (context) => const Inicio()))),
-        backgroundColor: Colors.blue,
-        child: const Text("Registrar"),
-        ),
-      ),
-      
-    ]); 
-  } else{
-    return SizedBox(
-      width: 150,
+      width: 400,
       height: 50,
       child: FloatingActionButton(onPressed: (() => Navigator.push(
                       context,
                       CupertinoPageRoute(
                           builder: (context) => const Inicio()))),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         child: const Text("Registrar")),
+    ),
+        const SizedBox(
+          height: 20,
+        ),
+
+      ],
+  );
+  
+}
+
+  void change(int n){
+    if(n == 1){
+      if(isVisible){
+        isVisible = false;
+      } else{
+      isVisible = true;
+      }
+    } else if(n == 2){
+      if(isVisiblebtn2){
+        isVisiblebtn2 = false;
+      } else{
+        isVisiblebtn2 = true;
+      }
+    }
+  }
+
+}
+
+// ignore: camel_case_types
+class regreso extends StatelessWidget {
+  const regreso({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const SizedBox(
+          width: 20,
+        ),
+        SizedBox(
+    width: 40,
+    height: 40,
+    child: FloatingActionButton(
+      heroTag: 'btnr',
+      backgroundColor: Colors.black,
+      shape: RoundedRectangleBorder(
+        side: const BorderSide(color: Colors.white, width: 2),
+        borderRadius: BorderRadius.circular(25)
+      ),
+      onPressed: () {
+      Navigator.pop(context);
+    },
+    child: const Icon(Icons.arrow_back  , color: Colors.white,)
+    ),
+        )
+      ],
     );
   }
-}
 }

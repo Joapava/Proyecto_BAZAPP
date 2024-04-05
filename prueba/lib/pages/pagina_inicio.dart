@@ -21,19 +21,23 @@ class _PaginaInicioState extends State<PaginaInicio> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop){
+
+      },
+      child: Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
               const barraCuenta(),
               getDetalles(),
-             getFotos(context)
-           
-        
+            getFotos(context)
           ],
         ),
       ),
-    );
+    ),
+      );
   }
 }
 

@@ -15,7 +15,7 @@ class _Login extends State<Login>{
   Widget build(BuildContext context){
     return const Scaffold(
       backgroundColor: Colors.black,
-      body: SafeArea(child: BoxCentral()
+      body: SafeArea(child: SingleChildScrollView(child: BoxCentral())
         ) 
     );
   }
@@ -215,11 +215,17 @@ class regreso extends StatelessWidget {
 }
 
 // ignore: camel_case_types
-class box_password extends StatelessWidget {
+class box_password extends StatefulWidget {
   const box_password({
     super.key,
   });
 
+  @override
+  State<box_password> createState() => _box_passwordState();
+}
+
+class _box_passwordState extends State<box_password> {
+  bool isVisible = true;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -236,6 +242,7 @@ class box_password extends StatelessWidget {
           child: Form(child: 
             TextFormField(
               style: const TextStyle(color: Colors.white),
+              obscureText: isVisible,
               decoration: const InputDecoration(
                 contentPadding: EdgeInsetsDirectional.symmetric(),
                 hintText: 'Ingrese su contraseña' ,
@@ -247,13 +254,14 @@ class box_password extends StatelessWidget {
             )
           ),
         ),
-        // const SizedBox(
-        //     width: 35,
-        //   ),
           SizedBox(
             width: 30,
             height: 30,
-            child: FloatingActionButton(onPressed: () {
+            child: FloatingActionButton(
+              onPressed: () {
+              setState(() {
+                change();
+              });
               },
               backgroundColor: const Color.fromARGB(0, 87, 87, 95),
               elevation: 0,
@@ -266,6 +274,14 @@ class box_password extends StatelessWidget {
       ],
       ),
     );
+  }
+
+  void change(){
+    if(isVisible){
+      isVisible = false;
+    } else{
+      isVisible = true;
+    }
   }
 }
 
