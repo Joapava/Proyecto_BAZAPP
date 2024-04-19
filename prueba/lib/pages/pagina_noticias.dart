@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prueba/barra_cuenta.dart';
+import 'package:prueba/components/barra_cuenta.dart';
 import 'package:prueba/data/noticias_data.dart';
 
 class paginaNoticias extends StatefulWidget {
