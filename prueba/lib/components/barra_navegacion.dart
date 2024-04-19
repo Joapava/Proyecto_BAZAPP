@@ -28,7 +28,7 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
 
   final List<Widget> _paginas = [
     const PaginaInicio(),
-    const paginaNoticias(),
+    const PaginaNoticias(),
     const PaginaPuestos(),
     const Center(child: Text("Perfil")),
   ];
@@ -78,7 +78,7 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
             padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
             child: Image.asset(imagePath, width: 30, height: 30),
           ),
-          Text(label, style: TextStyle(color: index == _indiceSeleccionado ? Color.fromRGBO(255, 255, 255, 1) : Color.fromRGBO(113, 113, 113, 1.0), fontFamily: "inter")),
+          Text(label, style: TextStyle(color: index == _indiceSeleccionado ? const Color.fromRGBO(255, 255, 255, 1) : const Color.fromRGBO(113, 113, 113, 1.0), fontFamily: "inter")),
         ],
       ),
     );
