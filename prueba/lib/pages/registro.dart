@@ -2,6 +2,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:prueba/pages/inicio.dart';
+import 'dart:core';
+import 'package:email_validator/email_validator.dart';
 
 enum SampleItem { itemOne, itemTwo, itemThree, itemFour, itemFive, itemsix}
 SampleItem? selectedMenu;
@@ -79,6 +81,13 @@ class Getformulario extends StatefulWidget{
 
 class _Getformulario extends State<Getformulario>
 {
+  final formKey = GlobalKey<FormState>();
+  TextEditingController emailcontrol = TextEditingController();
+  TextEditingController passwordcontrol = TextEditingController();
+  TextEditingController password2control = TextEditingController();
+  TextEditingController phone = TextEditingController();
+  TextEditingController name = TextEditingController();
+  Color validar = Colors.white;
   bool isVisible = true;
   bool isVisiblebtn2 = true;
   @override
@@ -113,6 +122,8 @@ class _Getformulario extends State<Getformulario>
               height: 50,
               child: Form(
                 child: TextFormField(
+                  style: const TextStyle(color: Colors.white),
+                  controller: name,
                   keyboardType: TextInputType.name,
                   decoration: const InputDecoration(
                       hintStyle: TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
@@ -155,9 +166,19 @@ class _Getformulario extends State<Getformulario>
               width: 265,
               height: 50,
               child: Form(
+                key: formKey,
                 child: TextFormField(
+                  validator: (value) {
+                    if(!EmailValidator.validate(value.toString())){
+                      return 'Coloca un correo valido';
+                    }
+                    return null;
+                  },
+                  style: const TextStyle(color: Colors.white),
+                  controller: emailcontrol,
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
+                      errorStyle: TextStyle(color: Colors.red),
                       hintStyle: TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
                       border: InputBorder.none,
                       hintText: 'Ingresa tu correo',
@@ -197,6 +218,7 @@ class _Getformulario extends State<Getformulario>
           height: 35,
           child: Form(child: 
             TextFormField(
+              controller: passwordcontrol,
               style: const TextStyle(color: Colors.white),
               obscureText: isVisible,
               decoration: const InputDecoration(
@@ -258,6 +280,7 @@ class _Getformulario extends State<Getformulario>
           height: 35,
           child: Form(child: 
             TextFormField(
+              controller: password2control,
               style: const TextStyle(color: Colors.white),
               obscureText: isVisiblebtn2,
               decoration: const InputDecoration(
@@ -313,6 +336,7 @@ class _Getformulario extends State<Getformulario>
     borderRadius: BorderRadius.circular(13),
   ),
   child: TextFormField(
+    controller: phone,
     style: const TextStyle(color: Colors.white),
     keyboardType: TextInputType.phone,
     maxLength: 10, // Alinea el texto al centro
@@ -338,16 +362,16 @@ class _Getformulario extends State<Getformulario>
       width: 10,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: Colors.white
+        color: ccolor()
       ),
     ),
     const SizedBox(
       width: 10,
     ),
-    const Text('Debe de incluir numeros',
+    Text('Debe de incluir numeros',
     style: TextStyle(
       fontFamily: 'Inter',
-      color: Colors.white,
+      color: ccolor(),
       fontSize: 15
     ),)
   ],),
@@ -361,16 +385,16 @@ class _Getformulario extends State<Getformulario>
       width: 10,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: Colors.white
+        color: ccolor()
       ),
     ),
     const SizedBox(
       width: 10,
     ),
-    const Text('Debe de contener al menos una letra mayuscula',
+    Text('Debe de contener al menos una letra mayuscula',
     style: TextStyle(
       fontFamily: 'Inter',
-      color: Colors.white,
+      color: ccolor(),
       fontSize: 15
     ),)
   ],),
@@ -380,10 +404,11 @@ class _Getformulario extends State<Getformulario>
       SizedBox(
       width: 400,
       height: 50,
-      child: FloatingActionButton(onPressed: (() => Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          builder: (context) => const Inicio()))),
+      child: FloatingActionButton(onPressed:  () {
+          if (formKey.currentState!.validate()) {
+            datos();
+          }
+        },
         backgroundColor: Colors.white,
         child: const Text("Registrar")),
     ),
@@ -395,6 +420,32 @@ class _Getformulario extends State<Getformulario>
   );
   
 }
+
+  bool pw2(){
+    if(passwordcontrol.text.isNotEmpty && password2control.text.isNotEmpty){
+      if(passwordcontrol.text == password2control.text){
+      Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          builder: (context) => const Inicio()));
+    }
+    }
+    
+    return false;
+  }
+
+  bool emailc(){
+    if(EmailValidator.validate(emailcontrol.text)){
+      return true;
+    }
+    return false;
+  }
+
+  void datos(){
+    if(name.text.isNotEmpty){
+      print(emailc());
+    }
+  }
 
   void change(int n){
     if(n == 1){
@@ -410,6 +461,10 @@ class _Getformulario extends State<Getformulario>
         isVisiblebtn2 = true;
       }
     }
+  }
+
+  Color ccolor(){
+    return Colors.white;
   }
 
 }

@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:prueba/pages/registro.dart';
-import 'package:prueba/pages/inicio.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -29,13 +27,15 @@ class BoxCentral extends StatefulWidget {
 }
 
 class _BoxCentral extends State<BoxCentral> {
+  TextEditingController emailcontrol = TextEditingController();
+  TextEditingController passwordcontrol = TextEditingController();
+  bool isVisible = true;
   @override
   Widget build(BuildContext context){
     return Column(children: [
       const SizedBox(
-        height: 25,
+        height: 55,
       ),
-      const regreso(),
       const FittedBox(
         child: Text('Inicia Sesión en tu cuenta', 
       style: TextStyle(fontSize: 20, fontFamily: 'Inter', color: Colors.white, 
@@ -78,7 +78,7 @@ class _BoxCentral extends State<BoxCentral> {
       const SizedBox(
         height: 5,
       ),
-      const box_correo(),
+      box_correo(),
       const SizedBox(
         height: 25,
       ),
@@ -95,7 +95,7 @@ class _BoxCentral extends State<BoxCentral> {
       const SizedBox(
         height: 5,
       ),
-      const box_password(),
+      box_password(),
       Align(
         alignment: Alignment.topRight,
         widthFactor: 2.2,
@@ -110,10 +110,8 @@ class _BoxCentral extends State<BoxCentral> {
           fontFamily: 'inter'
         ),)),
       ),
-      const SizedBox(
-        height: 35,
-      ),
-      const boton_ingresar(),
+      newMethod(),
+      boton_ingresar(),
       const SizedBox(
         height: 40,
       ),
@@ -138,8 +136,112 @@ class _BoxCentral extends State<BoxCentral> {
     );
   }
 
-  int prueba(){
-    return 1;
+  SizedBox newMethod() {
+    return const SizedBox(
+      height: 35,
+    );
+  }
+
+  Widget box_password(){
+    return Container(
+      width: 400,
+      height: 35,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: const Color.fromARGB(115, 87, 87, 94)
+      ),
+      child: Row(children: [
+        SizedBox(
+          width: 365,
+          height: 35,
+          child: Form(child: 
+            TextFormField(
+              controller: passwordcontrol,
+              style: const TextStyle(color: Colors.white),
+              obscureText: isVisible,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsetsDirectional.symmetric(),
+                hintText: 'Ingrese su contraseña' ,
+                hintStyle: TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
+                prefixIcon: Icon(Icons.lock_person_outlined , color: Color.fromARGB(101, 255, 255, 255)),
+                focusedBorder: InputBorder.none,
+                border: InputBorder.none
+              ),
+            )
+          ),
+        ),
+          SizedBox(
+            width: 30,
+            height: 30,
+            child: FloatingActionButton(
+              onPressed: () {
+              setState(() {
+                change();
+              });
+              },
+              backgroundColor: const Color.fromARGB(0, 87, 87, 95),
+              elevation: 0,
+              
+              heroTag: 'btn1',
+              child: const Icon(Icons.remove_red_eye_outlined, color: Color.fromARGB(101, 255, 255, 255)),
+            ),
+            )
+        
+      ],
+      ),
+    );
+  }
+
+  Widget box_correo(){
+    return Container(
+      width: 400,
+      height: 35,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: const Color.fromARGB(115, 87, 87, 94)
+      ),
+      child: Row(children: [
+    
+        SizedBox(
+          width: 380,
+          height: 35,
+          child: Form(child: 
+            TextFormField(
+              controller: emailcontrol,
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsetsDirectional.symmetric(),
+                hintText: 'Ingrese su correo' ,
+                hintStyle: TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
+                prefixIcon: Icon(Icons.email_outlined , color: Color.fromARGB(101, 255, 255, 255)),
+                focusedBorder: InputBorder.none,
+                border: InputBorder.none
+              ),
+            )
+          ),
+        )
+      ],
+      ),
+    );
+  }
+
+  Widget boton_ingresar(){
+    return SizedBox(
+      width: 400,
+      height: 50,
+      child: FloatingActionButton(
+        onPressed: (()=>
+          print(emailcontrol.text+"\n"+passwordcontrol.text)
+        ), backgroundColor: Colors.white,child: const Text('Ingresar'),),
+    );
+  }
+
+  void change(){
+    if(isVisible){
+      isVisible = false;
+    } else{
+      isVisible = true;
+    }
   }
 
 }
@@ -182,108 +284,9 @@ class botones_inicio extends StatelessWidget {
   }
 }
 
-// ignore: camel_case_types
-class regreso extends StatelessWidget {
-  const regreso({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(children: [
-    const SizedBox(
-      width: 10,
-    ),
-    SizedBox(
-    width: 40,
-    height: 40,
-    child: FloatingActionButton(
-      heroTag: 'btnr',
-      backgroundColor: Colors.black,
-      shape: RoundedRectangleBorder(
-        side: const BorderSide(color: Colors.white, width: 2),
-        borderRadius: BorderRadius.circular(25)
-      ),
-      onPressed: () {
-      
-    },
-    child: const Icon(Icons.arrow_back  , color: Colors.white,)
-    ),
-        )
-        ],);
-  }
-}
 
 // ignore: camel_case_types
-class box_password extends StatefulWidget {
-  const box_password({
-    super.key,
-  });
 
-  @override
-  State<box_password> createState() => _box_passwordState();
-}
-
-class _box_passwordState extends State<box_password> {
-  bool isVisible = true;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 400,
-      height: 35,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: const Color.fromARGB(115, 87, 87, 94)
-      ),
-      child: Row(children: [
-        SizedBox(
-          width: 365,
-          height: 35,
-          child: Form(child: 
-            TextFormField(
-              style: const TextStyle(color: Colors.white),
-              obscureText: isVisible,
-              decoration: const InputDecoration(
-                contentPadding: EdgeInsetsDirectional.symmetric(),
-                hintText: 'Ingrese su contraseña' ,
-                hintStyle: TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
-                prefixIcon: Icon(Icons.lock_person_outlined , color: Color.fromARGB(101, 255, 255, 255)),
-                focusedBorder: InputBorder.none,
-                border: InputBorder.none
-              ),
-            )
-          ),
-        ),
-          SizedBox(
-            width: 30,
-            height: 30,
-            child: FloatingActionButton(
-              onPressed: () {
-              setState(() {
-                change();
-              });
-              },
-              backgroundColor: const Color.fromARGB(0, 87, 87, 95),
-              elevation: 0,
-              
-              heroTag: 'btn1',
-              child: const Icon(Icons.remove_red_eye_outlined, color: Color.fromARGB(101, 255, 255, 255)),
-            ),
-            )
-        
-      ],
-      ),
-    );
-  }
-
-  void change(){
-    if(isVisible){
-      isVisible = false;
-    } else{
-      isVisible = true;
-    }
-  }
-}
 
 // ignore: camel_case_types
 class registro_box extends StatelessWidget {
@@ -314,62 +317,4 @@ class registro_box extends StatelessWidget {
   }
 }
 
-// ignore: camel_case_types
-class boton_ingresar extends StatelessWidget {
-  const boton_ingresar({
-    super.key,
-  });
 
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 400,
-      height: 50,
-      child: FloatingActionButton(
-        onPressed: (() => Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) => const Inicio()))), backgroundColor: Colors.white,child: const Text('Ingresar'),),
-    );
-  }
-}
-
-// ignore: camel_case_types
-class box_correo extends StatelessWidget {
-  const box_correo({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 400,
-      height: 35,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: const Color.fromARGB(115, 87, 87, 94)
-      ),
-      child: Row(children: [
-    
-        SizedBox(
-          width: 380,
-          height: 35,
-          child: Form(child: 
-            TextFormField(
-              style: const TextStyle(color: Colors.white),
-              decoration: const InputDecoration(
-                contentPadding: EdgeInsetsDirectional.symmetric(),
-                hintText: 'Ingrese su correo' ,
-                hintStyle: TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
-                prefixIcon: Icon(Icons.email_outlined , color: Color.fromARGB(101, 255, 255, 255)),
-                focusedBorder: InputBorder.none,
-                border: InputBorder.none
-              ),
-            )
-          ),
-        )
-      ],
-      ),
-    );
-  }
-}
