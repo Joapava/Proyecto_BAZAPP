@@ -17,17 +17,21 @@ Widget generatePositionedButtons({
       width: 20,
       margin: const EdgeInsets.all(2),
       child: ElevatedButton(
-        onPressed: () => print("Botón $startingLabel$index presionado"),
-        child: FittedBox( // Asegura que el texto se ajuste al espacio disponible
-          child: Text(
-            "$startingLabel$index",
-            style: const TextStyle(fontSize: 12), // Puedes ajustar el tamaño del texto aquí
-          ),
-        ),
+        onPressed: ()
+        {
+        
+        },
         style: ElevatedButton.styleFrom(
+          backgroundColor: const Color.fromARGB(185, 9, 152, 255),
           padding: EdgeInsets.zero, // Reduce el padding a cero
           shape: RoundedRectangleBorder( // Asegura que el botón sea cuadrado
             borderRadius: BorderRadius.circular(3), // Ajusta la curvatura de las esquinas
+          ),
+        ),
+        child: const FittedBox( // Asegura que el texto se ajuste al espacio disponible
+          child: Text(
+            " ",
+            style:  TextStyle(fontSize: 12), // Puedes ajustar el tamaño del texto aquí
           ),
         ),
       ),

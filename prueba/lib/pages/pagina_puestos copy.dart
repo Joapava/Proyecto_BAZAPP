@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:prueba/components/generar_botones.dart';
 
 class PaginaPuestos extends StatefulWidget {
@@ -22,12 +23,12 @@ Widget contenedorPuestos() {
       width: 450, // Ancho fijo para el contenedor
       decoration:  const BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(10)),
-        color: Colors.blue),
+        color: Color.fromRGBO(168, 169, 171, 0.2)),
       child: SizedBox(
         height: 500, // Altura fija para el contenedor
         child: SingleChildScrollView(
           // Habilita el desplazamiento vertical dentro de la altura fija
-          child: Column(
+          child: Stack(
             children: [
               // La altura de este contenedor debe ser suficiente para contener todos los botones
               // Coloca el Stack directamente aquí si es parte de lo que se quiere hacer scroll
@@ -71,6 +72,61 @@ Widget contenedorPuestos() {
                 
               generatePositionedButtons( count: 8, direction: ButtonDirection.vertical, startingLabel: "", x: 10, y: 560,),
       
+              //Edificio CNC
+              Positioned(
+                left: 40,
+                top:300,
+                child: Container(
+                  height: 200,
+                  width: 280,  
+                  decoration: const BoxDecoration(
+                    color: Color.fromRGBO(168, 169, 171, 1.0),
+                    borderRadius: BorderRadius.all(Radius.circular(10))
+                    ),
+                  child: const Center(
+                    child: Text("CNC",style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold,),
+                    ),
+                  ),
+                ),
+              ),
+
+              //Entrada secundario
+              Positioned(
+                left: 325,
+                top:0,
+                child: Container(
+                  height: 20,
+                  width: 65,  
+                  decoration: const BoxDecoration(
+                    color: Color.fromRGBO(168, 169, 171, 1.0),
+                    borderRadius: BorderRadius.all(Radius.circular(5))
+                    ),
+                  child: const Center(
+                    child: Text("Entrada",style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold,),
+                    ),
+                  ),
+                ),
+              ),
+
+              //Entrada Principal
+              Positioned(
+                left: 325,
+                top: 770,
+                child: Container(
+                  height: 30,
+                  width: 100,  
+                  decoration: const BoxDecoration(
+                    color: Color.fromRGBO(168, 169, 171, 1.0),
+                    borderRadius: BorderRadius.all(Radius.circular(5))
+                    ),
+                  child: const Center(
+                    child: Text("Entrada",style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,),
+                    ),
+                  ),
+                ),
+              ),
+
+
                   ],
                 ),
               ),
