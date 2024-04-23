@@ -3,7 +3,7 @@ import 'package:prueba/Persistencia/DatosDB.dart';
 import 'package:prueba/Objetos/Expositor.dart';
 
 class ValidarDatos {
-  Future<int> validar(String correo, String celular) async {
+  Future<int> validarRegistro(String correo, String celular) async {
     final List<Expositor> expositores = await DatosDB().getExpositores();
     for (var ex in expositores) {
       if (correo == ex.correo && celular != ex.celular) {
@@ -16,5 +16,15 @@ class ValidarDatos {
       }
     }
     return 0;
+  }
+
+  Future<bool> validarLogin(String correo, String password) async{
+    final List<Expositor> expositores = await DatosDB().getExpositores();
+    for (var ex in expositores){
+      if(correo == ex.correo && password == ex.password){
+        return true;
+      }
+    }
+    return false;
   }
 }

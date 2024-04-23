@@ -9,14 +9,6 @@ import 'package:email_validator/email_validator.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
 import 'package:prueba/pages/login.dart';
 
-enum SampleItem { itemOne, itemTwo, itemThree, itemFour, itemFive, itemsix }
-
-SampleItem? selectedMenu;
-
-SampleItem? giro;
-
-bool isChecked = false;
-
 class Registro extends StatefulWidget {
   const Registro({super.key});
 
@@ -565,7 +557,7 @@ class _Getformulario extends State<Getformulario> {
                 formname.currentState!.validate();
                 if (!isErroremail && !isErrorphone) {
                   x = await ValidarDatos()
-                      .validar(emailcontrol.text, phone.text);
+                      .validarRegistro(emailcontrol.text, phone.text);
                   if (x == 1) {
                     setState(() {
                       isErroremail = true;
@@ -590,11 +582,12 @@ class _Getformulario extends State<Getformulario> {
                           !isErrorname) {
                         List<String> nombre = name.text.split(" ");
                         Expositor expositor = Expositor(
-                            apellidos: nombre[1],
-                            celular: phone.text,
-                            password: passwordcontrol.text,
-                            correo: emailcontrol.text,
-                            nombre: nombre[0]);
+                            id: null,
+                            apellidos: nombre[1].toLowerCase(),
+                            celular: phone.text.toLowerCase(),
+                            password: passwordcontrol.text.toLowerCase(),
+                            correo: emailcontrol.text.toLowerCase(),
+                            nombre: nombre[0].toLowerCase());
                         InsertarDatos().setExpositor(expositor);
                         rLogin();
                       }
@@ -612,9 +605,9 @@ class _Getformulario extends State<Getformulario> {
     );
   }
 
-  void rLogin(){
+  void rLogin() {
     Navigator.push(
-            context, CupertinoPageRoute(builder: (context) => const Login()));
+        context, CupertinoPageRoute(builder: (context) => const Login()));
   }
 
   bool pw2() {

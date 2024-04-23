@@ -1,8 +1,11 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, avoid_print
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:prueba/Objetos/Expositor.dart';
 
 class DatosDB {
+
+  //Funcion que regresa los expositores que han sido creado en forma de lista
+
   Future<List<Expositor>> getExpositores() async {
     List<Expositor> listaExpositores = [];
     var db = FirebaseFirestore.instance;
@@ -21,6 +24,8 @@ class DatosDB {
     return listaExpositores;
   }
 
+  //Funcion para crear un nuevo expositor, el id se crea automaticamente con firebase
+
   Future setExpositor(Expositor ex) async {
     var db = FirebaseFirestore.instance;
     // Create a new user with a first and last name
@@ -32,8 +37,31 @@ class DatosDB {
       "nombre": ex.nombre
     };
 
-// Add a new document with a generated ID
-    db.collection("expositores").add(expositor).then((DocumentReference doc) =>
-        print('DocumentSnapshot added with ID: ${doc.id}'));
+    db
+        .collection("expositores")
+        .add(expositor)
+        .then((DocumentReference doc) => colocarid(doc.id));
+  }
+
+  //Funcion para colocar el id del expositor en el campo id de la Base de datos
+
+  Future colocarid(String id) async {
+    var db = FirebaseFirestore.instance;
+    final washingtonRef = db.collection("expositores").doc(id);
+    washingtonRef.update({"id": id}).then(
+        (value) => print("DocumentSnapshot updated!"),
+        onError: (e) => print("Error updating document $e"));
+  }
+
+  //Funcion para editar registros ya existentes
+
+  Future editard(String id, int n) async{
+    var db = FirebaseFirestore.instance;
+    if(n == 1){
+
+    }
+    else if(n ==2 ){
+
+    }
   }
 }
