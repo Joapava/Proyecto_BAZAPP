@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prueba/pages/registro.dart';
+import 'package:prueba/pages/inicio.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -231,7 +232,10 @@ class _BoxCentral extends State<BoxCentral> {
       height: 50,
       child: FloatingActionButton(
         onPressed: (()=>
-          print(emailcontrol.text+"\n"+passwordcontrol.text)
+          Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Inicio()))
         ), backgroundColor: Colors.white,child: const Text('Ingresar'),),
     );
   }
