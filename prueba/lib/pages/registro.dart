@@ -1,13 +1,10 @@
 // ignore: file_names
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:prueba/Negocio/InsertarDatos.dart';
 import 'package:prueba/Objetos/Expositor.dart';
-import 'package:prueba/pages/inicio.dart';
 import 'dart:core';
 import 'package:email_validator/email_validator.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
-import 'package:prueba/pages/login.dart';
 
 class Registro extends StatefulWidget {
   const Registro({super.key});
@@ -134,10 +131,18 @@ class _Getformulario extends State<Getformulario> {
               key: formname,
               child: TextFormField(
                 validator: (value) {
-                  if (value!.isEmpty) {
+                  if (name.text.isEmpty) {
                     setState(() {
                       isErrorname = true;
                     });
+                    return null;
+                  }
+                  bool v1 = value!.contains(RegExp(r'[0-9]'));
+                  if(v1){
+                    setState(() {
+                      isErrorname = true;
+                    });
+                    return null;
                   }
                   setState(() {
                     isErrorname = false;
@@ -550,11 +555,11 @@ class _Getformulario extends State<Getformulario> {
           child: FloatingActionButton(
               onPressed: () async {
                 x = 0;
+                formname.currentState!.validate();
                 formemail.currentState!.validate();
                 formpwd.currentState!.validate();
                 formpwd2.currentState!.validate();
                 formphone.currentState!.validate();
-                formname.currentState!.validate();
                 if (!isErroremail && !isErrorphone) {
                   x = await ValidarDatos()
                       .validarRegistro(emailcontrol.text, phone.text);
@@ -582,10 +587,10 @@ class _Getformulario extends State<Getformulario> {
                           !isErrorname) {
                         List<String> nombre = name.text.split(" ");
                         Expositor expositor = Expositor(
-                            id: null,
+                            id: '',
                             apellidos: nombre[1].toLowerCase(),
                             celular: phone.text.toLowerCase(),
-                            password: passwordcontrol.text.toLowerCase(),
+                            password: passwordcontrol.text,
                             correo: emailcontrol.text.toLowerCase(),
                             nombre: nombre[0].toLowerCase());
                         InsertarDatos().setExpositor(expositor);
@@ -606,19 +611,7 @@ class _Getformulario extends State<Getformulario> {
   }
 
   void rLogin() {
-    Navigator.push(
-        context, CupertinoPageRoute(builder: (context) => const Login()));
-  }
-
-  bool pw2() {
-    if (passwordcontrol.text.isNotEmpty && password2control.text.isNotEmpty) {
-      if (passwordcontrol.text == password2control.text) {
-        Navigator.push(
-            context, CupertinoPageRoute(builder: (context) => const Inicio()));
-      }
-    }
-
-    return false;
+    Navigator.pop(context);
   }
 
   bool emailc() {
@@ -669,6 +662,16 @@ class _Getformulario extends State<Getformulario> {
       return Colors.red;
     }
     return Colors.white;
+  }
+  
+  @override
+  void dispose(){
+    emailcontrol.dispose();
+    passwordcontrol.dispose();
+    password2control.dispose();
+    phone.dispose();
+    name.dispose();
+    super.dispose();
   }
 }
 

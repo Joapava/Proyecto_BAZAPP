@@ -6,10 +6,10 @@ class Expositor {
   String password;
   String correo;
   String nombre;
-  String? id;
+  String id;
 
   Expositor(
-      {this.id,
+      {required this.id,
       required this.apellidos,
       required this.celular,
       required this.password,

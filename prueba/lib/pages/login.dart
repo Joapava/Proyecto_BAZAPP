@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
 import 'package:prueba/pages/registro.dart';
 import 'package:prueba/pages/inicio.dart';
@@ -15,9 +16,15 @@ class Login extends StatefulWidget {
 class _Login extends State<Login> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
         backgroundColor: Colors.black,
-        body: SafeArea(child: SingleChildScrollView(child: BoxCentral())));
+        body: PopScope(
+          canPop: false,
+          onPopInvoked: (didPop) {
+            SystemNavigator.pop();
+          },
+          child: SafeArea(child: SingleChildScrollView(child: BoxCentral())),
+        ));
   }
 }
 
@@ -124,8 +131,11 @@ class _BoxCentral extends State<BoxCentral> {
           alignment: Alignment.topRight,
           widthFactor: 2.2,
           child: TextButton(
-              onPressed: (() => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const Registro()))),
+              onPressed: (() {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Registro()));
+                // cleancontroller();
+              }),
               child: const Text(
                 '¿Olvidaste tu contraseña?',
                 style: TextStyle(
@@ -161,15 +171,18 @@ class _BoxCentral extends State<BoxCentral> {
     );
   }
 
+  // void cleancontroller() {
+  //   emailcontrol.dispose();
+  //   passwordcontrol.dispose();
+  //   super.dispose();
+  // }
+
   FittedBox messageError() {
-    if(isErroremail && isErrorpwd){
+    if (isErroremail || isErrorpwd) {
       return const FittedBox(
         child: Text(
           'Correo o contraseña incorrectos',
-          style: TextStyle(
-            color: Colors.red,
-            fontFamily: 'Inter'
-          ),
+          style: TextStyle(color: Colors.red, fontFamily: 'Inter'),
         ),
       );
     }
@@ -203,7 +216,7 @@ class _BoxCentral extends State<BoxCentral> {
                 key: formpwd,
                 child: TextFormField(
                   validator: (value) {
-                    if (passwordcontrol.text.isEmpty) {
+                    if (value!.isEmpty) {
                       setState(() {
                         isErrorpwd = true;
                       });
@@ -270,7 +283,7 @@ class _BoxCentral extends State<BoxCentral> {
                 key: formnemail,
                 child: TextFormField(
                   validator: (value) {
-                    if (!EmailValidator.validate(emailcontrol.text)) {
+                    if (!EmailValidator.validate(value.toString())) {
                       setState(() {
                         isErroremail = true;
                       });
@@ -305,11 +318,18 @@ class _BoxCentral extends State<BoxCentral> {
       width: 400,
       height: 50,
       child: FloatingActionButton(
-        onPressed: (() async{
+        onPressed: (() async {
           formnemail.currentState!.validate();
           formpwd.currentState!.validate();
-          if(await ValidarDatos().validarLogin(emailcontrol.text, passwordcontrol.text)){
+          if (await ValidarDatos()
+              .validarLogin(emailcontrol.text, passwordcontrol.text)) {
             funcion_ingreso();
+          } else {
+            setState(() {
+              isErroremail = true;
+              isErrorpwd = true;
+              messageError();
+            });
           }
         }),
         backgroundColor: Colors.white,
@@ -319,13 +339,9 @@ class _BoxCentral extends State<BoxCentral> {
   }
 
   // ignore: non_constant_identifier_names
-  void funcion_ingreso(){
-    emailcontrol.clear();
-    passwordcontrol.clear();
-    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Inicio()));
+  void funcion_ingreso() {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const Inicio()));
   }
 
   void change() {
@@ -353,12 +369,12 @@ class _BoxCentral extends State<BoxCentral> {
                     isErroremail = false;
                     isErrorpwd = false;
                   });
-                  emailcontrol.clear();
-                  passwordcontrol.clear();
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const Registro()));
+                  // cleancontroller();
                 }),
                 child: const Text(
                   'Registrate aqui',
@@ -369,6 +385,13 @@ class _BoxCentral extends State<BoxCentral> {
                 )))
       ],
     );
+  }
+
+  @override
+  void dispose(){
+    emailcontrol.dispose();
+    passwordcontrol.dispose();
+    super.dispose();
   }
 }
 
