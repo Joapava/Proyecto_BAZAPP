@@ -3,26 +3,26 @@
 class Expositor {
   String apellidos;
   String celular;
-  String password;
-  String correo;
   String nombre;
   String id;
+  String correo;
+  bool ntf;
 
   Expositor(
       {required this.id,
+      required this.correo,
       required this.apellidos,
       required this.celular,
-      required this.password,
-      required this.correo,
-      required this.nombre});
+      required this.nombre,
+      required this.ntf});
 
   factory Expositor.fromMap(Map<String, dynamic> map) {
     return Expositor(
         id: map['id'],
+        correo:  map['correo'],
         apellidos: map['apellidos'],
         celular: map['celular'],
-        password: map['contrasena'],
-        correo: map['correo'],
-        nombre: map['nombre']);
+        nombre: map['nombre'],
+        ntf: map['ntf']);
   }
 }

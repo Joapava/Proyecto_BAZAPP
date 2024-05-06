@@ -13,44 +13,39 @@ class DatosDB {
         var data = doc.data();
         Expositor expositor = Expositor(
             id: data['id'],
+            correo: data['correo'],
             apellidos: data['apellidos'],
             celular: data['celular'],
-            password: data['contrasena'],
-            correo: data['correo'],
-            nombre: data['nombre']);
+            nombre: data['nombre'],
+            ntf: data['notificaciones']);
         listaExpositores.add(expositor);
       }
     });
     return listaExpositores;
   }
 
+  Future<bool> getNotificacion(String id) async {
+    bool ntf;
+    var db = FirebaseFirestore.instance;
+    ntf = (await db.collection("expositores").doc(id).get()) as bool;
+    return ntf;
+  }
+
   //Funcion para crear un nuevo expositor, el id se crea automaticamente con firebase
 
-  Future setExpositor(Expositor ex) async {
+  Future setExpositor(Expositor ex, String id) async {
     var db = FirebaseFirestore.instance;
     // Create a new user with a first and last name
     final expositor = <String, dynamic>{
+      "id": id,
+      "correo": ex.correo,
       "notificaciones": true,
       "apellidos": ex.apellidos,
       "celular": ex.celular,
-      "contrasena": ex.password,
-      "correo": ex.correo,
       "nombre": ex.nombre
     };
 
-    db
-        .collection("expositores")
-        .add(expositor)
-        .then((DocumentReference doc) => colocarid(doc.id));
-  }
-
-  //Funcion para colocar el id del expositor en el campo id de la Base de datos
-
-  Future colocarid(String id) async {
-    var db = FirebaseFirestore.instance;
-    final idRef = db.collection("expositores").doc(id);
-    idRef.update({"id": id}).then((value) => print("DocumentSnapshot updated!"),
-        onError: (e) => print("Error updating document $e"));
+    db.collection("expositores").doc(id).set(expositor);
   }
 
   //Funcion para editar el boleano de las notificaciones
@@ -67,8 +62,7 @@ class DatosDB {
   Future editarnombre(String id, String nombre, String apellido) async {
     var db = FirebaseFirestore.instance;
     final idRef = db.collection("expositores").doc(id);
-    idRef.update({"nombre": nombre}).then(
-        (value) => print("Update name!"),
+    idRef.update({"nombre": nombre}).then((value) => print("Update name!"),
         onError: (e) => print("Error updating document $e"));
     idRef.update({"apellidos": apellido}).then(
         (value) => print("Update lastname!"),
@@ -78,16 +72,14 @@ class DatosDB {
   Future editarcelular(String id, String celular) async {
     var db = FirebaseFirestore.instance;
     final idRef = db.collection("expositores").doc(id);
-    idRef.update({"celular": celular}).then(
-        (value) => print("Update phone!"),
+    idRef.update({"celular": celular}).then((value) => print("Update phone!"),
         onError: (e) => print("Error updating document $e"));
   }
 
   Future editarcorreo(String id, String correo) async {
     var db = FirebaseFirestore.instance;
     final idRef = db.collection("expositores").doc(id);
-    idRef.update({"correo": correo}).then(
-        (value) => print("Update email!"),
+    idRef.update({"correo": correo}).then((value) => print("Update email!"),
         onError: (e) => print("Error updating document $e"));
   }
 }

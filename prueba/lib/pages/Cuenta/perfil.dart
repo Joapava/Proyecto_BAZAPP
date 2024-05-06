@@ -1,4 +1,3 @@
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:prueba/Negocio/EditarDatos.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
@@ -70,23 +69,6 @@ class _Perfil extends State<Perfil> {
           ],
         ),
         name(),
-        const SizedBox(
-          height: 20,
-        ),
-        const Row(
-          children: [
-            SizedBox(
-              width: 30,
-            ),
-            FittedBox(
-              child: Text(
-                'Correo',
-                style: TextStyle(fontFamily: 'Inter', fontSize: 20),
-              ),
-            )
-          ],
-        ),
-        email(),
         const SizedBox(
           height: 20,
         ),
@@ -219,7 +201,7 @@ class _Perfil extends State<Perfil> {
                     return null;
                   },
                   focusNode: phonefocus,
-                  onFieldSubmitted: (String value) async{
+                  onFieldSubmitted: (String value) async {
                     await validar(2);
                     setState(() {
                       if (!isErrorphone) {
@@ -256,70 +238,6 @@ class _Perfil extends State<Perfil> {
     );
   }
 
-  Container email() {
-    return Container(
-      width: 400,
-      height: 65,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: Colors.white,
-          border: Border.all(
-              color: isErroremail
-                  ? Colors.red
-                  : const Color.fromRGBO(0, 0, 0, 0))),
-      child: Row(
-        children: [
-          const SizedBox(
-            width: 10,
-          ),
-          SizedBox(
-            width: 300,
-            height: 40,
-            child: Form(
-                key: formemail,
-                child: TextFormField(
-                  keyboardType: TextInputType.name,
-                  controller: emailcontrol,
-                  focusNode: emailfocus,
-                  validator: (value) {
-                    if (!EmailValidator.validate(emailcontrol.text)) {
-                      setState(() {
-                        isErroremail = true;
-                      });
-                      return null;
-                    }
-                    setState(() {
-                      isErroremail = false;
-                    });
-                    return null;
-                  },
-                  onFieldSubmitted: (value) async {
-                    await validar(1);
-                    setState(() {
-                      if (!isErroremail) {
-                        editemail = true;
-                      }
-                    });
-                    nuevoemail();
-                  },
-                  readOnly: editemail,
-                  decoration: const InputDecoration(
-                      contentPadding: EdgeInsetsDirectional.symmetric(),
-                      prefixIcon: Icon(Icons.alternate_email),
-                      focusedBorder: InputBorder.none,
-                      border: InputBorder.none),
-                  style: const TextStyle(fontFamily: 'Inter', fontSize: 18),
-                )),
-          ),
-          const SizedBox(
-            width: 45,
-          ),
-          SizedBox(width: 35, height: 35, child: buttomedit(3))
-        ],
-      ),
-    );
-  }
-
   Widget buttomedit(int x) {
     if (x == 1) {
       return FloatingActionButton(
@@ -347,8 +265,7 @@ class _Perfil extends State<Perfil> {
     } else if (x == 2) {
       return FloatingActionButton(
         heroTag: 'edit_phone',
-        onPressed: () async{
-
+        onPressed: () async {
           if (editphone) {
             setState(() {
               editphone = false;
@@ -367,31 +284,6 @@ class _Perfil extends State<Perfil> {
         backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
         elevation: 0,
         child: editphone
-            ? const Icon(Icons.edit)
-            : const Icon(Icons.check_rounded),
-      );
-    } else if (x == 3) {
-      return FloatingActionButton(
-        heroTag: 'edit_email',
-        onPressed: () async {
-          if (editemail) {
-            setState(() {
-              editemail = false;
-              FocusScope.of(context).requestFocus(emailfocus);
-            });
-          } else {
-            await validar(1);
-            if (!isErroremail) {
-              setState(() {
-                editemail = true;
-              });
-              nuevoemail();
-            }
-          }
-        },
-        backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
-        elevation: 0,
-        child: editemail
             ? const Icon(Icons.edit)
             : const Icon(Icons.check_rounded),
       );
@@ -461,47 +353,8 @@ class _Perfil extends State<Perfil> {
     }
   }
 
-  void nuevoemail() async{
-    if (!isErroremail) {
-      if (perfs.email == emailcontrol.text) {
-        setState(() {
-          editemail = true;
-        });
-      } else {
-        perfs.email = emailcontrol.text;
-        EditarDatos().cambiarcorreo(perfs.id, perfs.email);
-        setState(() {
-          editemail = true;
-        });
-      }
-    } 
-  }
-
   Future<void> validar(int x) async {
-    if (x == 1) {
-      formemail.currentState!.validate();
-      bool isRegister = await ValidarDatos().registroemail(emailcontrol.text);
-      if (isRegister && !isErroremail) {
-        if (perfs.email == emailcontrol.text) {
-          setState(() {
-            isErroremail = false;
-          });
-          // nuevoemail();
-        } else {
-          setState(() {
-            isErroremail = true;
-          });
-        }
-      } else if(isErroremail){
-        setState(() {
-          isErroremail = true;
-        });
-      } else {
-        setState(() {
-          isErroremail = false;
-        });
-      }
-    } else if (x == 2) {
+    if (x == 2) {
       formphone.currentState!.validate();
       bool isRegister = await ValidarDatos().registrocelular(phonecontrol.text);
       if (isRegister && !isErrorphone) {
@@ -515,7 +368,7 @@ class _Perfil extends State<Perfil> {
             isErrorphone = true;
           });
         }
-      } else if(isErrorphone){
+      } else if (isErrorphone) {
         setState(() {
           isErrorphone = true;
         });

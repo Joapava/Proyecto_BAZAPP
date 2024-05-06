@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
+import 'package:prueba/Negocio/autenticar.dart';
 import 'package:prueba/pages/registro.dart';
-import 'package:prueba/pages/inicio.dart';
+import 'package:prueba/pages/home.dart';
 import 'dart:core';
 import 'package:email_validator/email_validator.dart';
 
@@ -23,7 +24,8 @@ class _Login extends State<Login> {
           onPopInvoked: (didPop) {
             SystemNavigator.pop();
           },
-          child: SafeArea(child: SingleChildScrollView(child: BoxCentral())),
+          child:
+              const SafeArea(child: SingleChildScrollView(child: BoxCentral())),
         ));
   }
 }
@@ -67,7 +69,7 @@ class _BoxCentral extends State<BoxCentral> {
           child: Text(
             'Bienvenido de nuevo! Por favor ingresa tus datos',
             style: TextStyle(
-                fontSize: 15,
+                fontSize: 16,
                 color: Color.fromARGB(101, 255, 255, 255),
                 fontFamily: 'inter',
                 decoration: TextDecoration.none),
@@ -99,7 +101,7 @@ class _BoxCentral extends State<BoxCentral> {
               style: TextStyle(
                   decoration: TextDecoration.none,
                   color: Colors.white,
-                  fontFamily: 'inter-bold',
+                  fontFamily: 'inter',
                   fontSize: 20),
             )
           ],
@@ -129,7 +131,7 @@ class _BoxCentral extends State<BoxCentral> {
         box_password(),
         Align(
           alignment: Alignment.topRight,
-          widthFactor: 2.2,
+          widthFactor: 1.6,
           child: TextButton(
               onPressed: (() {
                 Navigator.push(context,
@@ -142,7 +144,8 @@ class _BoxCentral extends State<BoxCentral> {
                     color: Colors.blue,
                     decoration: TextDecoration.underline,
                     decorationColor: Colors.blue,
-                    fontFamily: 'inter'),
+                    fontFamily: 'inter',
+                    fontSize: 18),
               )),
         ),
         newMethod(),
@@ -155,14 +158,14 @@ class _BoxCentral extends State<BoxCentral> {
             'O ingresa con',
             style: TextStyle(
                 fontFamily: 'Inter',
-                fontSize: 15,
+                fontSize: 18,
                 color: Color.fromARGB(117, 255, 255, 255)),
           ),
         ),
         const SizedBox(
           height: 20,
         ),
-        const botones_inicio(),
+        botones_inicio(),
         const SizedBox(
           height: 10,
         ),
@@ -171,18 +174,13 @@ class _BoxCentral extends State<BoxCentral> {
     );
   }
 
-  // void cleancontroller() {
-  //   emailcontrol.dispose();
-  //   passwordcontrol.dispose();
-  //   super.dispose();
-  // }
-
   FittedBox messageError() {
     if (isErroremail || isErrorpwd) {
       return const FittedBox(
         child: Text(
           'Correo o contraseña incorrectos',
-          style: TextStyle(color: Colors.red, fontFamily: 'Inter'),
+          style:
+              TextStyle(color: Colors.red, fontFamily: 'Inter', fontSize: 18),
         ),
       );
     }
@@ -228,13 +226,16 @@ class _BoxCentral extends State<BoxCentral> {
                     return null;
                   },
                   controller: passwordcontrol,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(
+                      color: Colors.white, fontFamily: 'Inter', fontSize: 18),
                   obscureText: isVisible,
                   decoration: const InputDecoration(
-                      contentPadding: EdgeInsetsDirectional.symmetric(),
+                      contentPadding: EdgeInsets.only(bottom: 12),
                       hintText: 'Ingrese su contraseña',
-                      hintStyle:
-                          TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
+                      hintStyle: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 18,
+                          color: Color.fromARGB(101, 255, 255, 255)),
                       prefixIcon: Icon(Icons.lock_person_outlined,
                           color: Color.fromARGB(101, 255, 255, 255)),
                       focusedBorder: InputBorder.none,
@@ -253,8 +254,9 @@ class _BoxCentral extends State<BoxCentral> {
               backgroundColor: const Color.fromARGB(0, 87, 87, 95),
               elevation: 0,
               heroTag: 'btn1',
-              child: const Icon(Icons.remove_red_eye_outlined,
-                  color: Color.fromARGB(101, 255, 255, 255)),
+              child: isVisible
+                          ? Image.asset('assets/eye.png',color: const Color.fromARGB(101, 255, 255, 255))
+                          : Image.asset('assets/eye-line.png',color: const Color.fromARGB(101, 255, 255, 255)),
             ),
           )
         ],
@@ -295,12 +297,16 @@ class _BoxCentral extends State<BoxCentral> {
                     return null;
                   },
                   controller: emailcontrol,
-                  style: const TextStyle(color: Colors.white),
+                  keyboardType: TextInputType.emailAddress,
+                  style: const TextStyle(
+                      color: Colors.white, fontFamily: 'Inter', fontSize: 18),
                   decoration: const InputDecoration(
-                      contentPadding: EdgeInsetsDirectional.symmetric(),
+                      contentPadding: EdgeInsets.only(bottom: 12),
                       hintText: 'Ingrese su correo',
-                      hintStyle:
-                          TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
+                      hintStyle: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 18,
+                          color: Color.fromARGB(101, 255, 255, 255)),
                       prefixIcon: Icon(Icons.email_outlined,
                           color: Color.fromARGB(101, 255, 255, 255)),
                       focusedBorder: InputBorder.none,
@@ -321,19 +327,34 @@ class _BoxCentral extends State<BoxCentral> {
         onPressed: (() async {
           formnemail.currentState!.validate();
           formpwd.currentState!.validate();
-          if (await ValidarDatos()
-              .validarLogin(emailcontrol.text, passwordcontrol.text)) {
-            funcion_ingreso();
-          } else {
+          if (!isErroremail && !isErrorpwd) {
+            String id = await Autenticar().iniciarsesion(
+                email: emailcontrol.text, pwd: passwordcontrol.text);
+            if (id.isNotEmpty) {
+              ValidarDatos().datoslogin(id);
+              funcion_ingreso();
+            } else {
+              setState(() {
+                isErroremail = true;
+              isErrorpwd = true;
+              });
+              
+              messageError();
+            }
+          }else {
             setState(() {
               isErroremail = true;
               isErrorpwd = true;
-              messageError();
             });
-          }
+              
+              messageError();
+            }
         }),
         backgroundColor: Colors.white,
-        child: const Text('Ingresar'),
+        child: const Text(
+          'Ingresar',
+          style: TextStyle(fontFamily: 'Inter', fontSize: 18),
+        ),
       ),
     );
   }
@@ -341,7 +362,7 @@ class _BoxCentral extends State<BoxCentral> {
   // ignore: non_constant_identifier_names
   void funcion_ingreso() {
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const Inicio()));
+        context, MaterialPageRoute(builder: (context) => const Home()));
   }
 
   void change() {
@@ -359,7 +380,11 @@ class _BoxCentral extends State<BoxCentral> {
       children: [
         const Text(
           '¿Aún no tienes cuenta?',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 18,
+            color: Colors.white,
+          ),
         ),
         Hero(
             tag: 'pestana',
@@ -379,6 +404,8 @@ class _BoxCentral extends State<BoxCentral> {
                 child: const Text(
                   'Registrate aqui',
                   style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 18,
                       color: Colors.blue,
                       decoration: TextDecoration.underline,
                       decorationColor: Colors.blue),
@@ -387,29 +414,17 @@ class _BoxCentral extends State<BoxCentral> {
     );
   }
 
-  @override
-  void dispose(){
-    emailcontrol.dispose();
-    passwordcontrol.dispose();
-    super.dispose();
-  }
-}
-
-// ignore: camel_case_types
-class botones_inicio extends StatelessWidget {
-  const botones_inicio({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  // ignore: non_constant_identifier_names
+  Widget botones_inicio() {
     return SizedBox(
       width: 240,
       height: 60,
       child: Row(
         children: [
           FloatingActionButton(
-            onPressed: () => (),
+            onPressed: () {
+              print('google');
+            },
             heroTag: 'btngoogle',
             backgroundColor: const Color.fromARGB(117, 87, 87, 95),
             child: Image.asset('assets/google-icon.png'),
@@ -418,7 +433,9 @@ class botones_inicio extends StatelessWidget {
             width: 35,
           ),
           FloatingActionButton(
-            onPressed: () => (),
+            onPressed: () {
+              print('facebook');
+            },
             heroTag: 'btnface',
             backgroundColor: const Color.fromARGB(117, 87, 87, 95),
             child: Image.asset('assets/facebook-logo.png'),
@@ -427,7 +444,9 @@ class botones_inicio extends StatelessWidget {
             width: 35,
           ),
           FloatingActionButton(
-            onPressed: () => (),
+            onPressed: () {
+              print('apple');
+            },
             heroTag: 'btnapple',
             backgroundColor: const Color.fromARGB(117, 87, 87, 95),
             child: Image.asset('assets/apple-logo.png'),
@@ -435,5 +454,12 @@ class botones_inicio extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    emailcontrol.dispose();
+    passwordcontrol.dispose();
+    super.dispose();
   }
 }

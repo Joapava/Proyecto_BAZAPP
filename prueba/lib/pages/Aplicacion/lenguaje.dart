@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:prueba/Persistencia/Preferencias.dart';
 
 class Lenguaje extends StatefulWidget {
-  const Lenguaje({super.key});
+  final Preferencias perfs;
+  const Lenguaje({super.key, required this.perfs});
 
   @override
   State<Lenguaje> createState() => _LenguajeState();
 }
 
 class _LenguajeState extends State<Lenguaje> {
+  late final perfs = widget.perfs;
+  final searchcontrol = TextEditingController();
+  String search = '';
   @override
   Widget build(BuildContext context) {
+    cambiarl(perfs.lenguaje);
     return Scaffold(
       backgroundColor: const Color.fromRGBO(251, 251, 251, 1),
       body: SafeArea(
-        child: SingleChildScrollView(child: principal(),),
+        child: SingleChildScrollView(
+          child: principal(),
+        ),
       ),
     );
   }
@@ -34,6 +42,9 @@ class _LenguajeState extends State<Lenguaje> {
         ),
         buttonregreso(),
         busqueda(),
+        const SizedBox(
+          height: 20,
+        ),
         idiomas()
       ],
     );
@@ -45,7 +56,7 @@ class _LenguajeState extends State<Lenguaje> {
       children: [
         Container(
           width: 270,
-          height: 30,
+          height: 35,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: const Color.fromRGBO(240, 240, 240, 1)),
@@ -53,11 +64,17 @@ class _LenguajeState extends State<Lenguaje> {
             children: [
               SizedBox(
                 width: 270,
-                height: 30,
+                height: 35,
                 child: Form(
                     child: TextFormField(
+                  controller: searchcontrol,
+                  onChanged: (value) {
+                    setState(() {
+                      search = value.toLowerCase();
+                    });
+                  },
                   decoration: const InputDecoration(
-                      contentPadding: EdgeInsetsDirectional.all(6),
+                      contentPadding: EdgeInsetsDirectional.all(7),
                       hintText: 'Buscar',
                       prefixIcon: Icon(Icons.search),
                       focusedBorder: InputBorder.none,
@@ -69,7 +86,13 @@ class _LenguajeState extends State<Lenguaje> {
           ),
         ),
         TextButton(
-            onPressed: () {},
+            onPressed: () {
+              searchcontrol.clear();
+              setState(() {
+                search = '';
+              });
+              FocusScope.of(context).unfocus();
+            },
             child: const Text(
               'Cancelar',
               style: TextStyle(
@@ -83,63 +106,59 @@ class _LenguajeState extends State<Lenguaje> {
     return Container(
         width: 350,
         height: 700,
-        color: Colors.white,
-        child: ListView(
-          children: <Widget>[
-            SizedBox(
-              width: 350,
-              height: 35,
-              child: FloatingActionButton(
-                onPressed: () {},
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(0)),
-                backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
-                elevation: 0,
-                child: const Row(
-                children: [
-                  SizedBox(
-                    width: 35,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15), color: Colors.white),
+        child: ListView.builder(
+          itemCount: datosidiomas.length,
+          itemBuilder: (context, index) {
+            if (tipoidioma[index].toLowerCase().contains(search)) {
+              return ListTile(
+                splashColor: const Color.fromRGBO(251, 251, 251, 1),
+                title: Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 260,
+                        height: 60,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              datosidiomas[index],
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'Inter',
+                                  fontSize: 18),
+                            ),
+                            Text(
+                              tipoidioma[index],
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'Inter',
+                                  fontSize: 16),
+                            )
+                          ],
+                        ),
+                      ),
+                      Icon(
+                        isSeleted(nom[index]) ? Icons.check : null,
+                        color: Colors.blue[500],
+                      )
+                    ],
                   ),
-                  SizedBox(
-                    width: 290,
-                    height: 35,
-                    child: Row(
-                      children: [
-                        Icon(Icons.translate_outlined),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        FittedBox(
-                          child: Text(
-                            'Lenguaje',
-                            style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: 18,
-                                color: Color.fromRGBO(109, 106, 106, 1)),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        FittedBox(
-                          child: Text(
-                            ' (español)',
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: 'Inter',
-                                color: Color.fromRGBO(179, 179, 179, 1)),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Icon(Icons.arrow_forward_ios_outlined)
-                ],
-              ),
-              ),
-              
-            )
-          ],
+                ),
+                selected: isSeleted(nom[index]),
+                onTap: () {
+                  setState(() {
+                    cambiarl(nom[index]);
+                  });
+                },
+              );
+            } else {
+              return Container();
+            }
+          },
         ));
   }
 
@@ -166,8 +185,37 @@ class _LenguajeState extends State<Lenguaje> {
     );
   }
 
+  List<String> datosidiomas = ['Español', 'English','English (UK)','Français','Deutsch','日本語'];
+
+  List<String> tipoidioma = [
+    'Español (latinoamerica)',
+    'Ingles (estados unidos)',
+    'Ingles (R.U.)',
+    'Frances',
+    'Aleman',
+    'Japones'
+  ];
+
+  List<String> nom = ['es_MX', 'en_US','en_UK','fr','de','ja'];
+
+  bool isSeleted(String lenguaje) {
+    if (lenguaje == perfs.lenguaje) {
+      return true;
+    }
+    return false;
+  }
+
+  void cambiarl(String lenguaje) {
+    perfs.lenguaje = lenguaje;
+    print(perfs.lenguaje);
+    setState(() {
+      isSeleted(lenguaje);
+    });
+  }
+
   @override
   void dispose() {
+    searchcontrol.dispose();
     super.dispose();
   }
 }

@@ -1,8 +1,10 @@
 // ignore_for_file: non_constant_identifier_names
 import 'package:flutter/material.dart';
+import 'package:prueba/Persistencia/Auth.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
 import 'package:prueba/pages/Aplicacion/lenguaje.dart';
 import 'package:prueba/pages/Aplicacion/notificaciones.dart';
+import 'package:prueba/pages/Cuenta/password.dart';
 import 'package:prueba/pages/Cuenta/perfil.dart';
 import 'package:prueba/pages/login.dart';
 
@@ -73,6 +75,7 @@ class _ConfiguracionState extends State<Configuracion> {
               elevation: 0,
               onPressed: () {
                 perfs.clear();
+                Auth().signOut();
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const Login()));
               },
@@ -82,7 +85,8 @@ class _ConfiguracionState extends State<Configuracion> {
                     'Cerrar Sesion',
                     style: TextStyle(
                         fontFamily: 'Inter',
-                        color: Color.fromRGBO(137, 137, 137, 1)),
+                        fontSize: 18,
+                        color: Colors.black),
                   ),
                 ),
               ),
@@ -96,7 +100,7 @@ class _ConfiguracionState extends State<Configuracion> {
   Container Container_politica() {
     return Container(
       width: 400,
-      height: 95,
+      height: 102,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15), color: Colors.white),
       child: Column(
@@ -111,6 +115,7 @@ class _ConfiguracionState extends State<Configuracion> {
                   'Politica, Terminos y Condiciones',
                   style: TextStyle(
                       fontFamily: 'Inter',
+                      fontSize: 18,
                       color: Color.fromRGBO(113, 113, 113, 1)),
                 ),
               )
@@ -145,6 +150,7 @@ class _ConfiguracionState extends State<Configuracion> {
                             'Politica de Privacidad',
                             style: TextStyle(
                                 fontFamily: 'Inter',
+                                fontSize: 18,
                                 color: Color.fromRGBO(113, 113, 113, 1)),
                           ),
                         ),
@@ -187,6 +193,7 @@ class _ConfiguracionState extends State<Configuracion> {
                               'Terminos y Condiciones',
                               style: TextStyle(
                                   fontFamily: 'Inter',
+                                  fontSize: 18,
                                   color: Color.fromRGBO(113, 113, 113, 1)),
                             ),
                           )
@@ -204,7 +211,7 @@ class _ConfiguracionState extends State<Configuracion> {
 
   Container Container_cuenta() {
     return Container(
-      height: 90,
+      height: 96,
       width: 400,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15), color: Colors.white),
@@ -216,7 +223,10 @@ class _ConfiguracionState extends State<Configuracion> {
                 width: 15,
               ),
               FittedBox(
-                child: Text('Cuenta'),
+                child: Text('Cuenta',style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 18
+                ),),
               )
             ],
           ),
@@ -252,6 +262,7 @@ class _ConfiguracionState extends State<Configuracion> {
                             'Perfil',
                             style: TextStyle(
                                 fontFamily: 'Inter',
+                                fontSize: 18,
                                 color: Color.fromRGBO(109, 106, 106, 1)),
                           ),
                         ),
@@ -269,7 +280,8 @@ class _ConfiguracionState extends State<Configuracion> {
             child: FloatingActionButton(
               heroTag: 'password',
               onPressed: () {
-                
+                Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => const Password()));
               },
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15),bottomRight: Radius.circular(15))),
@@ -294,6 +306,7 @@ class _ConfiguracionState extends State<Configuracion> {
                             'Contraseña',
                             style: TextStyle(
                                 fontFamily: 'Inter',
+                                fontSize: 18,
                                 color: Color.fromRGBO(109, 106, 106, 1)),
                           ),
                         ),
@@ -317,7 +330,6 @@ class _ConfiguracionState extends State<Configuracion> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15), color: Colors.white),
       child: Column(
-        // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Row(
             children: [
@@ -341,7 +353,7 @@ class _ConfiguracionState extends State<Configuracion> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const Lenguaje()));
+                        builder: (context) => Lenguaje(perfs: perfs,)));
               },
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0)),
@@ -370,18 +382,7 @@ class _ConfiguracionState extends State<Configuracion> {
                                 color: Color.fromRGBO(109, 106, 106, 1)),
                           ),
                         ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        FittedBox(
-                          child: Text(
-                            ' (español)',
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: 'Inter',
-                                color: Color.fromRGBO(179, 179, 179, 1)),
-                          ),
-                        ),
+
                       ],
                     ),
                   ),
@@ -448,7 +449,7 @@ class _ConfiguracionState extends State<Configuracion> {
     );
   }
 
-  Container heat() {
+  Widget heat() {
     return Container(
       height: 70,
       width: 400,
@@ -476,7 +477,7 @@ class _ConfiguracionState extends State<Configuracion> {
               FittedBox(
                 child: Text(
                   perfs.nombre,
-                  style: const TextStyle(fontFamily: 'Inter', fontSize: 16),
+                  style: const TextStyle(fontFamily: 'Inter', fontSize: 18),
                 ),
               ),
               FittedBox(

@@ -1,6 +1,7 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:prueba/Negocio/InsertarDatos.dart';
+import 'package:prueba/Negocio/autenticar.dart';
 import 'package:prueba/Objetos/Expositor.dart';
 import 'dart:core';
 import 'package:email_validator/email_validator.dart';
@@ -106,7 +107,7 @@ class _Getformulario extends State<Getformulario> {
               style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'Inter',
-                fontSize: 17,
+                fontSize: 18,
               ),
             )
           ],
@@ -137,8 +138,14 @@ class _Getformulario extends State<Getformulario> {
                     });
                     return null;
                   }
+                  List<String> nombre = name.text.split(" ");
+                  if (nombre.length >= 2) {
+                    setState(() {
+                      isErrorname = true;
+                    });
+                  }
                   bool v1 = value!.contains(RegExp(r'[0-9]'));
-                  if(v1){
+                  if (v1) {
                     setState(() {
                       isErrorname = true;
                     });
@@ -149,7 +156,8 @@ class _Getformulario extends State<Getformulario> {
                   });
                   return null;
                 },
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(
+                    color: Colors.white, fontSize: 18, fontFamily: 'Inter'),
                 controller: name,
                 keyboardType: TextInputType.name,
                 decoration: const InputDecoration(
@@ -179,7 +187,7 @@ class _Getformulario extends State<Getformulario> {
               style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'Inter',
-                fontSize: 17,
+                fontSize: 18,
               ),
             )
           ],
@@ -221,7 +229,8 @@ class _Getformulario extends State<Getformulario> {
                   });
                   return null;
                 },
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(
+                    color: Colors.white, fontFamily: 'Inter', fontSize: 18),
                 controller: emailcontrol,
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
@@ -251,7 +260,7 @@ class _Getformulario extends State<Getformulario> {
               style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'Inter',
-                fontSize: 17,
+                fontSize: 18,
               ),
             )
           ],
@@ -295,10 +304,13 @@ class _Getformulario extends State<Getformulario> {
                           return null;
                         },
                         controller: passwordcontrol,
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Inter',
+                            fontSize: 18),
                         obscureText: isVisible,
                         decoration: const InputDecoration(
-                          contentPadding: EdgeInsetsDirectional.symmetric(),
+                          contentPadding: EdgeInsets.only(bottom: 10),
                           hintText: 'Ingrese su contraseña',
                           hintStyle: TextStyle(
                               color: Color.fromARGB(101, 255, 255, 255)),
@@ -321,8 +333,15 @@ class _Getformulario extends State<Getformulario> {
                     backgroundColor: const Color.fromARGB(0, 87, 87, 95),
                     elevation: 0,
                     heroTag: 'btn1',
-                    child: const Icon(Icons.remove_red_eye_outlined,
-                        color: Color.fromARGB(101, 255, 255, 255)),
+                    child: isVisible
+                        ? Image.asset(
+                            'assets/eye.png',
+                            color: const Color.fromARGB(101, 255, 255, 255),
+                          )
+                        : Image.asset(
+                            'assets/eye-line.png',
+                            color: const Color.fromARGB(101, 255, 255, 255),
+                          ),
                   ),
                 )
               ],
@@ -340,7 +359,7 @@ class _Getformulario extends State<Getformulario> {
               style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'Inter',
-                fontSize: 17,
+                fontSize: 18,
               ),
             )
           ],
@@ -381,11 +400,14 @@ class _Getformulario extends State<Getformulario> {
                           return null;
                         },
                         controller: password2control,
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Inter',
+                            fontSize: 18),
                         obscureText: isVisiblebtn2,
                         decoration: const InputDecoration(
                             errorStyle: TextStyle(color: Colors.red),
-                            contentPadding: EdgeInsetsDirectional.symmetric(),
+                            contentPadding: EdgeInsets.only(bottom: 10),
                             hintText: 'Vuelva a ingresar su contraseña',
                             hintStyle: TextStyle(
                                 color: Color.fromARGB(101, 255, 255, 255)),
@@ -407,8 +429,15 @@ class _Getformulario extends State<Getformulario> {
                     backgroundColor: const Color.fromARGB(0, 87, 87, 95),
                     elevation: 0,
                     heroTag: 'btn2',
-                    child: const Icon(Icons.remove_red_eye_outlined,
-                        color: Color.fromARGB(101, 255, 255, 255)),
+                    child: isVisiblebtn2
+                        ? Image.asset(
+                            'assets/eye.png',
+                            color: const Color.fromARGB(101, 255, 255, 255),
+                          )
+                        : Image.asset(
+                            'assets/eye-line.png',
+                            color: const Color.fromARGB(101, 255, 255, 255),
+                          ),
                   ),
                 )
               ],
@@ -426,7 +455,7 @@ class _Getformulario extends State<Getformulario> {
               style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'Inter',
-                fontSize: 17,
+                fontSize: 18,
               ),
             )
           ],
@@ -463,7 +492,8 @@ class _Getformulario extends State<Getformulario> {
                 return null;
               },
               controller: phone,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(
+                  color: Colors.white, fontFamily: 'Inter', fontSize: 18),
               keyboardType: TextInputType.phone,
               maxLength: 10, // Alinea el texto al centro
               decoration: const InputDecoration(
@@ -489,8 +519,8 @@ class _Getformulario extends State<Getformulario> {
               width: 25,
             ),
             Container(
-              height: 10,
-              width: 10,
+              height: 13,
+              width: 13,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15), color: ccolor(1)),
             ),
@@ -498,9 +528,9 @@ class _Getformulario extends State<Getformulario> {
               width: 10,
             ),
             Text(
-              'Debe de incluir numeros',
+              'Incluir minimo un numero',
               style: TextStyle(
-                  fontFamily: 'Inter', color: ccolor(1), fontSize: 15),
+                  fontFamily: 'Inter', color: ccolor(1), fontSize: 18),
             )
           ],
         ),
@@ -510,8 +540,8 @@ class _Getformulario extends State<Getformulario> {
               width: 25,
             ),
             Container(
-              height: 10,
-              width: 10,
+              height: 13,
+              width: 13,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15), color: ccolor(2)),
             ),
@@ -519,9 +549,9 @@ class _Getformulario extends State<Getformulario> {
               width: 10,
             ),
             Text(
-              'Debe de contener al menos una letra mayuscula',
+              'Incluir minimo una letra mayuscusla',
               style: TextStyle(
-                  fontFamily: 'Inter', color: ccolor(2), fontSize: 15),
+                  fontFamily: 'Inter', color: ccolor(2), fontSize: 18),
             )
           ],
         ),
@@ -531,8 +561,8 @@ class _Getformulario extends State<Getformulario> {
               width: 25,
             ),
             Container(
-              height: 10,
-              width: 10,
+              height: 13,
+              width: 13,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15), color: ccolor(3)),
             ),
@@ -542,7 +572,7 @@ class _Getformulario extends State<Getformulario> {
             Text(
               'Deben de coincidir las contraseñas',
               style: TextStyle(
-                  fontFamily: 'Inter', color: ccolor(3), fontSize: 15),
+                  fontFamily: 'Inter', color: ccolor(3), fontSize: 18),
             )
           ],
         ),
@@ -560,40 +590,24 @@ class _Getformulario extends State<Getformulario> {
                 formpwd.currentState!.validate();
                 formpwd2.currentState!.validate();
                 formphone.currentState!.validate();
+
                 if (!isErroremail && !isErrorphone) {
-                  x = await ValidarDatos()
-                      .validarRegistro(emailcontrol.text, phone.text);
+                  x = await ValidarDatos().validarRegistro(phone.text);
+
                   if (x == 1) {
-                    setState(() {
-                      isErroremail = true;
-                      formemail.currentState!.validate();
-                    });
-                  } else if (x == 2) {
                     setState(() {
                       isErrorphone = true;
                       formphone.currentState!.validate();
                     });
-                  } else if (x == 3) {
-                    setState(() {
-                      formemail.currentState!.validate();
-                      formphone.currentState!.validate();
-                    });
                   } else if (x == 0) {
                     if (name.text.split(" ").length >= 2) {
+                      print('aaaaaaaaaaaaa');
                       if (!isError &&
                           !isErroremail &&
                           !isErrorphone &&
                           !isErrorpwd &&
                           !isErrorname) {
-                        List<String> nombre = name.text.split(" ");
-                        Expositor expositor = Expositor(
-                            id: '',
-                            apellidos: nombre[1].toLowerCase(),
-                            celular: phone.text.toLowerCase(),
-                            password: passwordcontrol.text,
-                            correo: emailcontrol.text.toLowerCase(),
-                            nombre: nombre[0].toLowerCase());
-                        InsertarDatos().setExpositor(expositor);
+                        crearUsuario();
                         rLogin();
                       }
                     }
@@ -601,13 +615,38 @@ class _Getformulario extends State<Getformulario> {
                 }
               },
               backgroundColor: Colors.white,
-              child: const Text("Registrar")),
+              child: const Text(
+                "Registrar",
+                style: TextStyle(fontFamily: 'Inter', fontSize: 18),
+              )),
         ),
         const SizedBox(
           height: 20,
         ),
       ],
     );
+  }
+
+  Future<void> crearUsuario() async {
+    var r = await Autenticar()
+        .crearU(email: emailcontrol.text, pwd: password2control.text);
+    if (r.isNotEmpty) {
+      List<String> nombre = name.text.split(" ");
+      Expositor expositor = Expositor(
+          id: '',
+          correo: emailcontrol.text,
+          apellidos: nombre[1].toLowerCase(),
+          celular: phone.text.toLowerCase(),
+          nombre: nombre[0].toLowerCase(),
+          ntf: true);
+      InsertarDatos().setExpositor(expositor, r);
+    } else {
+      setState(() {
+        isErroremail = true;
+        isErrorpwd = true;
+        isError = true;
+      });
+    }
   }
 
   void rLogin() {
@@ -663,9 +702,9 @@ class _Getformulario extends State<Getformulario> {
     }
     return Colors.white;
   }
-  
+
   @override
-  void dispose(){
+  void dispose() {
     emailcontrol.dispose();
     passwordcontrol.dispose();
     password2control.dispose();

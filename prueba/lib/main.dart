@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:prueba/pages/inicio.dart';
-import 'package:prueba/pages/login.dart';
+import 'package:prueba/inicio.dart';
 import 'firebase_options.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
 
@@ -21,14 +20,10 @@ class BazzApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: "Bazz App",
       debugShowCheckedModeBanner: false,
-      initialRoute: perfs.id.isEmpty? 'Login' : 'Home',
-      routes: {
-        'Login' :(context) => const Login(),
-        'Home' :(context) => const Inicio()
-      },
+      home: Inicio(),
     );
   }
 }
