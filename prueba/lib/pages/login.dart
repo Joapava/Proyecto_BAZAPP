@@ -6,6 +6,7 @@ import 'package:prueba/pages/registro.dart';
 import 'package:prueba/pages/home.dart';
 import 'dart:core';
 import 'package:email_validator/email_validator.dart';
+import 'package:prueba/pages/reiniciar.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -135,7 +136,7 @@ class _BoxCentral extends State<BoxCentral> {
           child: TextButton(
               onPressed: (() {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Registro()));
+                    MaterialPageRoute(builder: (context) => const Reiniciar()));
                 // cleancontroller();
               }),
               child: const Text(

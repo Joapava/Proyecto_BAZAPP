@@ -601,7 +601,6 @@ class _Getformulario extends State<Getformulario> {
                     });
                   } else if (x == 0) {
                     if (name.text.split(" ").length >= 2) {
-                      print('aaaaaaaaaaaaa');
                       if (!isError &&
                           !isErroremail &&
                           !isErrorphone &&

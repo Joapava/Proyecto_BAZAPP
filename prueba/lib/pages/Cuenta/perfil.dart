@@ -202,7 +202,7 @@ class _Perfil extends State<Perfil> {
                   },
                   focusNode: phonefocus,
                   onFieldSubmitted: (String value) async {
-                    await validar(2);
+                    await validar();
                     setState(() {
                       if (!isErrorphone) {
                         editphone = true;
@@ -272,7 +272,7 @@ class _Perfil extends State<Perfil> {
               FocusScope.of(context).requestFocus(phonefocus);
             });
           } else {
-            await validar(2);
+            await validar();
             if (!isErrorphone) {
               setState(() {
                 editphone = true;
@@ -303,7 +303,6 @@ class _Perfil extends State<Perfil> {
           child: FloatingActionButton(
             heroTag: 'back',
             onPressed: () {
-              // dispose();
               Navigator.pop(context);
             },
             backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
@@ -353,8 +352,7 @@ class _Perfil extends State<Perfil> {
     }
   }
 
-  Future<void> validar(int x) async {
-    if (x == 2) {
+  Future<void> validar() async {
       formphone.currentState!.validate();
       bool isRegister = await ValidarDatos().registrocelular(phonecontrol.text);
       if (isRegister && !isErrorphone) {
@@ -362,7 +360,6 @@ class _Perfil extends State<Perfil> {
           setState(() {
             isErrorphone = false;
           });
-          // nuevoemail();
         } else {
           setState(() {
             isErrorphone = true;
@@ -377,7 +374,6 @@ class _Perfil extends State<Perfil> {
           isErrorphone = false;
         });
       }
-    }
   }
 
   @override

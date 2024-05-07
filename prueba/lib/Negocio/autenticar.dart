@@ -32,4 +32,13 @@ class Autenticar {
       return '';
     }
   }
+
+  Future<bool> reiniciarc(String email) async{
+    try{
+      await Auth().reiniciocontra(email);
+      return true;
+    }on FirebaseAuthException catch(_){
+      return false;
+    }
+  }
 }

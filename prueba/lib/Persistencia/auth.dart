@@ -17,6 +17,11 @@ class Auth {
       {required String email, required String pwd}) async {
     var r = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: pwd);
+    UserCredential userCredential = r;
+    User? usuario = userCredential.user;
+    if(usuario != null && !usuario.emailVerified){
+      await usuario.sendEmailVerification();
+    }
     return r.user!.uid.toString();
   }
 
@@ -28,5 +33,9 @@ class Auth {
     if (currentUser != null) {
       await currentUser?.updatePassword(pwd);
     }
+  }
+
+  Future<void> reiniciocontra(String email) async {
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 }
