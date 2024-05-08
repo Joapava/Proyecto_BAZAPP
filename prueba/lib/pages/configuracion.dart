@@ -6,6 +6,8 @@ import 'package:prueba/pages/Aplicacion/lenguaje.dart';
 import 'package:prueba/pages/Aplicacion/notificaciones.dart';
 import 'package:prueba/pages/Cuenta/password.dart';
 import 'package:prueba/pages/Cuenta/perfil.dart';
+import 'package:prueba/pages/Politicas/politicas.dart';
+import 'package:prueba/pages/Politicas/terminos.dart';
 import 'package:prueba/pages/login.dart';
 
 class Configuracion extends StatefulWidget {
@@ -126,7 +128,10 @@ class _ConfiguracionState extends State<Configuracion> {
             height: 35,
             child: FloatingActionButton(
               heroTag: 'politica_p',
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => const Politicas()));
+              },
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0)),
               backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
@@ -167,7 +172,10 @@ class _ConfiguracionState extends State<Configuracion> {
               height: 40,
               child: FloatingActionButton(
                 heroTag: 'terminos',
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => const Terminos()));
+                },
                 shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(15),

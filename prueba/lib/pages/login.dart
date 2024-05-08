@@ -423,8 +423,8 @@ class _BoxCentral extends State<BoxCentral> {
       child: Row(
         children: [
           FloatingActionButton(
-            onPressed: () {
-              print('google');
+            onPressed: () async {
+              await Autenticar().google();
             },
             heroTag: 'btngoogle',
             backgroundColor: const Color.fromARGB(117, 87, 87, 95),

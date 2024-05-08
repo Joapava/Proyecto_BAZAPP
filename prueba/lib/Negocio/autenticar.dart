@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:prueba/Negocio/ValidarDatos.dart';
 import 'package:prueba/Persistencia/Auth.dart';
+import 'package:prueba/Persistencia/Preferencias.dart';
+import 'package:prueba/Persistencia/auth_google.dart';
 
 class Autenticar {
   Future<String> cambiarpwd(String pwd) async {
@@ -39,6 +42,19 @@ class Autenticar {
       return true;
     }on FirebaseAuthException catch(_){
       return false;
+    }
+  }
+
+  Future<void> google()async{
+    Preferencias perfs = Preferencias();
+    try{
+      final user = await Authgoole().signInWithGoogle();
+      if(user != null){
+        perfs.id = user.uid;
+        ValidarDatos().datoslogin(perfs.id);
+      }
+    }on FirebaseAuthException catch(_){
+
     }
   }
 }
