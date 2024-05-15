@@ -1,0 +1,29 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "bazapp-51733",
+          "appId": "1:983937227457:android:9b171428da02fff4219240",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "bazapp-51733",
+          "configurations": {
+            "android": "1:983937227457:android:9b171428da02fff4219240",
+            "ios": "1:983937227457:ios:7c935b83aedcb9c6219240"
+          }
+        }
+      }
+    }
+  },
+  "database": {
+    "rules": "rules.BAZAPP"
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  }
+}

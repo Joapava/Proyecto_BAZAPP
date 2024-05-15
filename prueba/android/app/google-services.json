@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "983937227457",
+    "project_id": "bazapp-51733",
+    "storage_bucket": "bazapp-51733.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:983937227457:android:9b171428da02fff4219240",
+        "android_client_info": {
+          "package_name": "com.GangOfFive.BAZAPP"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "983937227457-625slqp5j3ua75v20oh9a6k99govjf4h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXJCNs4ofnnYFGCCZSWw5mxh8HJSFP4Bs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "983937227457-625slqp5j3ua75v20oh9a6k99govjf4h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

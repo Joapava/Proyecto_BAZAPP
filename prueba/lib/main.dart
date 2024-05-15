@@ -1,24 +1,29 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:prueba/pages/login.dart';
+import 'package:prueba/inicio.dart';
+import 'firebase_options.dart';
+import 'package:prueba/Persistencia/Preferencias.dart';
 
-void main(){
-  runApp(const BazzApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Preferencias.init();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(BazzApp());
 }
+
 class BazzApp extends StatelessWidget {
-  const BazzApp({super.key});
+  BazzApp({super.key});
+
+  final perfs = Preferencias();
 
   @override
   Widget build(BuildContext context) {
-    return  const MaterialApp(
+    return const MaterialApp(
       title: "Bazz App",
       debugShowCheckedModeBanner: false,
-      home: Login(),
+      home: Inicio(),
     );
   }
 }
-
-
-
-
-
-
