@@ -4,7 +4,6 @@ import 'package:prueba/data/imagenes_data.dart';
 import 'package:prueba/pages/imagen_pagina.dart';
 import 'package:prueba/data/noticias_data.dart';
 
-
 class PaginaInicio extends StatefulWidget {
   const PaginaInicio({super.key});
 
@@ -14,21 +13,13 @@ class PaginaInicio extends StatefulWidget {
 
 class _PaginaInicioState extends State<PaginaInicio> {
 
-  /*   
-     List<String> fotos = [
-  'https://i.pinimg.com/originals/bd/3f/31/bd3f31f58faac16f3e6bc177d9da44c4.jpg',
-  'https://i.pinimg.com/originals/bd/3f/31/bd3f31f58faac16f3e6bc177d9da44c4.jpg',
-  // Añade más URLs de imágenes según sea necesario
-];
-*/
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-             getDestacados(),
+            getDestacados(),
              getDetalles(),
              getFotos(context)
            
@@ -95,25 +86,24 @@ Widget formatoNoticia(Noticia noticia) {
       children: [
         ListTile(
           leading: CircleAvatar(
-            backgroundImage: NetworkImage(noticia.urlImagenPerfil),
+            backgroundImage: AssetImage(noticia.urlImagenPerfil),  // Cambiado de NetworkImage a AssetImage
             radius: 20,
           ),
           title: Text(noticia.nombrePerfil, style: const TextStyle(fontWeight: FontWeight.bold)),
         ),
         
         Container(
-          margin: EdgeInsets.fromLTRB(10, 0, 10, 5),
-          child: Text(noticia.cuerpoNoticia,overflow: TextOverflow.ellipsis, maxLines: 2, )),
-
+          margin: const EdgeInsets.fromLTRB(10, 0, 10, 5),
+          child: Text(noticia.cuerpoNoticia, overflow: TextOverflow.ellipsis, maxLines: 2)),
+        
         if (noticia.urlImagenNoticia.isNotEmpty)
           Expanded(
             child: ClipRRect(
               borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
-              child: Image.network(
+              child: Image.asset(  // Cambiado de Image.network a Image.asset
                 noticia.urlImagenNoticia,
-                width: double.infinity, // Asegura que la imagen llene el espacio disponible en ancho.
-                // No se necesita definir una altura específica aquí ya que Expanded lo manejará.
-                fit: BoxFit.cover, // La imagen se ajustará dentro del contenedor, mostrándose completa.
+                width: double.infinity,
+                fit: BoxFit.cover,
               ),
             ),
           ),
@@ -213,21 +203,27 @@ Widget getFotos(BuildContext context)
      );
 }
 
+
 List<Widget> listaImagenes(BuildContext context) {
   List<Widget> listaImagenes = [];
 
   for (int i = 0; i < images.length; i++) {
-    var imagenesData = images[i];
+    var imageName = images[i];
     listaImagenes.add(
       ClipRRect(
         borderRadius: BorderRadius.circular(5),
         child: GestureDetector(
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => imagenPagina(url: imagenesData)));
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => imagenPagina(imageName: imageName,),
+              ),
+            );
           },
           child: Hero(
-            tag: '$imagenesData$i', // Modificado para incluir el índice
-            child: Image.network(imagenesData, fit: BoxFit.cover,),
+            tag: '$imageName$i', // Asegúrate de que cada tag de Hero sea único
+            child: Image.asset('lib/images-prueba/$imageName', fit: BoxFit.cover),
           ),
         ),
       ),
@@ -236,5 +232,4 @@ List<Widget> listaImagenes(BuildContext context) {
 
   return listaImagenes;
 }
-
 

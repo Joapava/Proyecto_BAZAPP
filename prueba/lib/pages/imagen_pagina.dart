@@ -1,38 +1,42 @@
 // ignore: file_names
 import "package:flutter/material.dart";
+import 'package:photo_view/photo_view.dart';
 
 // ignore: camel_case_types
 class imagenPagina extends StatelessWidget {
-  
-  final String url;
-  const imagenPagina({super.key, required this.url});
+  final String imageName;
+
+  const imagenPagina({super.key, required this.imageName});
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+        backgroundColor: Colors.black, // Fondo más oscuro para mejor contraste
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            
             Container(
               alignment: Alignment.topLeft,
               child: IconButton(
-                  onPressed: (){
-                    Navigator.pop(context);
-                  },
-                    
-                  icon: const Icon(Icons.arrow_back_ios)
-                  ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.arrow_back_ios, color: Colors.white), // Icono blanco para mejor visibilidad
+              ),
             ),
-            
-            Hero(
-              tag: url,
-              child: Image.network(url)),
-
-            const Divider(thickness: 0,
-            color: Colors.black,)
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.all(20), // Margen para la visualización de la imagen
+                child: PhotoView(
+                  imageProvider: AssetImage('lib/images-prueba/$imageName'),
+                  backgroundDecoration: const BoxDecoration(
+                    color: Colors.black, // Fondo del área de zoom
+                  ),
+                ),
+              ),
+            ),
+            const Divider(thickness: 1, color: Colors.black), // Divider visible
           ],
         ),
       ),

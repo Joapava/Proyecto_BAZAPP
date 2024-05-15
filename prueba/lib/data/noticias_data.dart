@@ -11,5 +11,13 @@ class Noticia {
 // Asumiendo que tienes una lista de noticias.
 List<Noticia> noticias = [
   
+  Noticia("lib/images-prueba/foto-bazar.jpg", "Bazar vintage", "Prueba", "lib/images-prueba/1.jpg"),
+
+  Noticia("lib/images-prueba/foto-bazar.jpg", "Bazar vintage", "Prueba", "lib/images-prueba/1.jpg"),
+
+  Noticia("lib/images-prueba/foto-bazar.jpg", "Bazar vintage", "Prueba", "lib/images-prueba/1.jpg"),
+
+  Noticia("lib/images-prueba/foto-bazar.jpg", "Bazar vintage", "Prueba", "lib/images-prueba/1.jpg"),
+
 ];
 
