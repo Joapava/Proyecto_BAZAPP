@@ -6,6 +6,7 @@ import 'package:prueba/Objetos/Expositor.dart';
 import 'dart:core';
 import 'package:email_validator/email_validator.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
+import 'package:prueba/Persistencia/Preferencias.dart';
 
 class Registro extends StatefulWidget {
   const Registro({super.key});
@@ -15,34 +16,37 @@ class Registro extends StatefulWidget {
 }
 
 class _RegistroState extends State<Registro> {
+  final perfs = Preferencias();
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
         backgroundColor: Colors.black,
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                Align(
+                const Align(
                   alignment: Alignment.topLeft,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
-                regreso(),
-                Texto(),
-                SizedBox(
+                const regreso(),
+                const Texto(),
+                const SizedBox(
                   height: 20,
                 ),
-                Divider(
+                const Divider(
                   endIndent: 60,
                   indent: 60,
                   thickness: .6,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                Getformulario(),
+                Getformulario(
+                  perfs: perfs,
+                ),
               ],
             ),
           ),
@@ -68,7 +72,8 @@ class Texto extends StatelessWidget {
 }
 
 class Getformulario extends StatefulWidget {
-  const Getformulario({super.key});
+  final Preferencias perfs;
+  const Getformulario({super.key, required this.perfs});
 
   @override
   State<Getformulario> createState() => _Getformulario();
@@ -80,11 +85,13 @@ class _Getformulario extends State<Getformulario> {
   final formpwd = GlobalKey<FormState>();
   final formpwd2 = GlobalKey<FormState>();
   final formphone = GlobalKey<FormState>();
-  TextEditingController emailcontrol = TextEditingController();
+  late TextEditingController emailcontrol =
+      TextEditingController(text: widget.perfs.email);
   TextEditingController passwordcontrol = TextEditingController();
   TextEditingController password2control = TextEditingController();
   TextEditingController phone = TextEditingController();
-  TextEditingController name = TextEditingController();
+  late TextEditingController name =
+      TextEditingController(text: widget.perfs.nombre);
   bool isErrorname = false;
   bool isErroremail = false;
   bool isError = false;
@@ -606,8 +613,10 @@ class _Getformulario extends State<Getformulario> {
                           !isErrorphone &&
                           !isErrorpwd &&
                           !isErrorname) {
-                        crearUsuario();
-                        rLogin();
+                        await crearUsuario();
+                        if (!isError) {
+                          rLogin();
+                        }
                       }
                     }
                   }
@@ -631,14 +640,27 @@ class _Getformulario extends State<Getformulario> {
         .crearU(email: emailcontrol.text, pwd: password2control.text);
     if (r.isNotEmpty) {
       List<String> nombre = name.text.split(" ");
-      Expositor expositor = Expositor(
-          id: '',
+      if (r == 'nodata') {
+        final perfs = Preferencias();
+        Expositor expositor = Expositor(
+          id: perfs.id,
           correo: emailcontrol.text,
           apellidos: nombre[1].toLowerCase(),
           celular: phone.text.toLowerCase(),
           nombre: nombre[0].toLowerCase(),
           ntf: true);
-      InsertarDatos().setExpositor(expositor, r);
+          InsertarDatos().setExpositor(expositor, perfs.id);
+      } else {
+        Expositor expositor = Expositor(
+            id: '',
+            correo: emailcontrol.text,
+            apellidos: nombre[1].toLowerCase(),
+            celular: phone.text.toLowerCase(),
+            nombre: nombre[0].toLowerCase(),
+            ntf: true);
+            InsertarDatos().setExpositor(expositor, r);
+      }
+
     } else {
       setState(() {
         isErroremail = true;

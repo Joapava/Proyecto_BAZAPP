@@ -32,29 +32,39 @@ class Autenticar {
       String r = await Auth().createUser(email: email, pwd: pwd);
       return r;
     } on FirebaseAuthException catch (_) {
+      bool registrado = await ValidarDatos().sindatosemail(email);
+      if (!registrado) {
+        return 'nodata';
+      }
       return '';
     }
   }
 
-  Future<bool> reiniciarc(String email) async{
-    try{
+  Future<bool> reiniciarc(String email) async {
+    try {
       await Auth().reiniciocontra(email);
       return true;
-    }on FirebaseAuthException catch(_){
+    } on FirebaseAuthException catch (_) {
       return false;
     }
   }
 
-  Future<void> google()async{
+  Future<bool> google() async {
     Preferencias perfs = Preferencias();
-    try{
-      final user = await Authgoole().signInWithGoogle();
-      if(user != null){
+    try {
+      final user = await Authgoole().loginGoogle();
+      if (user != null) {
         perfs.id = user.uid;
-        ValidarDatos().datoslogin(perfs.id);
+        List<String> nombrec = user.displayName.toString().split(" ");
+        perfs.nombre = "${nombrec[0]} ${nombrec[1]}";
+        perfs.email = user.email.toString();
+        bool registrado = await ValidarDatos().datoslogin(perfs.id);
+        if (!registrado) {
+          return false;
+        }
+        return true;
       }
-    }on FirebaseAuthException catch(_){
-
-    }
+    } on FirebaseAuthException catch (_) {}
+    return false;
   }
 }

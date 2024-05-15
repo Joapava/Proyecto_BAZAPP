@@ -15,7 +15,7 @@ class ValidarDatos {
     return 0;
   }
 
-  Future<void> datoslogin(String id) async {
+  Future<bool> datoslogin(String id) async {
     final perfs = Preferencias();
     final List<Expositor> expositores = await DatosDB().getExpositores();
     for (var ex in expositores) {
@@ -25,9 +25,20 @@ class ValidarDatos {
         perfs.nombre = "${ex.nombre} ${ex.apellidos}";
         perfs.phone = ex.celular;
         perfs.notificaciones = ex.ntf;
-        break;
+        return true;
       }
     }
+    return false;
+  }
+
+  Future<bool> sindatosemail(String email) async {
+    final List<Expositor> expositores = await DatosDB().getExpositores();
+    for (var ex in expositores) {
+      if (email == ex.correo) {
+        return true;
+      }
+    }
+    return false;
   }
 
   Future<bool> registrocelular(String celular) async {

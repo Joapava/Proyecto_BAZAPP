@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
 import 'package:prueba/Negocio/autenticar.dart';
+import 'package:prueba/Persistencia/Preferencias.dart';
+import 'package:prueba/Persistencia/auth_google.dart';
 import 'package:prueba/pages/registro.dart';
 import 'package:prueba/pages/home.dart';
 import 'dart:core';
@@ -39,6 +41,7 @@ class BoxCentral extends StatefulWidget {
 }
 
 class _BoxCentral extends State<BoxCentral> {
+  final perfs = Preferencias();
   final formnemail = GlobalKey<FormState>();
   final formpwd = GlobalKey<FormState>();
   bool isErroremail = false;
@@ -57,7 +60,7 @@ class _BoxCentral extends State<BoxCentral> {
           child: Text(
             'Inicia Sesión en tu cuenta',
             style: TextStyle(
-                fontSize: 20,
+                fontSize: 25,
                 fontFamily: 'Inter',
                 color: Colors.white,
                 decoration: TextDecoration.none),
@@ -70,7 +73,7 @@ class _BoxCentral extends State<BoxCentral> {
           child: Text(
             'Bienvenido de nuevo! Por favor ingresa tus datos',
             style: TextStyle(
-                fontSize: 16,
+                fontSize: 18,
                 color: Color.fromARGB(101, 255, 255, 255),
                 fontFamily: 'inter',
                 decoration: TextDecoration.none),
@@ -366,6 +369,12 @@ class _BoxCentral extends State<BoxCentral> {
         context, MaterialPageRoute(builder: (context) => const Home()));
   }
 
+  // ignore: non_constant_identifier_names
+  void funcion_registro(){
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const Registro()));
+  }
+
   void change() {
     if (isVisible) {
       isVisible = false;
@@ -400,7 +409,6 @@ class _BoxCentral extends State<BoxCentral> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => const Registro()));
-                  // cleancontroller();
                 }),
                 child: const Text(
                   'Registrate aqui',
@@ -415,6 +423,8 @@ class _BoxCentral extends State<BoxCentral> {
     );
   }
 
+
+
   // ignore: non_constant_identifier_names
   Widget botones_inicio() {
     return SizedBox(
@@ -424,7 +434,13 @@ class _BoxCentral extends State<BoxCentral> {
         children: [
           FloatingActionButton(
             onPressed: () async {
-              await Autenticar().google();
+              bool registrado = await Autenticar().google();
+              if(registrado){
+                funcion_ingreso();
+              }else{
+                Authgoole().singout();
+                funcion_registro();
+              }
             },
             heroTag: 'btngoogle',
             backgroundColor: const Color.fromARGB(117, 87, 87, 95),

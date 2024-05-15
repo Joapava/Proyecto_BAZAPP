@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:prueba/Persistencia/Auth.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
+import 'package:prueba/Persistencia/auth_google.dart';
 import 'package:prueba/pages/Aplicacion/lenguaje.dart';
 import 'package:prueba/pages/Aplicacion/notificaciones.dart';
 import 'package:prueba/pages/Cuenta/password.dart';
@@ -78,6 +79,7 @@ class _ConfiguracionState extends State<Configuracion> {
               onPressed: () {
                 perfs.clear();
                 Auth().signOut();
+                Authgoole().singout();
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const Login()));
               },

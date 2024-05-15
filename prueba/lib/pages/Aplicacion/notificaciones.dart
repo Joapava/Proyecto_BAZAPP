@@ -31,7 +31,7 @@ class _Notificaciones extends State<Notificaciones> {
         const Center(
           child: FittedBox(
             child: Text(
-              'Ajustes',
+              'Notificaciones',
               style: TextStyle(fontFamily: 'Inter', fontSize: 20),
             ),
           ),
