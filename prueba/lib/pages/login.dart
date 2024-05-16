@@ -332,6 +332,66 @@ class boton_ingresar extends StatelessWidget {
                         builder: (context) => const Inicio()))), backgroundColor: Colors.white,child: const Text('Ingresar'),),
     );
   }
+<<<<<<< Updated upstream
+=======
+
+
+
+  // ignore: non_constant_identifier_names
+  Widget botones_inicio() {
+    return SizedBox(
+      width: 240,
+      height: 60,
+      child: Row(
+        children: [
+          FloatingActionButton(
+            onPressed: () async {
+              bool registrado = await Autenticar().google();
+              if(registrado){
+                funcion_ingreso();
+              }else{
+                Authgoole().singout();
+                funcion_registro();
+              }
+            },
+            heroTag: 'btngoogle',
+            backgroundColor: const Color.fromARGB(117, 87, 87, 95),
+            child: Image.asset('assets/google-icon.png'),
+          ),
+          const SizedBox(
+            width: 35,
+          ),
+          FloatingActionButton(
+            onPressed: () {
+              print('facebook');
+            },
+            heroTag: 'btnfacebook',
+            backgroundColor: const Color.fromARGB(117, 87, 87, 95),
+            child: Image.asset('assets/facebook-logo.png'),
+          ),
+          const SizedBox(
+            width: 35,
+          ),
+          FloatingActionButton(
+            onPressed: () {
+              print('apple');
+            },
+            heroTag: 'btnapple',
+            backgroundColor: const Color.fromARGB(117, 87, 87, 95),
+            child: Image.asset('assets/apple-logo.png'),
+          )
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    emailcontrol.dispose();
+    passwordcontrol.dispose();
+    super.dispose();
+  }
+>>>>>>> Stashed changes
 }
 
 // ignore: camel_case_types
