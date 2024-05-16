@@ -1,4 +1,4 @@
-package com.example.prueba
+package com.GangOfFive.BAZAPP
 
 import io.flutter.embedding.android.FlutterActivity
 
