@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
 import 'package:prueba/Negocio/autenticar.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
+// import 'package:prueba/Persistencia/auth_facebook.dart';
 import 'package:prueba/Persistencia/auth_google.dart';
 import 'package:prueba/pages/registro.dart';
 import 'package:prueba/pages/home.dart';
@@ -365,8 +366,11 @@ class _BoxCentral extends State<BoxCentral> {
 
   // ignore: non_constant_identifier_names
   void funcion_ingreso() {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const Home()));
+    if(mounted){
+      Navigator.pushAndRemoveUntil(
+        context, MaterialPageRoute(builder: (context) => const Home()),(Route<dynamic> route) => false);
+    }
+    
   }
 
   // ignore: non_constant_identifier_names
@@ -431,6 +435,7 @@ class _BoxCentral extends State<BoxCentral> {
       width: 240,
       height: 60,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FloatingActionButton(
             onPressed: () async {
@@ -451,23 +456,12 @@ class _BoxCentral extends State<BoxCentral> {
           ),
           FloatingActionButton(
             onPressed: () {
-              print('facebook');
+              // Authfacebook().signInWithFacebook();
             },
             heroTag: 'btnface',
             backgroundColor: const Color.fromARGB(117, 87, 87, 95),
             child: Image.asset('assets/facebook-logo.png'),
           ),
-          const SizedBox(
-            width: 35,
-          ),
-          FloatingActionButton(
-            onPressed: () {
-              print('apple');
-            },
-            heroTag: 'btnapple',
-            backgroundColor: const Color.fromARGB(117, 87, 87, 95),
-            child: Image.asset('assets/apple-logo.png'),
-          )
         ],
       ),
     );
