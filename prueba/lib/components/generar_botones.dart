@@ -3,40 +3,87 @@ import 'package:flutter/material.dart';
 // Define una enumeración para la dirección de los botones.
 enum ButtonDirection { horizontal, vertical }
 
-// Función para generar botones y posicionarlos.
-Widget generatePositionedButtons({
-  required int count,
-  required ButtonDirection direction,
-  required String startingLabel,
-  required double x,
-  required double y,
-}) {
-  List<Widget> buttons = List.generate(count, (index) {
+// Variable global para mantener los lugares seleccionados.
+List<String> selectedLocations = [];
+
+class ButtonWithColorChange extends StatefulWidget {
+  final String label;
+  final Function updateCallback;
+
+  const ButtonWithColorChange({
+    Key? key,
+    required this.label,
+    required this.updateCallback,
+  }) : super(key: key);
+
+  @override
+  _ButtonWithColorChangeState createState() => _ButtonWithColorChangeState();
+}
+
+class _ButtonWithColorChangeState extends State<ButtonWithColorChange> {
+  bool isPressed = false;
+
+  void _toggleColor() {
+    setState(() {
+      isPressed = !isPressed;
+      if (isPressed) {
+        selectedLocations.add(widget.label);
+      } else {
+        selectedLocations.remove(widget.label);
+      }
+      widget.updateCallback();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      height: 20,
-      width: 20,
+      height: 25,
+      width: 25,
       margin: const EdgeInsets.all(2),
       child: ElevatedButton(
-        onPressed: () => print("Botón $startingLabel$index presionado"),
-        child: FittedBox( // Asegura que el texto se ajuste al espacio disponible
-          child: Text(
-            "$startingLabel$index",
-            style: const TextStyle(fontSize: 12), // Puedes ajustar el tamaño del texto aquí
+        onPressed: _toggleColor,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: isPressed
+              ? const Color.fromARGB(184, 255, 11, 11)
+              : const Color.fromARGB(184, 1, 167, 62),
+          padding: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(3),
           ),
         ),
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.zero, // Reduce el padding a cero
-          shape: RoundedRectangleBorder( // Asegura que el botón sea cuadrado
-            borderRadius: BorderRadius.circular(3), // Ajusta la curvatura de las esquinas
+        child: FittedBox(
+          child: Text(
+            widget.label,
+            style: const TextStyle(fontSize: 10, color: Colors.black),
           ),
         ),
       ),
+    );
+  }
+}
+
+// Función para generar botones y posicionarlos.
+Widget generatePositionedButtons({
+  required List<String> labels,
+  required ButtonDirection direction,
+  required double x,
+  required double y,
+  required Function updateCallback,
+}) {
+  List<Widget> buttons = List.generate(labels.length, (index) {
+    final label = labels[index];
+    return ButtonWithColorChange(
+      label: label,
+      updateCallback: updateCallback,
     );
   });
 
   return Positioned(
     left: x,
     top: y,
-    child: direction == ButtonDirection.horizontal ? Row(children: buttons) : Column(children: buttons),
+    child: direction == ButtonDirection.horizontal
+        ? Row(children: buttons)
+        : Column(children: buttons),
   );
 }
