@@ -15,7 +15,7 @@ Widget informacionCompra() {
   int totalPrice = totalSelected * 200;
 
   return Positioned(
-    top: 550,
+    top: 560,
     left: 10,
     child: Container(
       width: 430,
@@ -39,9 +39,9 @@ Widget informacionCompra() {
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
-            Text(
+            const Text(
               'Lugares seleccionados:',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             Expanded(
