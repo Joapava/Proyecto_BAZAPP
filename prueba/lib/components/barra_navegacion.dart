@@ -3,6 +3,7 @@ import 'package:prueba/Persistencia/Preferencias.dart';
 import 'package:prueba/pages/configuracion.dart';
 import 'package:prueba/pages/configuracion_admin.dart';
 import 'package:prueba/pages/pagina_inicio.dart';
+import 'package:prueba/pages/pagina_inicio_admin.dart';
 import 'package:prueba/pages/pagina_noticias.dart';
 import 'package:prueba/pages/pagina_puestos.dart';
 
@@ -30,7 +31,6 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
   int _indiceSeleccionado = 0;
 
   final List<Widget> _paginas = [
-    const PaginaInicio(),
     const PaginaNoticias(),
     const PaginaPuestos(),
   ];
@@ -44,8 +44,10 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
   void _paginasadd(){
     final perfs = Preferencias();
     if(perfs.lvl == 2){
+      _paginas.insert(0, const PaginaInicioAdmin());
       _paginas.add(const ConfiguracionAdmin());
     } else{
+      _paginas.insert(0, const PaginaInicio());
       _paginas.add(const Configuracion());
     }
   }

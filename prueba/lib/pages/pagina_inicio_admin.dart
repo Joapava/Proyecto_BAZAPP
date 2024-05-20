@@ -7,14 +7,14 @@ import 'package:prueba/data/noticias_data.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:prueba/pages/pagina_noticias.dart';
 
-class PaginaInicio extends StatefulWidget {
-  const PaginaInicio({super.key});
+class PaginaInicioAdmin extends StatefulWidget {
+  const PaginaInicioAdmin({super.key});
 
   @override
-  State<PaginaInicio> createState() => _PaginaInicioState();
+  State<PaginaInicioAdmin> createState() => _PaginaInicioAdminState();
 }
 
-class _PaginaInicioState extends State<PaginaInicio> {
+class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
   List _imageUrls = [];
 
   @override
@@ -232,6 +232,26 @@ class _PaginaInicioState extends State<PaginaInicio> {
                             fontWeight: FontWeight.bold,
                             fontFamily: "Arial",
                             fontSize: 25),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(220, 28, 0, 0),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          splashFactory: NoSplash.splashFactory,
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                        ),
+                        onPressed: _pickImage,
+                        child: const Text(
+                          "Agregar Fotos",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "Arial",
+                            fontSize: 15,
+                            color: Colors.blue,
+                          ),
+                        ),
                       ),
                     ),
                   ],
