@@ -20,7 +20,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
   @override
   void initState() {
     super.initState();
-    loadimages();
+    _loadimages();
   }
 
   Future<void> _pickImage() async {
@@ -289,15 +289,17 @@ class _PaginaInicioState extends State<PaginaInicio> {
     return listaImagenes;
   }
 
-  void loadimages() async {
+  Future<void> _loadimages() async {
+    ListResult result = await FirebaseStorage.instance.ref('uploads').listAll();
+    List<String> urls = [];
+    for (var ref in result.items) {
+      String url = await ref.getDownloadURL();
+      urls.add(url);
+    }
     if (mounted) {
-      _imageUrls = await ValidarDatos().loadimages();
-      if(_imageUrls.isNotEmpty){
-        setState(() {
-        _imageUrls;
+      setState(() {
+        _imageUrls = urls;
       });
-      }
-      
     }
   }
 
