@@ -38,11 +38,11 @@ class Preferencias {
   }
 
   String get nombre {
-    return _prefs.getString('nombre') ?? 'Not found';
+    return _prefs.getString('nombre') ?? '';
   }
 
   String get email {
-    return _prefs.getString('email') ?? 'Not found';
+    return _prefs.getString('email') ?? '';
   }
 
   String get id {

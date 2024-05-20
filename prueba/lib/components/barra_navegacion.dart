@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prueba/pages/configuracion.dart';
+import 'package:prueba/pages/configuracion_admin.dart';
 import 'package:prueba/pages/pagina_inicio.dart';
 import 'package:prueba/pages/pagina_noticias.dart';
 import 'package:prueba/pages/pagina_puestos.dart';
@@ -31,7 +32,7 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
     const PaginaInicio(),
     const PaginaNoticias(),
     const PaginaPuestos(),
-    const Configuracion(),
+    const ConfiguracionAdmin(),
   ];
 
   void _onItemTapped(int index) {
