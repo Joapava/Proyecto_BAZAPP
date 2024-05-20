@@ -15,8 +15,7 @@ class PaginaInicio extends StatefulWidget {
 }
 
 class _PaginaInicioState extends State<PaginaInicio> {
-  // final AuthenticationService _authService = AuthenticationService(FirebaseAuth.instance);
-  late List _imageUrls = [];
+  List _imageUrls = [];
 
   @override
   void initState() {
@@ -313,9 +312,17 @@ class _PaginaInicioState extends State<PaginaInicio> {
   void loadimages() async {
     if (mounted) {
       _imageUrls = await ValidarDatos().loadimages();
-      setState(() {
+      if(_imageUrls.isNotEmpty){
+        setState(() {
         _imageUrls;
       });
+      }
+      
     }
+  }
+
+  @override
+  void dispose(){
+    super.dispose();
   }
 }

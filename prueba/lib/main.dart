@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prueba/Services/bloc/notificaciones_bloc.dart';
 import 'package:prueba/inicio.dart';
 import 'firebase_options.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
@@ -10,7 +12,14 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(BazzApp());
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider(
+        create: (context) => NotificacionesBloc(),
+      ),
+    ],
+    child: BazzApp(),
+  ));
 }
 
 class BazzApp extends StatelessWidget {

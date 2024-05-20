@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prueba/Persistencia/Preferencias.dart';
 import 'package:prueba/pages/configuracion.dart';
 import 'package:prueba/pages/configuracion_admin.dart';
 import 'package:prueba/pages/pagina_inicio.dart';
@@ -32,8 +33,22 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
     const PaginaInicio(),
     const PaginaNoticias(),
     const PaginaPuestos(),
-    const ConfiguracionAdmin(),
   ];
+
+  @override
+  void initState() {
+    _paginasadd();
+    super.initState();
+  }
+
+  void _paginasadd(){
+    final perfs = Preferencias();
+    if(perfs.lvl == 2){
+      _paginas.add(const ConfiguracionAdmin());
+    } else{
+      _paginas.add(const Configuracion());
+    }
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -43,6 +58,7 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: _paginas.elementAt(_indiceSeleccionado),
       bottomNavigationBar: Container(

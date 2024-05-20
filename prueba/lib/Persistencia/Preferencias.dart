@@ -37,6 +37,18 @@ class Preferencias {
     _prefs.setBool('var', ntf);
   }
 
+  set admin(String id){
+    _prefs.setString('id_admin', id);
+  }
+
+  set lvl(int x){
+    _prefs.setInt('lvl', x);
+  }
+
+  set token(String token){
+    _prefs.setString('token', token);
+  }
+
   String get nombre {
     return _prefs.getString('nombre') ?? '';
   }
@@ -63,6 +75,18 @@ class Preferencias {
 
   bool get variable{
     return _prefs.getBool('var') ?? false;
+  }
+
+  String get idadmin{
+    return _prefs.getString('id_admin') ?? 'Not found';
+  }
+
+  int get lvl{
+    return _prefs.getInt('lvl') ?? 0;
+  }
+
+  String get token{
+    return _prefs.getString('token') ?? '';
   }
 
   void clear() {
