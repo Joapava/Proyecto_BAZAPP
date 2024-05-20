@@ -33,7 +33,6 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
   }
 
   Widget principal() {
-    // getUserId();
     return SizedBox(
       child: Column(
         children: [
@@ -63,6 +62,10 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
           const SizedBox(
             height: 15,
           ),
+          Container_crear(),
+          const SizedBox(
+            height: 15,
+          ),
           Container_politica(),
           const SizedBox(
             height: 25,
@@ -88,9 +91,7 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                   child: Text(
                     'Cerrar Sesion',
                     style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 18,
-                        color: Colors.black),
+                        fontFamily: 'Inter', fontSize: 18, color: Colors.black),
                   ),
                 ),
               ),
@@ -131,8 +132,8 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
             child: FloatingActionButton(
               heroTag: 'politica_p',
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => const Politicas()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Politicas()));
               },
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0)),
@@ -175,8 +176,10 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
               child: FloatingActionButton(
                 heroTag: 'terminos',
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => const Terminos()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Terminos()));
                 },
                 shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
@@ -233,10 +236,10 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                 width: 15,
               ),
               FittedBox(
-                child: Text('Cuenta',style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 18
-                ),),
+                child: Text(
+                  'Cuenta',
+                  style: TextStyle(fontFamily: 'Inter', fontSize: 18),
+                ),
               )
             ],
           ),
@@ -246,8 +249,12 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
             child: FloatingActionButton(
               heroTag: 'perfil',
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => Perfil(perfs: perfs,)));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Perfil(
+                              perfs: perfs,
+                            )));
               },
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0)),
@@ -290,11 +297,13 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
             child: FloatingActionButton(
               heroTag: 'password',
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => const Password()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Password()));
               },
               shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15),bottomRight: Radius.circular(15))),
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15))),
               backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
               elevation: 0,
               child: const Row(
@@ -314,6 +323,116 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                         FittedBox(
                           child: Text(
                             'Contraseña',
+                            style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 18,
+                                color: Color.fromRGBO(109, 106, 106, 1)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(Icons.arrow_forward_ios_outlined)
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container Container_crear() {
+    return Container(
+      height: 96,
+      width: 400,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15), color: Colors.white),
+      child: Column(
+        children: [
+          const Row(
+            children: [
+              SizedBox(
+                width: 15,
+              ),
+              FittedBox(
+                child: Text(
+                  'Generar',
+                  style: TextStyle(fontFamily: 'Inter', fontSize: 18),
+                ),
+              )
+            ],
+          ),
+          SizedBox(
+            width: 400,
+            height: 35,
+            child: FloatingActionButton(
+              heroTag: 'gnotificacion',
+              onPressed: () {},
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(0)),
+              backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
+              elevation: 0,
+              child: const Row(
+                children: [
+                  SizedBox(
+                    width: 35,
+                  ),
+                  SizedBox(
+                    width: 320,
+                    height: 35,
+                    child: Row(
+                      children: [
+                        Icon(Icons.notification_add),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        FittedBox(
+                          child: Text(
+                            'Notificacion',
+                            style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 18,
+                                color: Color.fromRGBO(109, 106, 106, 1)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(Icons.arrow_forward_ios_outlined)
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 400,
+            height: 35,
+            child: FloatingActionButton(
+              heroTag: 'ganuncio',
+              onPressed: () {},
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15))),
+              backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
+              elevation: 0,
+              child: const Row(
+                children: [
+                  SizedBox(
+                    width: 35,
+                  ),
+                  SizedBox(
+                    width: 320,
+                    height: 35,
+                    child: Row(
+                      children: [
+                        Icon(Icons.add_to_photos),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        FittedBox(
+                          child: Text(
+                            'Aviso',
                             style: TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 18,
@@ -363,7 +482,9 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Lenguaje(perfs: perfs,)));
+                        builder: (context) => Lenguaje(
+                              perfs: perfs,
+                            )));
               },
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0)),
@@ -392,7 +513,6 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                                 color: Color.fromRGBO(109, 106, 106, 1)),
                           ),
                         ),
-
                       ],
                     ),
                   ),
@@ -484,10 +604,10 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              FittedBox(
+              const FittedBox(
                 child: Text(
-                  perfs.nombre,
-                  style: const TextStyle(fontFamily: 'Inter', fontSize: 18),
+                  'Administrador',
+                  style: TextStyle(fontFamily: 'Inter', fontSize: 18),
                 ),
               ),
               FittedBox(
