@@ -1,4 +1,3 @@
-// ignore: file_names
 import "package:flutter/material.dart";
 import 'package:photo_view/photo_view.dart';
 
@@ -29,7 +28,7 @@ class imagenPagina extends StatelessWidget {
               child: Container(
                 margin: const EdgeInsets.all(20), // Margen para la visualización de la imagen
                 child: PhotoView(
-                  imageProvider: AssetImage('lib/images-prueba/$imageName'),
+                  imageProvider: NetworkImage(imageName), // Utilizar NetworkImage para cargar la imagen desde la URL
                   backgroundDecoration: const BoxDecoration(
                     color: Colors.black, // Fondo del área de zoom
                   ),

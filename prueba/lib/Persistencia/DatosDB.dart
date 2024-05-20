@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, avoid_print
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:prueba/Objetos/Expositor.dart';
+import 'package:prueba/Objetos/administrador.dart';
 
 class DatosDB {
   //Funcion que regresa los expositores que han sido creado en forma de lista
@@ -22,6 +23,22 @@ class DatosDB {
       }
     });
     return listaExpositores;
+  }
+
+  Future<List<Administrador>> getAdmin() async {
+    List<Administrador> listaAdministrador = [];
+    var db = FirebaseFirestore.instance;
+    await db.collection("administrador").get().then((event) {
+      for (var doc in event.docs) {
+        var data = doc.data();
+        Administrador admin = Administrador(
+            nivel: data['nivel'],
+            idadministrador: data['id_administrador'],
+            idexpositor: data['id_expositor']);
+        listaAdministrador.add(admin);
+      }
+    });
+    return listaAdministrador;
   }
 
   Future<bool> getNotificacion(String id) async {

@@ -1,4 +1,5 @@
 // ignore_for_file: file_names
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:prueba/Persistencia/Auth.dart';
 import 'package:prueba/Persistencia/DatosDB.dart';
 import 'package:prueba/Objetos/Expositor.dart';
@@ -29,6 +30,15 @@ class ValidarDatos {
       }
     }
     return false;
+  }
+
+  Future<void> administrador(String id)async{
+    final perfs = Preferencias();
+    
+  }
+  
+  Future<List> loadimages()async{
+    return await Auth().loadImages();
   }
 
   Future<bool> sindatosemail(String email) async {
