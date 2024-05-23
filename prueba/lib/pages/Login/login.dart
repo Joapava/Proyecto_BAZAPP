@@ -5,11 +5,11 @@ import 'package:prueba/Negocio/autenticar.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
 // import 'package:prueba/Persistencia/auth_facebook.dart';
 import 'package:prueba/Persistencia/auth_google.dart';
-import 'package:prueba/pages/registro.dart';
-import 'package:prueba/pages/home.dart';
+import 'package:prueba/pages/Login/registro.dart';
+import 'package:prueba/pages/home/home.dart';
 import 'dart:core';
 import 'package:email_validator/email_validator.dart';
-import 'package:prueba/pages/reiniciar.dart';
+import 'package:prueba/pages/Login/reiniciar.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -450,17 +450,6 @@ class _BoxCentral extends State<BoxCentral> {
             heroTag: 'btngoogle',
             backgroundColor: const Color.fromARGB(117, 87, 87, 95),
             child: Image.asset('assets/google-icon.png'),
-          ),
-          const SizedBox(
-            width: 35,
-          ),
-          FloatingActionButton(
-            onPressed: () {
-              // Authfacebook().signInWithFacebook();
-            },
-            heroTag: 'btnface',
-            backgroundColor: const Color.fromARGB(117, 87, 87, 95),
-            child: Image.asset('assets/facebook-logo.png'),
           ),
         ],
       ),
