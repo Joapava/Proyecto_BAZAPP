@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
-import 'package:prueba/pages/configuracion.dart';
-import 'package:prueba/pages/configuracion_admin.dart';
-import 'package:prueba/pages/pagina_inicio.dart';
-import 'package:prueba/pages/pagina_inicio_admin.dart';
-import 'package:prueba/pages/pagina_noticias.dart';
-import 'package:prueba/pages/pagina_puestos.dart';
+import 'package:prueba/pages/config/configuracion.dart';
+import 'package:prueba/pages/config/configuracion_admin.dart';
+import 'package:prueba/pages/home/pagina_inicio.dart';
+import 'package:prueba/pages/home/pagina_inicio_admin.dart';
+import 'package:prueba/pages/home/pagina_noticias.dart';
+import 'package:prueba/pages/home/pagina_puestos.dart';
 
 void main() => runApp(const MyApp());
 
@@ -41,12 +41,12 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
     super.initState();
   }
 
-  void _paginasadd(){
+  void _paginasadd() {
     final perfs = Preferencias();
-    if(perfs.lvl == 2){
+    if (perfs.lvl == 2) {
       _paginas.insert(0, const PaginaInicioAdmin());
       _paginas.add(const ConfiguracionAdmin());
-    } else{
+    } else {
       _paginas.insert(0, const PaginaInicio());
       _paginas.add(const Configuracion());
     }
@@ -60,18 +60,15 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: _paginas.elementAt(_indiceSeleccionado),
       bottomNavigationBar: Container(
         height: 60,
         decoration: const BoxDecoration(
-          color:  Color.fromRGBO(18, 19, 21, 1.0),
+          color: Color.fromRGBO(18, 19, 21, 1.0),
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(13),
-            topRight: Radius.circular(13)
-          ),
-          boxShadow:  [
+              topLeft: Radius.circular(13), topRight: Radius.circular(13)),
+          boxShadow: [
             BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),
           ],
         ),
@@ -98,7 +95,12 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
             padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
             child: Image.asset(imagePath, width: 30, height: 30),
           ),
-          Text(label, style: TextStyle(color: index == _indiceSeleccionado ? const Color.fromRGBO(255, 255, 255, 1) : const Color.fromRGBO(113, 113, 113, 1.0), fontFamily: "inter")),
+          Text(label,
+              style: TextStyle(
+                  color: index == _indiceSeleccionado
+                      ? const Color.fromRGBO(255, 255, 255, 1)
+                      : const Color.fromRGBO(113, 113, 113, 1.0),
+                  fontFamily: "inter")),
         ],
       ),
     );

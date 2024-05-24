@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prueba/Negocio/autenticar.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
-import 'package:prueba/pages/login.dart';
+import 'package:prueba/pages/Login/login.dart';
 
 class Password extends StatefulWidget {
   const Password({super.key});

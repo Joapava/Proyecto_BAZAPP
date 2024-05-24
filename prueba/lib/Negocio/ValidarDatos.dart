@@ -1,8 +1,8 @@
 // ignore_for_file: file_names
-import 'package:prueba/Objetos/administrador.dart';
+import 'package:prueba/Class/administrador.dart';
 import 'package:prueba/Persistencia/Auth.dart';
 import 'package:prueba/Persistencia/DatosDB.dart';
-import 'package:prueba/Objetos/Expositor.dart';
+import 'package:prueba/Class/Expositor.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
 
 class ValidarDatos {
@@ -17,8 +17,6 @@ class ValidarDatos {
   }
 
   Future<bool> datoslogin(String id) async {
-    
-
     final perfs = Preferencias();
     final List<Expositor> expositores = await DatosDB().getExpositores();
     for (var ex in expositores) {
@@ -51,10 +49,6 @@ class ValidarDatos {
         perfs.lvl = ad.nivel;
       }
     }
-  }
-  
-  Future<List> loadimages()async{
-    return await Auth().loadImages();
   }
 
   Future<bool> sindatosemail(String email) async {

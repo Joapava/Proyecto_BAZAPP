@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:prueba/Negocio/InsertarDatos.dart';
 import 'package:prueba/Negocio/autenticar.dart';
-import 'package:prueba/Objetos/Expositor.dart';
+import 'package:prueba/Class/Expositor.dart';
 import 'dart:core';
 import 'package:email_validator/email_validator.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';

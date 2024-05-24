@@ -109,9 +109,9 @@ class _LenguajeState extends State<Lenguaje> {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15), color: Colors.white),
         child: ListView.builder(
-          itemCount: datosidiomas.length,
+          itemCount: dataleng.length,
           itemBuilder: (context, index) {
-            if (tipoidioma[index].toLowerCase().contains(search)) {
+            if (typeleng[index].toLowerCase().contains(search)) {
               return ListTile(
                 splashColor: const Color.fromRGBO(251, 251, 251, 1),
                 title: Padding(
@@ -125,14 +125,14 @@ class _LenguajeState extends State<Lenguaje> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              datosidiomas[index],
+                              dataleng[index],
                               style: const TextStyle(
                                   color: Colors.black,
                                   fontFamily: 'Inter',
                                   fontSize: 18),
                             ),
                             Text(
-                              tipoidioma[index],
+                              typeleng[index],
                               style: const TextStyle(
                                   color: Colors.black,
                                   fontFamily: 'Inter',
@@ -185,9 +185,9 @@ class _LenguajeState extends State<Lenguaje> {
     );
   }
 
-  List<String> datosidiomas = ['Español', 'English','English (UK)','Français','Deutsch','日本語'];
+  List<String> dataleng = ['Español', 'English','English (UK)','Français','Deutsch','日本語'];
 
-  List<String> tipoidioma = [
+  List<String> typeleng = [
     'Español (latinoamerica)',
     'Ingles (estados unidos)',
     'Ingles (R.U.)',
@@ -207,7 +207,6 @@ class _LenguajeState extends State<Lenguaje> {
 
   void cambiarl(String lenguaje) {
     perfs.lenguaje = lenguaje;
-    print(perfs.lenguaje);
     setState(() {
       isSeleted(lenguaje);
     });

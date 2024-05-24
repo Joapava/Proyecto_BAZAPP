@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 class Auth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -12,16 +11,6 @@ class Auth {
     var ex = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: pwd);
     return ex.user?.uid;
-  }
-
-  Future<List> loadImages() async {
-    ListResult result = await FirebaseStorage.instance.ref('uploads').listAll();
-    List<String> urls = [];
-    for (var ref in result.items) {
-      String url = await ref.getDownloadURL();
-      urls.add(url);
-    }
-    return urls;
   }
 
   Future<String> createUser(
@@ -52,3 +41,4 @@ class Auth {
 
   
 }
+  

@@ -1,7 +1,7 @@
 // ignore_for_file: file_names, avoid_print
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:prueba/Objetos/Expositor.dart';
-import 'package:prueba/Objetos/administrador.dart';
+import 'package:prueba/Class/Expositor.dart';
+import 'package:prueba/Class/administrador.dart';
 
 class DatosDB {
   //Funcion que regresa los expositores que han sido creado en forma de lista

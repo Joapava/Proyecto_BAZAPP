@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prueba/Persistencia/Auth.dart';
-import 'package:prueba/pages/home.dart';
-import 'package:prueba/pages/login.dart';
+import 'package:prueba/pages/home/home.dart';
+import 'package:prueba/pages/Login/login.dart';
 
 class Inicio extends StatefulWidget {
   const Inicio({super.key});
