@@ -213,7 +213,7 @@ class _BoxCentral extends State<BoxCentral> {
       child: Row(
         children: [
           SizedBox(
-            width: 365,
+            width: 355,
             height: 35,
             child: Form(
                 key: formpwd,
