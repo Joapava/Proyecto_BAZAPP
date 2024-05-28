@@ -6,7 +6,7 @@ import 'package:prueba/Class/Expositor.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
 
 class ValidarDatos {
-  Future<int> validarRegistro(String celular) async {
+  Future<int> validarCelular(String celular) async {
     final List<Expositor> expositores = await DatosDB().getExpositores();
     for (var ex in expositores) {
       if (celular == ex.celular) {

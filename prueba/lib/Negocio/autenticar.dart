@@ -64,7 +64,9 @@ class Autenticar {
         }
         return true;
       }
-    } on FirebaseAuthException catch (_) {}
+    } on FirebaseAuthException catch (_) {
+      return false;
+    }
     return false;
   }
 }
