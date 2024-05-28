@@ -18,7 +18,8 @@ Widget informacionCompra() {
     top: 560,
     left: 10,
     child: Container(
-      width: 430,
+      margin: EdgeInsets.all(10),
+      width: 400,
       height: 200,
       decoration: const BoxDecoration(
         color: Color.fromRGBO(168, 169, 171, 0.2),

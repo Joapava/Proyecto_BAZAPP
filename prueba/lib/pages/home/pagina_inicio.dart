@@ -245,7 +245,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
 
   Widget getFotos(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(15, 0, 10, 5),
+      margin: const EdgeInsets.fromLTRB(10, 0, 10, 5),
       width: 700,
       height: 400,
       child: GridView.extent(
