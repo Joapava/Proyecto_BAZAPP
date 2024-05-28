@@ -1,4 +1,5 @@
-// ignore: file_names
+// ignore_for_file: file_names
+
 class Noticia {
   final String urlImagenPerfil;
   final String nombrePerfil;
@@ -6,18 +7,22 @@ class Noticia {
   final String urlImagenNoticia;
 
   Noticia(this.urlImagenPerfil, this.nombrePerfil, this.cuerpoNoticia, this.urlImagenNoticia);
+
+  Map<String, dynamic> toJson() => {
+        'urlImagenPerfil': urlImagenPerfil,
+        'nombrePerfil': nombrePerfil,
+        'cuerpoNoticia': cuerpoNoticia,
+        'urlImagenNoticia': urlImagenNoticia,
+      };
+
+  factory Noticia.fromJson(Map<String, dynamic> json) {
+    return Noticia(
+      json['urlImagenPerfil'],
+      json['nombrePerfil'],
+      json['cuerpoNoticia'],
+      json['urlImagenNoticia'],
+    );
+  }
 }
 
-// Asumiendo que tienes una lista de noticias.
-List<Noticia> noticias = [
-  
-  Noticia("lib/images-prueba/foto-bazar.jpg", "Bazar vintage", "Prueba", "lib/images-prueba/1.jpg"),
-
-  Noticia("lib/images-prueba/foto-bazar.jpg", "Bazar vintage", "Prueba", "lib/images-prueba/1.jpg"),
-
-  Noticia("lib/images-prueba/foto-bazar.jpg", "Bazar vintage", "Prueba", "lib/images-prueba/1.jpg"),
-
-  Noticia("lib/images-prueba/foto-bazar.jpg", "Bazar vintage", "Prueba", "lib/images-prueba/1.jpg"),
-
-];
-
+List<Noticia> noticias = [];

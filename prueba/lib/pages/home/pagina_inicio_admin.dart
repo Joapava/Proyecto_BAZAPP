@@ -233,8 +233,9 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
                             fontSize: 25),
                       ),
                     ),
+                    const Spacer(),
                     Container(
-                      margin: const EdgeInsets.fromLTRB(220, 28, 0, 0),
+                      margin: const EdgeInsets.fromLTRB(30, 25,0,0),
                       child: TextButton(
                         style: TextButton.styleFrom(
                           splashFactory: NoSplash.splashFactory,
@@ -265,14 +266,20 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
 
   Widget getFotos(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(15, 0, 10, 5),
-      width: 700,
-      height: 400,
-      child: GridView.extent(
-        mainAxisSpacing: 5,
-        crossAxisSpacing: 5,
-        maxCrossAxisExtent: 150,
-        children: listaImagenes(context),
+      margin: const EdgeInsets.fromLTRB(10, 0, 10, 5),
+      width: double.infinity,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          (constraints.maxWidth / 150).floor();
+          return GridView.extent(
+            maxCrossAxisExtent: 150,
+            mainAxisSpacing: 5,
+            crossAxisSpacing: 5,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            children: listaImagenes(context),
+          );
+        },
       ),
     );
   }
@@ -323,7 +330,7 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
   }
 
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
   }
 }

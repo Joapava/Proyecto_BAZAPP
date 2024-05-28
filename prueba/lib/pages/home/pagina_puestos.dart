@@ -21,38 +21,52 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        contenedorPuestos(updateState),
-        visualizarInformacionCompta(),
-      ],
+    return Scaffold(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                contenedorPuestos(updateState, constraints.maxWidth, constraints.maxHeight),
+                visualizarInformacionCompta(),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
-  Widget contenedorPuestos(Function updateCallback) {
+  Widget contenedorPuestos(Function updateCallback, double maxWidth, double maxHeight) {
     int startLabel = 0;
-    return Scaffold(
-      body: Column(
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: maxWidth * 0.05),
+      child: Column(
         children: [
           const SizedBox(
             height: 35,
           ),
           Container(
-            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            width: 450,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              color: Color.fromRGBO(168, 169, 171, 0.2),
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              color: const Color.fromRGBO(168, 169, 171, 0.2),
+              border: Border.all(color: Colors.grey),
             ),
             child: SizedBox(
-              height: 500,
+              height: maxHeight - 250,
               child: SingleChildScrollView(
-                child: Stack(
-                  children: [
-                    SizedBox(
-                      height: 800,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: InteractiveViewer(
+                    boundaryMargin: const EdgeInsets.all(20),
+                    minScale: 0.1,
+                    maxScale: 2.0,
+                    child: SizedBox(
+                      width: 500, // Ajustar este valor según sea necesario
+                      height: 830, // Ajustar este valor según sea necesario
                       child: Stack(
-                        children: <Widget>[
+                        children: [
                           generatePositionedButtons(
                               labels: generateLabels("A", startLabel, 10),
                               direction: ButtonDirection.vertical,
@@ -161,7 +175,7 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
                               x: 10,
                               y: 560,
                               updateCallback: updateCallback),
-          
+
                           // Edificio CNC
                           Positioned(
                             left: 40,
@@ -180,7 +194,7 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
                               ),
                             ),
                           ),
-          
+
                           // Entrada secundaria
                           Positioned(
                             left: 350,
@@ -199,7 +213,7 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
                               ),
                             ),
                           ),
-          
+
                           // Entrada principal
                           Positioned(
                             left: 325,
@@ -221,7 +235,7 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
                         ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
