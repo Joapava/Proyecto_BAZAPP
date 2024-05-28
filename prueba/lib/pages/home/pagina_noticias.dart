@@ -66,7 +66,7 @@ class _PaginaNoticiasState extends State<PaginaNoticias> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Divider(),
+              const Divider(),
               ListaNoticias(noticias: noticias),
             ],
           ),
@@ -74,6 +74,7 @@ class _PaginaNoticiasState extends State<PaginaNoticias> {
         floatingActionButton: SizedBox(
           width: 110,
           child: FloatingActionButton(
+            backgroundColor: const Color.fromRGBO(238, 235, 237, 1),
             onPressed: () async {
               final resultado = await Navigator.push(
                 context,
@@ -86,7 +87,9 @@ class _PaginaNoticiasState extends State<PaginaNoticias> {
             },
             child: const Padding(
               padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-              child: Text("Agregar Noticia"),
+              child: Text("Agregar Noticia", style: TextStyle(
+                color: Colors.black
+              ),),
             ),
           ),
         ),
@@ -143,22 +146,14 @@ class FormularioNoticia extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: 50,
-                height: 50,
-                margin: const EdgeInsets.fromLTRB(5, 5, 0, 0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.fromLTRB(10, 0, 10, 20),
+                margin: const EdgeInsets.fromLTRB(10, 10, 0, 20),
                 child: Text(nombrePerfil,
                     style: const TextStyle(fontWeight: FontWeight.bold)),
               ),
             ],
           ),
           Container(
-            margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+            margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
             child: Align(
               alignment: Alignment.topLeft,
               child: Text(cuerpoNoticia, textAlign: TextAlign.justify),
