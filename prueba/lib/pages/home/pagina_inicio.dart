@@ -1,9 +1,11 @@
 import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:prueba/pages/home/imagen_pagina.dart';
 import 'package:prueba/data/noticias_data.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:prueba/pages/home/imagen_pagina.dart';
 import 'package:prueba/pages/home/pagina_noticias.dart';
 
 class PaginaInicio extends StatefulWidget {
@@ -14,12 +16,50 @@ class PaginaInicio extends StatefulWidget {
 }
 
 class _PaginaInicioState extends State<PaginaInicio> {
+  List<Noticia> noticias = [];
   List _imageUrls = [];
 
   @override
   void initState() {
     super.initState();
-    _loadimages();
+    _loadImages();
+    _loadNoticias();
+  }
+
+  Future<void> _loadNoticias() async {
+    final QuerySnapshot result =
+        await FirebaseFirestore.instance.collection('noticias').get();
+    final List<DocumentSnapshot> documents = result.docs;
+    List<Noticia> noticiasCargadas = [];
+    for (var doc in documents) {
+      noticiasCargadas.add(
+        Noticia(
+          "",
+          doc['nombre'],
+          doc['cuerpo'],
+          doc['imagenUrl'],
+        ),
+      );
+    }
+    if (mounted) {
+      setState(() {
+        noticias = noticiasCargadas;
+      });
+    }
+  }
+
+  Future<void> _loadImages() async {
+    ListResult result = await FirebaseStorage.instance.ref('uploads').listAll();
+    List<String> urls = [];
+    for (var ref in result.items) {
+      String url = await ref.getDownloadURL();
+      urls.add(url);
+    }
+    if (mounted) {
+      setState(() {
+        _imageUrls = urls;
+      });
+    }
   }
 
   Future<void> _pickImage() async {
@@ -111,7 +151,6 @@ class _PaginaInicioState extends State<PaginaInicio> {
           children: [
             ListTile(
               leading: CircleAvatar(
-                backgroundImage: AssetImage(noticia.urlImagenPerfil),
                 radius: 20,
               ),
               title: Text(noticia.nombrePerfil,
@@ -129,7 +168,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
                     bottomLeft: Radius.circular(10),
                     bottomRight: Radius.circular(10),
                   ),
-                  child: Image.asset(
+                  child: Image.network(
                     noticia.urlImagenNoticia,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -288,22 +327,8 @@ class _PaginaInicioState extends State<PaginaInicio> {
     return listaImagenes;
   }
 
-  Future<void> _loadimages() async {
-    ListResult result = await FirebaseStorage.instance.ref('uploads').listAll();
-    List<String> urls = [];
-    for (var ref in result.items) {
-      String url = await ref.getDownloadURL();
-      urls.add(url);
-    }
-    if (mounted) {
-      setState(() {
-        _imageUrls = urls;
-      });
-    }
-  }
-
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
   }
 }
