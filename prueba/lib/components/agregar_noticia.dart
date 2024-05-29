@@ -73,7 +73,7 @@ class _agregar_noticiaState extends State<agregar_noticia> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Agregar Noticia'),
+          title: const Text('Agregar Noticia'),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -84,7 +84,7 @@ class _agregar_noticiaState extends State<agregar_noticia> {
               
                 TextFormField(
                   controller: _cuerpoController,
-                  decoration: InputDecoration(labelText: 'Cuerpo de la noticia'),
+                  decoration: const InputDecoration(labelText: 'Cuerpo de la noticia'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Por favor ingrese el cuerpo de la noticia';
@@ -92,16 +92,16 @@ class _agregar_noticiaState extends State<agregar_noticia> {
                     return null;
                   },
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 _imagenUrlNoticia == null
                     ? ElevatedButton(
                         onPressed: _pickImage,
-                        child: Text('Seleccionar Imagen'))
+                        child: const Text('Seleccionar Imagen'))
                     : Image.network(_imagenUrlNoticia!),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: _submitForm,
-                  child: Text('Agregar Noticia'),
+                  child: const Text('Agregar Noticia'),
                 ),
               ],
             ),
