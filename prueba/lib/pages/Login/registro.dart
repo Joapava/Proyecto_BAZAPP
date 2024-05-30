@@ -99,6 +99,8 @@ class _Getformulario extends State<Getformulario> {
   bool isErrorphone = false;
   bool isVisible = true;
   bool isVisiblebtn2 = true;
+  String emailError = "";
+  String phoneError = "";
   int? x;
   @override
   Widget build(BuildContext context) {
@@ -124,7 +126,7 @@ class _Getformulario extends State<Getformulario> {
         ),
         nombrebox(),
         const SizedBox(
-          height: 10,
+          height: 15,
         ),
         const Row(
           children: [
@@ -145,8 +147,17 @@ class _Getformulario extends State<Getformulario> {
           height: 5,
         ),
         emailbox(),
-        const SizedBox(
-          height: 5,
+        Row(
+          children: [
+            const SizedBox(
+              width: 30,
+            ),
+            Text(
+              emailError,
+              style: const TextStyle(
+                  fontFamily: 'Inter', color: Colors.red, fontSize: 16),
+            )
+          ],
         ),
         const Row(
           children: [
@@ -165,7 +176,7 @@ class _Getformulario extends State<Getformulario> {
         ),
         pwdbox(),
         const SizedBox(
-          height: 5,
+          height: 20,
         ),
         const Row(
           children: [
@@ -184,7 +195,7 @@ class _Getformulario extends State<Getformulario> {
         ),
         confirmacionpwd(),
         const SizedBox(
-          height: 5,
+          height: 15,
         ),
         const Row(
           children: [
@@ -203,6 +214,21 @@ class _Getformulario extends State<Getformulario> {
         ),
         celularbox(),
         const SizedBox(
+          height: 5,
+        ),
+        Row(
+          children: [
+            const SizedBox(
+              width: 30,
+            ),
+            Text(
+              phoneError,
+              style: const TextStyle(
+                  fontFamily: 'Inter', color: Colors.red, fontSize: 16),
+            )
+          ],
+        ),
+        const SizedBox(
           height: 15,
         ),
         txtvalidaciones(),
@@ -219,120 +245,194 @@ class _Getformulario extends State<Getformulario> {
 
   SizedBox buttonregistro() {
     return SizedBox(
-        width: 400,
-        height: 50,
-        child: FloatingActionButton(
-            onPressed: () async {
-              x = 0;
-              formname.currentState!.validate();
-              formemail.currentState!.validate();
-              formpwd.currentState!.validate();
-              formpwd2.currentState!.validate();
-              formphone.currentState!.validate();
+      width: 400,
+      height: 50,
+      child: FloatingActionButton(
+          onPressed: () async {
+            x = 0;
+            formname.currentState!.validate();
+            formemail.currentState!.validate();
+            formpwd.currentState!.validate();
+            formpwd2.currentState!.validate();
+            formphone.currentState!.validate();
 
-              if (!isErroremail && !isErrorphone) {
-                x = await ValidarDatos().validarCelular(phone.text);
+            if (!isErroremail && !isErrorphone) {
+              x = await ValidarDatos().validarCelular(phone.text);
 
-                if (x == 1) {
-                  setState(() {
-                    isErrorphone = true;
-                    formphone.currentState!.validate();
-                  });
-                } else if (x == 0) {
-                  if (name.text.split(" ").length >= 2) {
-                    if (!isError &&
-                        !isErroremail &&
-                        !isErrorphone &&
-                        !isErrorpwd &&
-                        !isErrorname) {
-                      await crearUsuario();
-                      if (!isError) {
-                        rLogin();
-                      }
+              if (x == 1) {
+                setState(() {
+                  isErrorphone = true;
+                  formphone.currentState!.validate();
+                });
+              } else if (x == 0) {
+                if (name.text.split(" ").length >= 2) {
+                  if (!isError &&
+                      !isErroremail &&
+                      !isErrorphone &&
+                      !isErrorpwd &&
+                      !isErrorname) {
+                    await crearUsuario();
+                    if (!isError) {
+                      rLogin();
                     }
                   }
                 }
               }
-            },
-            backgroundColor: Colors.white,
-            child: const Text(
-              "Registrar",
-              style: TextStyle(fontFamily: 'Inter', fontSize: 18),
-            )),
-      );
+            }
+          },
+          backgroundColor: Colors.white,
+          child: const Text(
+            "Registrar",
+            style: TextStyle(fontFamily: 'Inter', fontSize: 18),
+          )),
+    );
   }
 
   Column txtvalidaciones() {
     return Column(
-        children: [
-          Row(
-            children: [
-              const SizedBox(
-                width: 25,
-              ),
-              Container(
-                height: 13,
-                width: 13,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15), color: ccolor(1)),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Text(
-                'Incluir minimo un numero',
-                style: TextStyle(
-                    fontFamily: 'Inter', color: ccolor(1), fontSize: 18),
-              )
-            ],
-          ),
-          Row(
-            children: [
-              const SizedBox(
-                width: 25,
-              ),
-              Container(
-                height: 13,
-                width: 13,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15), color: ccolor(2)),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Text(
-                'Incluir minimo una letra mayuscusla',
-                style: TextStyle(
-                    fontFamily: 'Inter', color: ccolor(2), fontSize: 18),
-              )
-            ],
-          ),
-          Row(
-            children: [
-              const SizedBox(
-                width: 25,
-              ),
-              Container(
-                height: 13,
-                width: 13,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15), color: ccolor(3)),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Text(
-                'Deben de coincidir las contraseñas',
-                style: TextStyle(
-                    fontFamily: 'Inter', color: ccolor(3), fontSize: 18),
-              )
-            ],
-          ),
-        ],
-      );
+      children: [
+        Row(children: [
+          const SizedBox(
+              width: 25,
+            ),
+            Container(
+              height: 13,
+              width: 13,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15), color: ccolor(4)),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              'Minimo 8 caracteres',
+              style: TextStyle(
+                  fontFamily: 'Inter', color: ccolor(4), fontSize: 18),
+            )
+        ],),
+        Row(
+          children: [
+            const SizedBox(
+              width: 25,
+            ),
+            Container(
+              height: 13,
+              width: 13,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15), color: ccolor(1)),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              'Incluir minimo un numero',
+              style: TextStyle(
+                  fontFamily: 'Inter', color: ccolor(1), fontSize: 18),
+            )
+          ],
+        ),
+        Row(
+          children: [
+            const SizedBox(
+              width: 25,
+            ),
+            Container(
+              height: 13,
+              width: 13,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15), color: ccolor(2)),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              'Incluir minimo una letra mayuscusla',
+              style: TextStyle(
+                  fontFamily: 'Inter', color: ccolor(2), fontSize: 18),
+            )
+          ],
+        ),
+        Row(
+          children: [
+            const SizedBox(
+              width: 25,
+            ),
+            Container(
+              height: 13,
+              width: 13,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15), color: ccolor(3)),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              'Deben de coincidir las contraseñas',
+              style: TextStyle(
+                  fontFamily: 'Inter', color: ccolor(3), fontSize: 18),
+            )
+          ],
+        ),
+      ],
+    );
   }
 
   Container celularbox() {
+    return Container(
+      width: 400,
+      height: 50,
+      decoration: BoxDecoration(
+          color: const Color.fromARGB(115, 87, 87, 94),
+          borderRadius: BorderRadius.circular(13),
+          border: Border.all(
+              color: isErrorphone
+                  ? Colors.red
+                  : const Color.fromARGB(0, 87, 87, 94))),
+      child: Form(
+        key: formphone,
+        child: TextFormField(
+          validator: (value) {
+            if (value!.length < 10) {
+              setState(() {
+                isErrorphone = true;
+                phoneError = 'Celular a 10 digitos';
+              });
+              return null;
+            }
+            if (x == 2 || x == 3) {
+              setState(() {
+                isErrorphone = true;
+                phoneError = 'Numero ya registrado';
+              });
+              return null;
+            }
+            setState(() {
+              isErrorphone = false;
+            });
+            return null;
+          },
+          controller: phone,
+          style: const TextStyle(
+              color: Colors.white, fontFamily: 'Inter', fontSize: 18),
+          keyboardType: TextInputType.phone,
+          maxLength: 10, // Alinea el texto al centro
+          decoration: const InputDecoration(
+            errorStyle: TextStyle(color: Colors.red),
+            hintStyle: TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
+            border: InputBorder.none,
+            hintText: 'Ingrese su número celular',
+            prefixIcon: Icon(
+              Icons.phone,
+              color: Color.fromARGB(101, 255, 255, 255),
+            ),
+            counterText: "", // Elimina el contador de longitud
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container confirmacionpwd() {
     return Container(
         width: 400,
         height: 50,
@@ -340,337 +440,281 @@ class _Getformulario extends State<Getformulario> {
             color: const Color.fromARGB(115, 87, 87, 94),
             borderRadius: BorderRadius.circular(13),
             border: Border.all(
-                color: isErrorphone
+                color: isErrorpwd
                     ? Colors.red
                     : const Color.fromARGB(0, 87, 87, 94))),
-        child: Form(
-          key: formphone,
-          child: TextFormField(
-            validator: (value) {
-              if (value!.length < 10) {
-                setState(() {
-                  isErrorphone = true;
-                });
-                return 'Celular a 10 digitos';
-              }
-              if (x == 2 || x == 3) {
-                setState(() {
-                  isErrorphone = true;
-                });
-                return 'Numero ya registrado';
-              }
-              setState(() {
-                isErrorphone = false;
-              });
-              return null;
-            },
-            controller: phone,
-            style: const TextStyle(
-                color: Colors.white, fontFamily: 'Inter', fontSize: 18),
-            keyboardType: TextInputType.phone,
-            maxLength: 10, // Alinea el texto al centro
-            decoration: const InputDecoration(
-              errorStyle: TextStyle(color: Colors.red),
-              hintStyle: TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
-              border: InputBorder.none,
-              hintText: 'Ingrese su número celular',
-              prefixIcon: Icon(
-                Icons.phone,
-                color: Color.fromARGB(101, 255, 255, 255),
-              ),
-              counterText: "", // Elimina el contador de longitud
-            ),
-          ),
-        ),
-      );
-  }
-
-  Container confirmacionpwd() {
-    return Container(
-          width: 400,
-          height: 50,
-          decoration: BoxDecoration(
-              color: const Color.fromARGB(115, 87, 87, 94),
-              borderRadius: BorderRadius.circular(13),
-              border: Border.all(
-                  color: isErrorpwd
-                      ? Colors.red
-                      : const Color.fromARGB(0, 87, 87, 94))),
-          child: Row(
-            children: [
-              SizedBox(
-                width: 365,
-                height: 35,
-                child: Form(
-                    key: formpwd2,
-                    child: TextFormField(
-                      validator: (value) {
-                        if (value != passwordcontrol.text) {
-                          setState(() {
-                            isErrorpwd = true;
-                          });
-                          return null;
-                        } else if (password2control.text.isEmpty) {
-                          setState(() {
-                            isErrorpwd = true;
-                          });
-                          return null;
-                        }
+        child: Row(
+          children: [
+            SizedBox(
+              width: 365,
+              height: 35,
+              child: Form(
+                  key: formpwd2,
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value != passwordcontrol.text) {
                         setState(() {
-                          isErrorpwd = false;
+                          isErrorpwd = true;
                         });
                         return null;
-                      },
-                      onChanged: (value) {
-                        formpwd2.currentState!.validate();
-                      },
-                      controller: password2control,
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Inter',
-                          fontSize: 18),
-                      obscureText: isVisiblebtn2,
-                      decoration: const InputDecoration(
-                          errorStyle: TextStyle(color: Colors.red),
-                          contentPadding: EdgeInsets.only(bottom: 10),
-                          hintText: 'Vuelva a ingresar su contraseña',
-                          hintStyle: TextStyle(
-                              color: Color.fromARGB(101, 255, 255, 255)),
-                          prefixIcon: Icon(Icons.lock_person_outlined,
-                              color: Color.fromARGB(101, 255, 255, 255)),
-                          focusedBorder: InputBorder.none,
-                          border: InputBorder.none),
-                    )),
-              ),
-              SizedBox(
-                width: 30,
-                height: 30,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    setState(() {
-                      change(2);
-                    });
-                  },
-                  backgroundColor: const Color.fromARGB(0, 87, 87, 95),
-                  elevation: 0,
-                  heroTag: 'btn2',
-                  child: isVisiblebtn2
-                      ? Image.asset(
-                          'assets/eye.png',
-                          color: const Color.fromARGB(101, 255, 255, 255),
-                        )
-                      : Image.asset(
-                          'assets/eye-line.png',
-                          color: const Color.fromARGB(101, 255, 255, 255),
-                        ),
-                ),
-              )
-            ],
-          ));
-  }
-
-  Container pwdbox() {
-    return Container(
-          width: 400,
-          height: 50,
-          decoration: BoxDecoration(
-              color: const Color.fromARGB(115, 87, 87, 94),
-              borderRadius: BorderRadius.circular(13),
-              border: Border.all(
-                  color: isError
-                      ? Colors.red
-                      : const Color.fromARGB(0, 87, 87, 94))),
-          child: Row(
-            children: [
-              SizedBox(
-                width: 365,
-                height: 35,
-                child: Form(
-                    key: formpwd,
-                    child: TextFormField(
-                      validator: (value) {
-                        if (value!.length < 8) {
-                          setState(() {
-                            isError = true;
-                          });
-                          return null;
-                        }
-                        bool v1 = value.contains(RegExp(r'[0-9]'));
-                        bool v2 = value.contains(RegExp(r'[A-Z]'));
-                        if (!v1 && !v2 || v1 && !v2 || !v1 && v2) {
-                          setState(() {
-                            isError = true;
-                          });
-                          return null;
-                        }
+                      } else if (password2control.text.isEmpty) {
                         setState(() {
-                          isError = false;
+                          isErrorpwd = true;
                         });
                         return null;
-                      },
-                      onChanged: (value) {
-                        formpwd.currentState!.validate();
-                      },
-                      controller: passwordcontrol,
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Inter',
-                          fontSize: 18),
-                      obscureText: isVisible,
-                      decoration: const InputDecoration(
+                      }
+                      setState(() {
+                        isErrorpwd = false;
+                      });
+                      return null;
+                    },
+                    onChanged: (value) {
+                      formpwd2.currentState!.validate();
+                    },
+                    controller: password2control,
+                    style: const TextStyle(
+                        color: Colors.white, fontFamily: 'Inter', fontSize: 18),
+                    obscureText: isVisiblebtn2,
+                    decoration: const InputDecoration(
+                        errorStyle: TextStyle(color: Colors.red),
                         contentPadding: EdgeInsets.only(bottom: 10),
-                        hintText: 'Ingrese su contraseña',
+                        hintText: 'Vuelva a ingresar su contraseña',
                         hintStyle: TextStyle(
                             color: Color.fromARGB(101, 255, 255, 255)),
                         prefixIcon: Icon(Icons.lock_person_outlined,
                             color: Color.fromARGB(101, 255, 255, 255)),
                         focusedBorder: InputBorder.none,
-                        border: InputBorder.none,
+                        border: InputBorder.none),
+                  )),
+            ),
+            SizedBox(
+              width: 30,
+              height: 30,
+              child: FloatingActionButton(
+                onPressed: () {
+                  setState(() {
+                    change(2);
+                  });
+                },
+                backgroundColor: const Color.fromARGB(0, 87, 87, 95),
+                elevation: 0,
+                heroTag: 'btn2',
+                child: isVisiblebtn2
+                    ? Image.asset(
+                        'assets/eye.png',
+                        color: const Color.fromARGB(101, 255, 255, 255),
+                      )
+                    : Image.asset(
+                        'assets/eye-line.png',
+                        color: const Color.fromARGB(101, 255, 255, 255),
                       ),
-                    )),
               ),
-              SizedBox(
-                width: 30,
-                height: 30,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    setState(() {
-                      change(1);
-                    });
-                  },
-                  backgroundColor: const Color.fromARGB(0, 87, 87, 95),
-                  elevation: 0,
-                  heroTag: 'btn1',
-                  child: isVisible
-                      ? Image.asset(
-                          'assets/eye.png',
-                          color: const Color.fromARGB(101, 255, 255, 255),
-                        )
-                      : Image.asset(
-                          'assets/eye-line.png',
-                          color: const Color.fromARGB(101, 255, 255, 255),
-                        ),
-                ),
-              )
-            ],
-          ));
+            )
+          ],
+        ));
+  }
+
+  Container pwdbox() {
+    return Container(
+        width: 400,
+        height: 50,
+        decoration: BoxDecoration(
+            color: const Color.fromARGB(115, 87, 87, 94),
+            borderRadius: BorderRadius.circular(13),
+            border: Border.all(
+                color: isError
+                    ? Colors.red
+                    : const Color.fromARGB(0, 87, 87, 94))),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 365,
+              height: 35,
+              child: Form(
+                  key: formpwd,
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value!.length < 8) {
+                        setState(() {
+                          isError = true;
+                        });
+                        return null;
+                      }
+                      bool v1 = value.contains(RegExp(r'[0-9]'));
+                      bool v2 = value.contains(RegExp(r'[A-Z]'));
+                      if (!v1 && !v2 || v1 && !v2 || !v1 && v2) {
+                        setState(() {
+                          isError = true;
+                        });
+                        return null;
+                      }
+                      setState(() {
+                        isError = false;
+                      });
+                      return null;
+                    },
+                    onChanged: (value) {
+                      formpwd.currentState!.validate();
+                    },
+                    controller: passwordcontrol,
+                    style: const TextStyle(
+                        color: Colors.white, fontFamily: 'Inter', fontSize: 18),
+                    obscureText: isVisible,
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: 10),
+                      hintText: 'Ingrese su contraseña',
+                      hintStyle:
+                          TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
+                      prefixIcon: Icon(Icons.lock_person_outlined,
+                          color: Color.fromARGB(101, 255, 255, 255)),
+                      focusedBorder: InputBorder.none,
+                      border: InputBorder.none,
+                    ),
+                  )),
+            ),
+            SizedBox(
+              width: 30,
+              height: 30,
+              child: FloatingActionButton(
+                onPressed: () {
+                  setState(() {
+                    change(1);
+                  });
+                },
+                backgroundColor: const Color.fromARGB(0, 87, 87, 95),
+                elevation: 0,
+                heroTag: 'btn1',
+                child: isVisible
+                    ? Image.asset(
+                        'assets/eye.png',
+                        color: const Color.fromARGB(101, 255, 255, 255),
+                      )
+                    : Image.asset(
+                        'assets/eye-line.png',
+                        color: const Color.fromARGB(101, 255, 255, 255),
+                      ),
+              ),
+            )
+          ],
+        ));
   }
 
   Container emailbox() {
     return Container(
-        width: 400,
+      width: 400,
+      height: 50,
+      decoration: BoxDecoration(
+          color: const Color.fromARGB(115, 87, 87, 94),
+          borderRadius: BorderRadius.circular(13),
+          border: Border.all(
+              color: isErroremail
+                  ? Colors.red
+                  : const Color.fromARGB(0, 87, 87, 94))),
+      child: SizedBox(
+        width: 265,
         height: 50,
-        decoration: BoxDecoration(
-            color: const Color.fromARGB(115, 87, 87, 94),
-            borderRadius: BorderRadius.circular(13),
-            border: Border.all(
-                color: isErroremail
-                    ? Colors.red
-                    : const Color.fromARGB(0, 87, 87, 94))),
-        child: SizedBox(
-          width: 265,
-          height: 50,
-          child: Form(
-            key: formemail,
-            child: TextFormField(
-              validator: (value) {
-                if (!EmailValidator.validate(value.toString())) {
-                  setState(() {
-                    isErroremail = true;
-                  });
-                  return 'Coloca un correo valido';
-                }
-                if (x == 1 || x == 3) {
-                  setState(() {
-                    isErroremail = true;
-                  });
-                  return 'Correo ya registrado';
-                }
+        child: Form(
+          key: formemail,
+          child: TextFormField(
+            validator: (value) {
+              if (!EmailValidator.validate(value.toString())) {
                 setState(() {
-                  isErroremail = false;
+                  isErroremail = true;
+                  emailError = 'Coloca un correo valido';
                 });
                 return null;
-              },
-              style: const TextStyle(
-                  color: Colors.white, fontFamily: 'Inter', fontSize: 18),
-              controller: emailcontrol,
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                  errorStyle: TextStyle(color: Colors.red),
-                  hintStyle:
-                      TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
-                  border: InputBorder.none,
-                  hintText: 'Ingresa tu correo',
-                  prefixIcon: Icon(
-                    Icons.email_outlined,
-                    color: Color.fromARGB(101, 255, 255, 255),
-                  )),
-            ),
+              }
+              if (x == 1 || x == 3) {
+                setState(() {
+                  isErroremail = true;
+                  emailError = 'Correo ya registrado';
+                });
+                return null;
+              }
+              setState(() {
+                isErroremail = false;
+                emailError = "";
+              });
+              return null;
+            },
+            style: const TextStyle(
+                color: Colors.white, fontFamily: 'Inter', fontSize: 18),
+            controller: emailcontrol,
+            keyboardType: TextInputType.emailAddress,
+            decoration: const InputDecoration(
+                errorStyle: TextStyle(color: Colors.red),
+                hintStyle: TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
+                border: InputBorder.none,
+                hintText: 'Ingresa tu correo',
+                prefixIcon: Icon(
+                  Icons.email_outlined,
+                  color: Color.fromARGB(101, 255, 255, 255),
+                )),
           ),
         ),
-      );
+      ),
+    );
   }
 
   Container nombrebox() {
     return Container(
-        width: 400,
+      width: 400,
+      height: 50,
+      decoration: BoxDecoration(
+          color: const Color.fromARGB(115, 87, 87, 94),
+          borderRadius: BorderRadius.circular(13),
+          border: Border.all(
+              color: isErrorname
+                  ? Colors.red
+                  : const Color.fromARGB(0, 87, 87, 94))),
+      child: SizedBox(
+        width: 265,
         height: 50,
-        decoration: BoxDecoration(
-            color: const Color.fromARGB(115, 87, 87, 94),
-            borderRadius: BorderRadius.circular(13),
-            border: Border.all(
-                color: isErrorname
-                    ? Colors.red
-                    : const Color.fromARGB(0, 87, 87, 94))),
-        child: SizedBox(
-          width: 265,
-          height: 50,
-          child: Form(
-            key: formname,
-            child: TextFormField(
-              validator: (value) {
-                if (name.text.isEmpty) {
-                  setState(() {
-                    isErrorname = true;
-                  });
-                  return null;
-                }
-                List<String> nombre = name.text.split(" ");
-                if (nombre.length >= 2) {
-                  setState(() {
-                    isErrorname = true;
-                  });
-                }
-                bool v1 = value!.contains(RegExp(r'[0-9]'));
-                if (v1) {
-                  setState(() {
-                    isErrorname = true;
-                  });
-                  return null;
-                }
+        child: Form(
+          key: formname,
+          child: TextFormField(
+            validator: (value) {
+              if (name.text.isEmpty) {
                 setState(() {
-                  isErrorname = false;
+                  isErrorname = true;
                 });
                 return null;
-              },
-              style: const TextStyle(
-                  color: Colors.white, fontSize: 18, fontFamily: 'Inter'),
-              controller: name,
-              keyboardType: TextInputType.name,
-              decoration: const InputDecoration(
-                hintStyle:
-                    TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
-                prefixIcon: Icon(
-                  Icons.account_box_rounded,
-                  color: Color.fromARGB(101, 255, 255, 255),
-                ),
-                border: InputBorder.none,
-                hintText: 'Ingresa tu nombre',
+              }
+              List<String> nombre = name.text.split(" ");
+              if (nombre.length >= 2) {
+                setState(() {
+                  isErrorname = true;
+                });
+              }
+              bool v1 = value!.contains(RegExp(r'[0-9]'));
+              if (v1) {
+                setState(() {
+                  isErrorname = true;
+                });
+                return null;
+              }
+              setState(() {
+                isErrorname = false;
+              });
+              return null;
+            },
+            style: const TextStyle(
+                color: Colors.white, fontSize: 18, fontFamily: 'Inter'),
+            controller: name,
+            keyboardType: TextInputType.name,
+            decoration: const InputDecoration(
+              hintStyle: TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
+              prefixIcon: Icon(
+                Icons.account_box_rounded,
+                color: Color.fromARGB(101, 255, 255, 255),
               ),
+              border: InputBorder.none,
+              hintText: 'Ingresa tu nombre',
             ),
           ),
         ),
-      );
+      ),
+    );
   }
 
   Future<void> crearUsuario() async {
@@ -681,13 +725,13 @@ class _Getformulario extends State<Getformulario> {
       if (r == 'nodata') {
         final perfs = Preferencias();
         Expositor expositor = Expositor(
-          id: perfs.id,
-          correo: emailcontrol.text,
-          apellidos: nombre[1].toLowerCase(),
-          celular: phone.text.toLowerCase(),
-          nombre: nombre[0].toLowerCase(),
-          ntf: true);
-          InsertarDatos().setExpositor(expositor, perfs.id);
+            id: perfs.id,
+            correo: emailcontrol.text,
+            apellidos: nombre[1].toLowerCase(),
+            celular: phone.text.toLowerCase(),
+            nombre: nombre[0].toLowerCase(),
+            ntf: true);
+        InsertarDatos().setExpositor(expositor, perfs.id);
       } else {
         Expositor expositor = Expositor(
             id: '',
@@ -696,9 +740,8 @@ class _Getformulario extends State<Getformulario> {
             celular: phone.text.toLowerCase(),
             nombre: nombre[0].toLowerCase(),
             ntf: true);
-            InsertarDatos().setExpositor(expositor, r);
+        InsertarDatos().setExpositor(expositor, r);
       }
-
     } else {
       setState(() {
         isErroremail = true;
@@ -755,6 +798,13 @@ class _Getformulario extends State<Getformulario> {
         return Colors.white;
       } else if (password2control.text == passwordcontrol.text &&
           passwordcontrol.text.isNotEmpty) {
+        return Colors.green;
+      }
+      return Colors.red;
+    }else if(x == 4){
+      if(passwordcontrol.text.isEmpty && !isErrorpwd){
+        return Colors.white;
+      } else if(passwordcontrol.text.length >= 8){
         return Colors.green;
       }
       return Colors.red;

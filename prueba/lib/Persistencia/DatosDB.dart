@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:prueba/Class/Expositor.dart';
 import 'package:prueba/Class/administrador.dart';
+import 'package:prueba/Class/noticias_data.dart';
 
 class DatosDB {
   //Funcion que regresa los expositores que han sido creado en forma de lista
@@ -46,6 +47,24 @@ class DatosDB {
     var db = FirebaseFirestore.instance;
     ntf = (await db.collection("expositores").doc(id).get()) as bool;
     return ntf;
+  }
+
+  Future<List<Noticia>> getNoticias() async {
+    var db = FirebaseFirestore.instance;
+    final QuerySnapshot result = await db.collection('noticias').get();
+
+    List<Noticia> noticiasCargadas = [];
+    for (var doc in result.docs) {
+      noticiasCargadas.add(
+        Noticia(
+          "",
+          doc['nombre'],
+          doc['cuerpo'],
+          doc['imagenUrl'],
+        ),
+      );
+    }
+    return noticiasCargadas;
   }
 
   //Funcion para crear un nuevo expositor, el id se crea automaticamente con firebase

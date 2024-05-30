@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 import 'package:prueba/Class/administrador.dart';
+import 'package:prueba/Class/noticias_data.dart';
 import 'package:prueba/Persistencia/Auth.dart';
 import 'package:prueba/Persistencia/DatosDB.dart';
 import 'package:prueba/Class/Expositor.dart';
@@ -83,5 +84,7 @@ class ValidarDatos {
     await Auth().signOut();
   }
 
-  
+  Future<List<Noticia>> getNotificias() async{
+    return await DatosDB().getNoticias();
+  }
 }

@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:prueba/Persistencia/Preferencias.dart';
 import 'package:prueba/components/agregar_noticia.dart';
-import 'package:prueba/data/noticias_data.dart';
+import 'package:prueba/Class/noticias_data.dart';
 
 class PaginaNoticias extends StatefulWidget {
   const PaginaNoticias({super.key});
@@ -71,7 +72,17 @@ class _PaginaNoticiasState extends State<PaginaNoticias> {
             ],
           ),
         ),
-        floatingActionButton: SizedBox(
+        floatingActionButton: bottonagregar()
+      ),
+    );
+
+   
+  }
+
+  SizedBox bottonagregar(){
+    Preferencias prefs = Preferencias();
+    if(prefs.lvl == 2){
+      return SizedBox(
           width: 110,
           child: FloatingActionButton(
             backgroundColor: const Color.fromRGBO(238, 235, 237, 1),
@@ -92,10 +103,11 @@ class _PaginaNoticiasState extends State<PaginaNoticias> {
               ),),
             ),
           ),
-        ),
-      ),
-    );
-  }
+        );
+    }else{
+      return const SizedBox();
+    }
+    }
 }
 
 class ListaNoticias extends StatelessWidget {
