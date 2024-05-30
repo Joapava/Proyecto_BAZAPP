@@ -72,38 +72,84 @@ class _agregar_noticiaState extends State<agregar_noticia> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('Agregar Noticia'),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-              
-                TextFormField(
-                  controller: _cuerpoController,
-                  decoration: InputDecoration(labelText: 'Cuerpo de la noticia'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor ingrese el cuerpo de la noticia';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 20),
-                _imagenUrlNoticia == null
-                    ? ElevatedButton(
-                        onPressed: _pickImage,
-                        child: Text('Seleccionar Imagen'))
-                    : Image.network(_imagenUrlNoticia!),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _submitForm,
-                  child: Text('Agregar Noticia'),
-                ),
-              ],
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'Agregar Noticia',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _cuerpoController,
+                    maxLines: 5,
+                    decoration: InputDecoration(
+                      labelText: 'Cuerpo de la noticia',
+                      alignLabelWithHint: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey[100],
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor ingrese el cuerpo de la noticia';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: _imagenUrlNoticia == null
+                        ? ElevatedButton.icon(
+                            onPressed: _pickImage,
+                            icon: Icon(Icons.image, color: Colors.white),
+                            label: Text('Seleccionar Imagen', style: TextStyle(color: Colors.white)),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                            ),
+                          )
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(
+                              _imagenUrlNoticia!,
+                              height: 200,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton.icon(
+                    onPressed: _submitForm,
+                    icon: Icon(Icons.send, color: Colors.white),
+                    label: Text('Agregar Noticia', style: TextStyle(color: Colors.white)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blueGrey,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:prueba/pages/home/imagen_pagina.dart';
@@ -14,12 +15,50 @@ class PaginaInicioAdmin extends StatefulWidget {
 }
 
 class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
+  List<Noticia> noticias = [];
   List _imageUrls = [];
 
   @override
   void initState() {
     super.initState();
-    _loadimages();
+    _loadImages();
+    _loadNoticias();
+  }
+
+  Future<void> _loadNoticias() async {
+    final QuerySnapshot result =
+        await FirebaseFirestore.instance.collection('noticias').get();
+    final List<DocumentSnapshot> documents = result.docs;
+    List<Noticia> noticiasCargadas = [];
+    for (var doc in documents) {
+      noticiasCargadas.add(
+        Noticia(
+          "",
+          doc['nombre'],
+          doc['cuerpo'],
+          doc['imagenUrl'],
+        ),
+      );
+    }
+    if (mounted) {
+      setState(() {
+        noticias = noticiasCargadas;
+      });
+    }
+  }
+
+  Future<void> _loadImages() async {
+    ListResult result = await FirebaseStorage.instance.ref('uploads').listAll();
+    List<String> urls = [];
+    for (var ref in result.items) {
+      String url = await ref.getDownloadURL();
+      urls.add(url);
+    }
+    if (mounted) {
+      setState(() {
+        _imageUrls = urls;
+      });
+    }
   }
 
   Future<void> _pickImage() async {
@@ -109,12 +148,15 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ListTile(
-              leading: CircleAvatar(
-                backgroundImage: AssetImage(noticia.urlImagenPerfil),
-                radius: 20,
-              ),
-              title: Text(noticia.nombrePerfil,
+            // ListTile(
+            //   // leading: CircleAvatar(
+            //   //   radius: 20,
+            //   // ),
+            //   title:
+            // ),
+            Container(
+              margin: const EdgeInsets.fromLTRB(10, 5, 0, 5),
+              child: Text(noticia.nombrePerfil,
                   style: const TextStyle(fontWeight: FontWeight.bold)),
             ),
             Container(
@@ -129,7 +171,7 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
                     bottomLeft: Radius.circular(10),
                     bottomRight: Radius.circular(10),
                   ),
-                  child: Image.asset(
+                  child: Image.network(
                     noticia.urlImagenNoticia,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -235,7 +277,7 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
                     ),
                     const Spacer(),
                     Container(
-                      margin: const EdgeInsets.fromLTRB(30, 25,0,0),
+                      margin: const EdgeInsets.fromLTRB(30, 25, 0, 0),
                       child: TextButton(
                         style: TextButton.styleFrom(
                           splashFactory: NoSplash.splashFactory,
@@ -328,6 +370,55 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
       });
     }
   }
+
+
+  // 
+
+   Widget getFotos2(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(10, 0, 10, 5),
+      width: 700,
+      height: 400,
+      child: GridView.extent(
+        mainAxisSpacing: 5,
+        crossAxisSpacing: 5,
+        maxCrossAxisExtent: 150,
+        children: listaImagenes(context),
+      ),
+    );
+  }
+
+  List<Widget> listaImagenes2(BuildContext context) {
+    List<Widget> listaImagenes = [];
+
+    for (int i = 0; i < _imageUrls.length; i++) {
+      var imageUrl = _imageUrls[i];
+      listaImagenes.add(
+        ClipRRect(
+          borderRadius: BorderRadius.circular(5),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => imagenPagina(
+                    imageName: imageUrl,
+                  ),
+                ),
+              );
+            },
+            child: Hero(
+              tag: '$imageUrl$i',
+              child: Image.network(imageUrl, fit: BoxFit.cover),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return listaImagenes;
+  }
+
 
   @override
   void dispose() {

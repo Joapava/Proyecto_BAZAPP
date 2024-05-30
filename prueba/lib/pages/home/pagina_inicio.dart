@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -149,11 +148,15 @@ class _PaginaInicioState extends State<PaginaInicio> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ListTile(
-              leading: CircleAvatar(
-                radius: 20,
-              ),
-              title: Text(noticia.nombrePerfil,
+            // ListTile(
+            //   // leading: CircleAvatar(
+            //   //   radius: 20,
+            //   // ),
+            //   title:
+            // ),
+            Container(
+              margin: const EdgeInsets.fromLTRB(10, 5, 0, 5),
+              child: Text(noticia.nombrePerfil,
                   style: const TextStyle(fontWeight: FontWeight.bold)),
             ),
             Container(
