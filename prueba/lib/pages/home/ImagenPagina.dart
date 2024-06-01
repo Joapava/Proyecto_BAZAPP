@@ -1,11 +1,10 @@
 import "package:flutter/material.dart";
 import 'package:photo_view/photo_view.dart';
 
-// ignore: camel_case_types
-class imagenPagina extends StatelessWidget {
-  final String imageName;
+class ImagenPagina extends StatelessWidget {
+  final String imageUrl;
 
-  const imagenPagina({super.key, required this.imageName});
+  const ImagenPagina({Key? key, required this.imageUrl}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +30,7 @@ class imagenPagina extends StatelessWidget {
                     20), // Margen para la visualización de la imagen
                 child: PhotoView(
                   imageProvider: NetworkImage(
-                      imageName), // Utilizar NetworkImage para cargar la imagen desde la URL
+                      imageUrl), // Utilizar NetworkImage para cargar la imagen desde la URL
                   backgroundDecoration: const BoxDecoration(
                     color: Colors.white, // Fondo del área de zoom
                   ),

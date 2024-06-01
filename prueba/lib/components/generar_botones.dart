@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 // Define una enumeración para la dirección de los botones.
 enum ButtonDirection { horizontal, vertical }
 
-// Variable global para mantener los lugares seleccionados.
+// Variable global para mantener los lugares seleccionados y comprados.
 List<String> selectedLocations = [];
+List<String> purchasedLocations = [];
 
 class ButtonWithColorChange extends StatefulWidget {
   final String label;
@@ -37,16 +38,20 @@ class _ButtonWithColorChangeState extends State<ButtonWithColorChange> {
 
   @override
   Widget build(BuildContext context) {
+    bool isPurchased = purchasedLocations.contains(widget.label);
+
     return Container(
       height: 25,
       width: 25,
       margin: const EdgeInsets.all(2),
       child: ElevatedButton(
-        onPressed: _toggleColor,
+        onPressed: isPurchased ? null : _toggleColor,
         style: ElevatedButton.styleFrom(
-          backgroundColor: isPressed
-              ? const Color.fromARGB(184, 255, 11, 11)
-              : const Color.fromARGB(184, 1, 167, 62),
+          backgroundColor: isPurchased
+              ? const Color.fromRGBO(168, 169, 171, 0.2)
+              : (isPressed
+                  ? const Color.fromARGB(184, 255, 11, 11)
+                  : const Color.fromARGB(184, 1, 167, 62)),
           padding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(3),

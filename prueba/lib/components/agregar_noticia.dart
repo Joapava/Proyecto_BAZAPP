@@ -39,12 +39,15 @@ class _agregar_noticiaState extends State<agregar_noticia> {
     });
 
     try {
-      final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final XFile? image =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image != null) {
         File imageFile = File(image.path);
-        String fileName = 'uploads/${DateTime.now().millisecondsSinceEpoch}.jpg';
+        String fileName =
+            'uploads/${DateTime.now().millisecondsSinceEpoch}.jpg';
         await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
-        String downloadURL = await FirebaseStorage.instance.ref(fileName).getDownloadURL();
+        String downloadURL =
+            await FirebaseStorage.instance.ref(fileName).getDownloadURL();
         setState(() {
           _imagenUrlNoticia = downloadURL;
         });
@@ -81,15 +84,6 @@ class _agregar_noticiaState extends State<agregar_noticia> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    'Agregar Noticia',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
                   const SizedBox(height: 20),
                   TextFormField(
                     controller: _cuerpoController,
@@ -115,14 +109,17 @@ class _agregar_noticiaState extends State<agregar_noticia> {
                     child: _imagenUrlNoticia == null
                         ? ElevatedButton.icon(
                             onPressed: _pickImage,
-                            icon: Icon(Icons.image, color: Colors.white),
-                            label: Text('Seleccionar Imagen', style: TextStyle(color: Colors.white)),
+                            icon: const Icon(Icons.image, color: Colors.black),
+                            label: const Text('Seleccionar Imagen',
+                                style: TextStyle(color: Colors.black)),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
+                              backgroundColor:
+                                  const Color.fromRGBO(168, 169, 171, 0.1),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
                             ),
                           )
                         : ClipRRect(
@@ -138,14 +135,16 @@ class _agregar_noticiaState extends State<agregar_noticia> {
                   const SizedBox(height: 20),
                   ElevatedButton.icon(
                     onPressed: _submitForm,
-                    icon: Icon(Icons.send, color: Colors.white),
-                    label: Text('Agregar Noticia', style: TextStyle(color: Colors.white)),
+                    icon: const Icon(Icons.send, color: Colors.black),
+                    label: const Text('Agregar Noticia',
+                        style: TextStyle(color: Colors.black)),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blueGrey,
+                      backgroundColor: const Color.fromRGBO(168, 169, 171, 0.1),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
                     ),
                   ),
                 ],

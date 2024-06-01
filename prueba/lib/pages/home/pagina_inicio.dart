@@ -6,6 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:prueba/data/noticias_data.dart';
 import 'package:prueba/pages/home/imagen_pagina.dart';
 import 'package:prueba/pages/home/pagina_noticias.dart';
+// ignore: depend_on_referenced_packages
+import 'package:http/http.dart' as http;
 
 class PaginaInicio extends StatefulWidget {
   const PaginaInicio({super.key});
@@ -16,7 +18,7 @@ class PaginaInicio extends StatefulWidget {
 
 class _PaginaInicioState extends State<PaginaInicio> {
   List<Noticia> noticias = [];
-  List _imageUrls = [];
+  List<String> _imageUrls = [];
 
   @override
   void initState() {
@@ -31,14 +33,17 @@ class _PaginaInicioState extends State<PaginaInicio> {
     final List<DocumentSnapshot> documents = result.docs;
     List<Noticia> noticiasCargadas = [];
     for (var doc in documents) {
-      noticiasCargadas.add(
-        Noticia(
-          "",
-          doc['nombre'],
-          doc['cuerpo'],
-          doc['imagenUrl'],
-        ),
-      );
+      String imageUrl = doc['imagenUrl'];
+      if (await _imageExists(imageUrl)) {
+        noticiasCargadas.add(
+          Noticia(
+            "",
+            doc['nombre'],
+            doc['cuerpo'],
+            imageUrl,
+          ),
+        );
+      }
     }
     if (mounted) {
       setState(() {
@@ -47,12 +52,26 @@ class _PaginaInicioState extends State<PaginaInicio> {
     }
   }
 
+  Future<bool> _imageExists(String url) async {
+    try {
+      final response = await http.head(Uri.parse(url));
+      return response.statusCode == 200;
+    } catch (e) {
+      print('Error checking image existence: $e');
+      return false;
+    }
+  }
+
   Future<void> _loadImages() async {
     ListResult result = await FirebaseStorage.instance.ref('uploads').listAll();
     List<String> urls = [];
     for (var ref in result.items) {
-      String url = await ref.getDownloadURL();
-      urls.add(url);
+      try {
+        String url = await ref.getDownloadURL();
+        urls.add(url);
+      } catch (e) {
+        print('Error al cargar la imagen: $e');
+      }
     }
     if (mounted) {
       setState(() {
@@ -90,7 +109,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
           children: <Widget>[
             getDestacados(context),
             getDetalles(context),
-            getFotos(context)
+            getFotos(context),
           ],
         ),
       ),
@@ -127,8 +146,8 @@ class _PaginaInicioState extends State<PaginaInicio> {
   Widget formatoNoticia(Noticia noticia, context) {
     return GestureDetector(
       onTap: () => {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => PaginaNoticias()))
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const PaginaNoticias()))
       },
       child: Container(
         width: 270,
@@ -148,12 +167,6 @@ class _PaginaInicioState extends State<PaginaInicio> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ListTile(
-            //   // leading: CircleAvatar(
-            //   //   radius: 20,
-            //   // ),
-            //   title:
-            // ),
             Container(
               margin: const EdgeInsets.fromLTRB(10, 5, 0, 5),
               child: Text(noticia.nombrePerfil,
@@ -171,10 +184,23 @@ class _PaginaInicioState extends State<PaginaInicio> {
                     bottomLeft: Radius.circular(10),
                     bottomRight: Radius.circular(10),
                   ),
-                  child: Image.network(
-                    noticia.urlImagenNoticia,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+                  child: FutureBuilder<bool>(
+                    future: _imageExists(noticia.urlImagenNoticia),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError ||
+                          !snapshot.hasData ||
+                          !snapshot.data!) {
+                        return const Icon(Icons.broken_image);
+                      } else {
+                        return Image.network(
+                          noticia.urlImagenNoticia,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        );
+                      }
+                    },
                   ),
                 ),
               ),
@@ -203,7 +229,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
         Container(
           margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
           child: const Text(
-            "HORARIO:5:30-10:30 PM TODOS LOS VIERNES, SABADOS Y DOMINGOS💜💟🌈",
+            "HORARIO: 5:30-10:30 PM TODOS LOS VIERNES, SABADOS Y DOMINGOS💜💟🌈",
             textAlign: TextAlign.center,
           ),
         ),
@@ -213,9 +239,9 @@ class _PaginaInicioState extends State<PaginaInicio> {
         ),
         Container(
           margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-          child: Column(
+          child: const Column(
             children: <Widget>[
-              const Padding(
+              Padding(
                 padding: EdgeInsets.symmetric(vertical: 5),
                 child: Row(
                   children: <Widget>[
@@ -231,7 +257,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
                   ],
                 ),
               ),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.symmetric(vertical: 5),
                 child: Row(
                   children: <Widget>[
@@ -249,7 +275,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
                   ],
                 ),
               ),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.symmetric(vertical: 5),
                 child: Row(
                   children: <Widget>[
@@ -261,21 +287,21 @@ class _PaginaInicioState extends State<PaginaInicio> {
                   ],
                 ),
               ),
-              Align(
-                alignment: Alignment.topLeft,
-                child: Row(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(10, 30, 10, 5),
-                      child: const Text(
-                        "Fotos",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: "Arial",
-                            fontSize: 25),
-                      ),
-                    ),
-                  ],
+            ],
+          ),
+        ),
+        Align(
+          alignment: Alignment.topLeft,
+          child: Row(
+            children: [
+              Container(
+                margin: const EdgeInsets.fromLTRB(10, 30, 10, 5),
+                child: const Text(
+                  "Fotos",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Arial",
+                      fontSize: 25),
                 ),
               ),
             ],

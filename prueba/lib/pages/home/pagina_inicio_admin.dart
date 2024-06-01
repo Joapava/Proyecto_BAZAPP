@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:prueba/pages/home/imagen_pagina.dart';
 import 'package:prueba/data/noticias_data.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:prueba/pages/home/imagen_pagina.dart';
 import 'package:prueba/pages/home/pagina_noticias.dart';
+// ignore: depend_on_referenced_packages
+import 'package:http/http.dart' as http;
 
 class PaginaInicioAdmin extends StatefulWidget {
   const PaginaInicioAdmin({super.key});
@@ -16,7 +18,7 @@ class PaginaInicioAdmin extends StatefulWidget {
 
 class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
   List<Noticia> noticias = [];
-  List _imageUrls = [];
+  List<String> _imageUrls = [];
 
   @override
   void initState() {
@@ -31,14 +33,17 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
     final List<DocumentSnapshot> documents = result.docs;
     List<Noticia> noticiasCargadas = [];
     for (var doc in documents) {
-      noticiasCargadas.add(
-        Noticia(
-          "",
-          doc['nombre'],
-          doc['cuerpo'],
-          doc['imagenUrl'],
-        ),
-      );
+      String imageUrl = doc['imagenUrl'];
+      if (await _imageExists(imageUrl)) {
+        noticiasCargadas.add(
+          Noticia(
+            "",
+            doc['nombre'],
+            doc['cuerpo'],
+            imageUrl,
+          ),
+        );
+      }
     }
     if (mounted) {
       setState(() {
@@ -47,12 +52,26 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
     }
   }
 
+  Future<bool> _imageExists(String url) async {
+    try {
+      final response = await http.head(Uri.parse(url));
+      return response.statusCode == 200;
+    } catch (e) {
+      print('Error checking image existence: $e');
+      return false;
+    }
+  }
+
   Future<void> _loadImages() async {
     ListResult result = await FirebaseStorage.instance.ref('uploads').listAll();
     List<String> urls = [];
     for (var ref in result.items) {
-      String url = await ref.getDownloadURL();
-      urls.add(url);
+      try {
+        String url = await ref.getDownloadURL();
+        urls.add(url);
+      } catch (e) {
+        print('Error al cargar la imagen: $e');
+      }
     }
     if (mounted) {
       setState(() {
@@ -90,9 +109,15 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
           children: <Widget>[
             getDestacados(context),
             getDetalles(context),
-            getFotos(context)
+            getFotos(context),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        foregroundColor: Colors.black,
+        backgroundColor: const Color.fromRGBO(238, 235, 237, 1),
+        onPressed: _pickImage,
+        child: const Icon(Icons.add_photo_alternate),
       ),
     );
   }
@@ -127,8 +152,8 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
   Widget formatoNoticia(Noticia noticia, context) {
     return GestureDetector(
       onTap: () => {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => PaginaNoticias()))
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const PaginaNoticias()))
       },
       child: Container(
         width: 270,
@@ -148,12 +173,6 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ListTile(
-            //   // leading: CircleAvatar(
-            //   //   radius: 20,
-            //   // ),
-            //   title:
-            // ),
             Container(
               margin: const EdgeInsets.fromLTRB(10, 5, 0, 5),
               child: Text(noticia.nombrePerfil,
@@ -171,10 +190,23 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
                     bottomLeft: Radius.circular(10),
                     bottomRight: Radius.circular(10),
                   ),
-                  child: Image.network(
-                    noticia.urlImagenNoticia,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+                  child: FutureBuilder<bool>(
+                    future: _imageExists(noticia.urlImagenNoticia),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError ||
+                          !snapshot.hasData ||
+                          !snapshot.data!) {
+                        return const Icon(Icons.broken_image);
+                      } else {
+                        return Image.network(
+                          noticia.urlImagenNoticia,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        );
+                      }
+                    },
                   ),
                 ),
               ),
@@ -203,7 +235,7 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
         Container(
           margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
           child: const Text(
-            "HORARIO:5:30-10:30 PM TODOS LOS VIERNES, SABADOS Y DOMINGOS💜💟🌈",
+            "HORARIO: 5:30-10:30 PM TODOS LOS VIERNES, SABADOS Y DOMINGOS💜💟🌈",
             textAlign: TextAlign.center,
           ),
         ),
@@ -213,9 +245,9 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
         ),
         Container(
           margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-          child: Column(
+          child: const Column(
             children: <Widget>[
-              const Padding(
+              Padding(
                 padding: EdgeInsets.symmetric(vertical: 5),
                 child: Row(
                   children: <Widget>[
@@ -231,7 +263,7 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
                   ],
                 ),
               ),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.symmetric(vertical: 5),
                 child: Row(
                   children: <Widget>[
@@ -249,7 +281,7 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
                   ],
                 ),
               ),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.symmetric(vertical: 5),
                 child: Row(
                   children: <Widget>[
@@ -261,42 +293,21 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
                   ],
                 ),
               ),
-              Align(
-                alignment: Alignment.topLeft,
-                child: Row(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(10, 30, 10, 5),
-                      child: const Text(
-                        "Fotos",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: "Arial",
-                            fontSize: 25),
-                      ),
-                    ),
-                    const Spacer(),
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(30, 25, 0, 0),
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                          splashFactory: NoSplash.splashFactory,
-                          backgroundColor: Colors.transparent,
-                          shadowColor: Colors.transparent,
-                        ),
-                        onPressed: _pickImage,
-                        child: const Text(
-                          "Agregar Fotos",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: "Arial",
-                            fontSize: 15,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+            ],
+          ),
+        ),
+        Align(
+          alignment: Alignment.topLeft,
+          child: Row(
+            children: [
+              Container(
+                margin: const EdgeInsets.fromLTRB(10, 30, 10, 5),
+                child: const Text(
+                  "Fotos",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Arial",
+                      fontSize: 25),
                 ),
               ),
             ],
@@ -309,19 +320,13 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
   Widget getFotos(BuildContext context) {
     return Container(
       margin: const EdgeInsets.fromLTRB(10, 0, 10, 5),
-      width: double.infinity,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          (constraints.maxWidth / 150).floor();
-          return GridView.extent(
-            maxCrossAxisExtent: 150,
-            mainAxisSpacing: 5,
-            crossAxisSpacing: 5,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            children: listaImagenes(context),
-          );
-        },
+      width: 700,
+      height: 400,
+      child: GridView.extent(
+        mainAxisSpacing: 5,
+        crossAxisSpacing: 5,
+        maxCrossAxisExtent: 150,
+        children: listaImagenes(context),
       ),
     );
   }
@@ -356,69 +361,6 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
 
     return listaImagenes;
   }
-
-  Future<void> _loadimages() async {
-    ListResult result = await FirebaseStorage.instance.ref('uploads').listAll();
-    List<String> urls = [];
-    for (var ref in result.items) {
-      String url = await ref.getDownloadURL();
-      urls.add(url);
-    }
-    if (mounted) {
-      setState(() {
-        _imageUrls = urls;
-      });
-    }
-  }
-
-
-  // 
-
-   Widget getFotos2(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(10, 0, 10, 5),
-      width: 700,
-      height: 400,
-      child: GridView.extent(
-        mainAxisSpacing: 5,
-        crossAxisSpacing: 5,
-        maxCrossAxisExtent: 150,
-        children: listaImagenes(context),
-      ),
-    );
-  }
-
-  List<Widget> listaImagenes2(BuildContext context) {
-    List<Widget> listaImagenes = [];
-
-    for (int i = 0; i < _imageUrls.length; i++) {
-      var imageUrl = _imageUrls[i];
-      listaImagenes.add(
-        ClipRRect(
-          borderRadius: BorderRadius.circular(5),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => imagenPagina(
-                    imageName: imageUrl,
-                  ),
-                ),
-              );
-            },
-            child: Hero(
-              tag: '$imageUrl$i',
-              child: Image.network(imageUrl, fit: BoxFit.cover),
-            ),
-          ),
-        ),
-      );
-    }
-
-    return listaImagenes;
-  }
-
 
   @override
   void dispose() {
