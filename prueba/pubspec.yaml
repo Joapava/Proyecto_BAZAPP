@@ -41,7 +41,7 @@ flutter:
   uses-material-design: true
 
   assets: 
-    # - lib/images/
+    - lib/images/
     # - lib/images-prueba/
     - assets/
 

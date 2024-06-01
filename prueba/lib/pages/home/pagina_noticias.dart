@@ -119,7 +119,7 @@ class _PaginaNoticiasState extends State<PaginaNoticias> {
 class ListaNoticias extends StatelessWidget {
   final List<Noticia> noticias;
 
-  const ListaNoticias({Key? key, required this.noticias}) : super(key: key);
+  const ListaNoticias({super.key, required this.noticias});
 
   @override
   Widget build(BuildContext context) {
@@ -145,11 +145,11 @@ class FormularioNoticia extends StatelessWidget {
   final String urlImagenNoticia;
 
   const FormularioNoticia({
-    Key? key,
+    super.key,
     required this.nombrePerfil,
     required this.cuerpoNoticia,
     required this.urlImagenNoticia,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

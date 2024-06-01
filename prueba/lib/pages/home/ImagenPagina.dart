@@ -4,7 +4,7 @@ import 'package:photo_view/photo_view.dart';
 class ImagenPagina extends StatelessWidget {
   final String imageUrl;
 
-  const ImagenPagina({Key? key, required this.imageUrl}) : super(key: key);
+  const ImagenPagina({super.key, required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {

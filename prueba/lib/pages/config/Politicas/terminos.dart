@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class Terminos extends StatefulWidget {
   const Terminos({super.key});

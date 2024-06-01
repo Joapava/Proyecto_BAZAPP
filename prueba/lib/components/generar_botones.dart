@@ -40,27 +40,30 @@ class _ButtonWithColorChangeState extends State<ButtonWithColorChange> {
   Widget build(BuildContext context) {
     bool isPurchased = purchasedLocations.contains(widget.label);
 
-    return Container(
-      height: 25,
-      width: 25,
-      margin: const EdgeInsets.all(2),
-      child: ElevatedButton(
-        onPressed: isPurchased ? null : _toggleColor,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: isPurchased
-              ? const Color.fromRGBO(168, 169, 171, 0.2)
-              : (isPressed
-                  ? const Color.fromARGB(184, 255, 11, 11)
-                  : const Color.fromARGB(184, 1, 167, 62)),
-          padding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(3),
+    return Tooltip(
+      message: 'Espacio: 3x3',
+      child: Container(
+        height: 25,
+        width: 25,
+        margin: const EdgeInsets.all(2),
+        child: ElevatedButton(
+          onPressed: isPurchased ? null : _toggleColor,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: isPurchased
+                ? const Color.fromRGBO(168, 169, 171, 0.2)
+                : (isPressed
+                    ? const Color.fromARGB(184, 255, 11, 11)
+                    : const Color.fromARGB(184, 1, 167, 62)),
+            padding: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(3),
+            ),
           ),
-        ),
-        child: FittedBox(
-          child: Text(
-            widget.label,
-            style: const TextStyle(fontSize: 10, color: Colors.black),
+          child: FittedBox(
+            child: Text(
+              widget.label,
+              style: const TextStyle(fontSize: 10, color: Colors.black),
+            ),
           ),
         ),
       ),

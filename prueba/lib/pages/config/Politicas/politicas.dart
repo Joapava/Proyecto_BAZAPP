@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class Politicas extends StatefulWidget {
   const Politicas({super.key});

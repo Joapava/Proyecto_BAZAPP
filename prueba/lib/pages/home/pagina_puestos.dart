@@ -43,10 +43,10 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
                       ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            selectedLocations.forEach((label) {
+                            for (var label in selectedLocations) {
                               // Aquí marcamos los lugares comprados como no interactivos
                               purchasedLocations.add(label);
-                            });
+                            }
                             selectedLocations.clear();
                           });
                         },
