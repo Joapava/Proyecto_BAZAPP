@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:prueba/Class/noticias_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class agregar_noticia extends StatefulWidget {
@@ -31,6 +32,7 @@ class _agregar_noticiaState extends State<agregar_noticia> {
     });
   }
 
+  // colocar los metodos en las capas correspondientes
   Future<void> _pickImage() async {
     if (isPickingImage) return;
 
@@ -63,11 +65,10 @@ class _agregar_noticiaState extends State<agregar_noticia> {
 
   void _submitForm() {
     if (_formKey.currentState!.validate() && _imagenUrlNoticia != null) {
-      Navigator.pop(context, {
-        'nombre': _nombreUsuario,
-        'cuerpo': _cuerpoController.text,
-        'imagenUrl': _imagenUrlNoticia,
-      });
+      Navigator.pop(
+          context,
+          Noticia(
+              '', _nombreUsuario, _cuerpoController.text, _imagenUrlNoticia!));
     }
   }
 
@@ -154,5 +155,11 @@ class _agregar_noticiaState extends State<agregar_noticia> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _cuerpoController.dispose();
+    super.dispose();
   }
 }

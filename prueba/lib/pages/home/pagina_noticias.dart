@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:prueba/Negocio/InsertarDatos.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
 import 'package:prueba/components/agregar_noticia.dart';
@@ -32,20 +32,18 @@ class _PaginaNoticiasState extends State<PaginaNoticias> {
     });
   }
 
-  void _agregarNuevaNoticia(Map<String, dynamic> nuevaNoticia) {
-    FirebaseFirestore.instance.collection('noticias').add({
-      'nombre': nuevaNoticia['nombre'],
-      'cuerpo': nuevaNoticia['cuerpo'],
-      'imagenUrl': nuevaNoticia['imagenUrl'],
-    });
+
+  //Colocar metodo en la capa correspondiente
+  void _agregarNuevaNoticia(Noticia nuevaNoticia) {
+    InsertarDatos().setNoticia(nuevaNoticia);
 
     setState(() {
       noticias.add(
         Noticia(
           "lib/images-prueba/foto-bazar.jpg",
-          nuevaNoticia['nombre'],
-          nuevaNoticia['cuerpo'],
-          nuevaNoticia['imagenUrl'],
+          nuevaNoticia.nombrePerfil,
+          nuevaNoticia.cuerpoNoticia,
+          nuevaNoticia.urlImagenNoticia,
         ),
       );
     });
