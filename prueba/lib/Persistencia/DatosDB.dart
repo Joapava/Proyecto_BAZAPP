@@ -103,6 +103,18 @@ class DatosDB {
     db.collection("expositores").doc(id).set(expositor);
   }
 
+  Future setNoticia(Noticia nc) async{
+    var db = FirebaseFirestore.instance;
+
+    final noticia = <String, dynamic>{
+      'nombre': nc.nombrePerfil,
+      'cuerpo': nc.cuerpoNoticia,
+      'imagenUrl': nc.urlImagenNoticia,
+    };
+
+    db.collection("noticias").add(noticia);
+  }
+
   //Funcion para editar el boleano de las notificaciones
   // con esto podra recibir o no las notificaciones PUSH
 
