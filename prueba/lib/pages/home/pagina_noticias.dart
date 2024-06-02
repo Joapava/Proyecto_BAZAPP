@@ -2,7 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
 import 'package:prueba/components/agregar_noticia.dart';
-import 'package:prueba/Class/noticias_data.dart';
+import 'package:prueba/class/noticias_data.dart';
+// ignore: depend_on_referenced_packages
+import 'package:http/http.dart' as http;
+import 'package:prueba/pages/home/ImagenPagina.dart';
 
 class PaginaNoticias extends StatefulWidget {
   const PaginaNoticias({super.key});
@@ -26,18 +29,38 @@ class _PaginaNoticiasState extends State<PaginaNoticias> {
     final List<DocumentSnapshot> documents = result.docs;
     List<Noticia> noticiasCargadas = [];
     for (var doc in documents) {
-      noticiasCargadas.add(
-        Noticia(
-          "lib/images-prueba/foto-bazar.jpg",
-          doc['nombre'],
-          doc['cuerpo'],
-          doc['imagenUrl'],
-        ),
-      );
+      String imageUrl = doc['imagenUrl'];
+      bool exists = await _imageExists(imageUrl);
+      if (exists) {
+        noticiasCargadas.add(
+          Noticia(
+            "lib/images-prueba/foto-bazar.jpg",
+            doc['nombre'],
+            doc['cuerpo'],
+            imageUrl,
+          ),
+        );
+      } else {
+        // Eliminar noticia de Firebase si la imagen no existe
+        await FirebaseFirestore.instance
+            .collection('noticias')
+            .doc(doc.id)
+            .delete();
+      }
     }
     setState(() {
       noticias = noticiasCargadas;
     });
+  }
+
+  Future<bool> _imageExists(String url) async {
+    try {
+      final response = await http.head(Uri.parse(url));
+      return response.statusCode == 200;
+    } catch (e) {
+      print('Error checking image existence: $e');
+      return false;
+    }
   }
 
   void _agregarNuevaNoticia(Map<String, dynamic> nuevaNoticia) {
@@ -72,48 +95,31 @@ class _PaginaNoticiasState extends State<PaginaNoticias> {
             ],
           ),
         ),
-        floatingActionButton: bottonagregar()
-      ),
-    );
-
-   
-  }
-
-  SizedBox bottonagregar(){
-    Preferencias prefs = Preferencias();
-    if(prefs.lvl == 2){
-      return SizedBox(
-          width: 110,
-          child: FloatingActionButton(
-            backgroundColor: const Color.fromRGBO(238, 235, 237, 1),
-            onPressed: () async {
-              final resultado = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const agregar_noticia()),
-              );
-              if (resultado != null) {
-                _agregarNuevaNoticia(resultado);
-              }
-            },
-            child: const Padding(
-              padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-              child: Text("Agregar Noticia", style: TextStyle(
-                color: Colors.black
-              ),),
-            ),
+        floatingActionButton: FloatingActionButton(
+          foregroundColor: Colors.black,
+          backgroundColor: const Color.fromRGBO(238, 235, 237, 1),
+          onPressed: () async {
+            final resultado = await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const agregar_noticia()),
+            );
+            if (resultado != null) {
+              _agregarNuevaNoticia(resultado);
+            }
+          },
+          child: const Padding(
+            padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+            child: Icon(Icons.add_comment),
           ),
-        );
-    }else{
-      return const SizedBox();
+    )));
     }
     }
-}
+
 
 class ListaNoticias extends StatelessWidget {
   final List<Noticia> noticias;
 
-  const ListaNoticias({Key? key, required this.noticias}) : super(key: key);
+  const ListaNoticias({super.key, required this.noticias});
 
   @override
   Widget build(BuildContext context) {
@@ -139,11 +145,11 @@ class FormularioNoticia extends StatelessWidget {
   final String urlImagenNoticia;
 
   const FormularioNoticia({
-    Key? key,
+    super.key,
     required this.nombrePerfil,
     required this.cuerpoNoticia,
     required this.urlImagenNoticia,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -177,11 +183,48 @@ class FormularioNoticia extends StatelessWidget {
             margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
             child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(10)),
-              child: Image.network(urlImagenNoticia, fit: BoxFit.cover),
+              child: FutureBuilder<bool>(
+                future: _imageExists(urlImagenNoticia),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError ||
+                      !snapshot.hasData ||
+                      !snapshot.data!) {
+                    return const Icon(Icons.broken_image);
+                  } else {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ImagenPagina(imageUrl: urlImagenNoticia),
+                          ),
+                        );
+                      },
+                      child: Image.network(
+                        urlImagenNoticia,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  }
+                },
+              ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  Future<bool> _imageExists(String url) async {
+    try {
+      final response = await http.head(Uri.parse(url));
+      return response.statusCode == 200;
+    } catch (e) {
+      print('Error checking image existence: $e');
+      return false;
+    }
   }
 }

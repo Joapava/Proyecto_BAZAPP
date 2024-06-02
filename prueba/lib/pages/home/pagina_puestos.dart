@@ -38,6 +38,20 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
                         constraints.maxHeight),
                     const SizedBox(height: 10), // Espacio entre elementos
                     visualizarInformacionCompta(),
+                    const SizedBox(height: 10), // Espacio entre elementos
+                    if (selectedLocations.isNotEmpty)
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            for (var label in selectedLocations) {
+                              // Aquí marcamos los lugares comprados como no interactivos
+                              purchasedLocations.add(label);
+                            }
+                            selectedLocations.clear();
+                          });
+                        },
+                        child: const Text('Comprar',style: TextStyle(color: Colors.black),),
+                      ),
                   ],
                 ),
               ),

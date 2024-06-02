@@ -42,7 +42,7 @@ flutter:
 
   assets: 
     - lib/images/
-    - lib/images-prueba/
+    # - lib/images-prueba/
     - assets/
 
 
