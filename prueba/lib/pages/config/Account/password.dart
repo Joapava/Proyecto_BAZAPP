@@ -22,10 +22,92 @@ class _PasswordState extends State<Password> {
   final formpwd2 = GlobalKey<FormState>();
   final formpwd3 = GlobalKey<FormState>();
   @override
+  void initState() {
+    super.initState();
+    if (perfs.type == 'google') {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _mostrarDialogo(context);
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(245, 245, 245, 1),
       body: SafeArea(child: principal()),
+    );
+  }
+
+  _mostrarDialogo(BuildContext context) {
+    double ancho = MediaQuery.of(context).size.width;
+    double altura = MediaQuery.of(context).size.height;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+              backgroundColor: const Color.fromARGB(255, 53, 53, 53),
+              child: SizedBox(
+                height: altura * .25,
+                width: ancho * .7,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Image.asset('assets/advertencia.png',color: Colors.yellow[300],),
+                    SizedBox(
+                      height: altura * .010,
+                    ),
+                    const FittedBox(
+                      child: Text(
+                        'Al iniciar sesion con google',
+                        style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 16,
+                            color: Colors.white),
+                      ),
+                    ),
+                    const FittedBox(
+                      child: Text(
+                        'tendra que cambiar su contraseña',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Inter',
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    const FittedBox(
+                      child: Text(
+                        'desde ajustes de google',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Inter',
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: altura * .015),
+                    Container(
+                      height: altura * .043,
+                      width: ancho * .2,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: FloatingActionButton(
+                        backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
+                        heroTag: 'dialogacpt',
+                        elevation: 0,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Aceptar'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+      },
     );
   }
 
@@ -55,29 +137,50 @@ class _PasswordState extends State<Password> {
         const SizedBox(
           height: 40,
         ),
-        Container(
-          width: 400,
-          height: 40,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15), color: Colors.black),
-          child: FloatingActionButton(
-            onPressed: () {
-              if (!isErrorpwd2 && !isErrorpwd3) {
-                Autenticar().cambiarpwd(pwd3control.text);
-                perfs.clear();
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const Login()));
-              }
-            },
-            backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
-            child: const Text(
-              'Guardar',
-              style: TextStyle(
-                  fontFamily: 'Inter', fontSize: 18, color: Colors.white),
-            ),
+        buttonguardar(),
+      ],
+    );
+  }
+
+  Container buttonguardar() {
+    if (perfs.type == 'google') {
+      return Container(
+        width: 400,
+        height: 40,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15), color: Colors.grey[700]),
+        child: FloatingActionButton(
+          onPressed: null,
+          backgroundColor: Colors.grey[700],
+          child: const Text(
+            'Guardar',
+            style: TextStyle(
+                fontFamily: 'Inter', fontSize: 18, color: Colors.white),
           ),
         ),
-      ],
+      );
+    }
+    return Container(
+      width: 400,
+      height: 40,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15), color: Colors.black),
+      child: FloatingActionButton(
+        onPressed: () {
+          if (!isErrorpwd2 && !isErrorpwd3) {
+            Autenticar().cambiarpwd(pwd3control.text);
+            perfs.clear();
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const Login()));
+          }
+        },
+        backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
+        child: const Text(
+          'Guardar',
+          style:
+              TextStyle(fontFamily: 'Inter', fontSize: 18, color: Colors.white),
+        ),
+      ),
     );
   }
 

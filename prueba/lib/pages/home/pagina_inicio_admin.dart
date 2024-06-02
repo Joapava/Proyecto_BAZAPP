@@ -1,10 +1,10 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:prueba/data/noticias_data.dart';
+import 'package:prueba/Negocio/ValidarDatos.dart';
 import 'package:prueba/pages/home/imagen_pagina.dart';
+import 'package:prueba/Class/noticias_data.dart';
 import 'package:prueba/pages/home/pagina_noticias.dart';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
@@ -28,23 +28,7 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
   }
 
   Future<void> _loadNoticias() async {
-    final QuerySnapshot result =
-        await FirebaseFirestore.instance.collection('noticias').get();
-    final List<DocumentSnapshot> documents = result.docs;
-    List<Noticia> noticiasCargadas = [];
-    for (var doc in documents) {
-      String imageUrl = doc['imagenUrl'];
-      if (await _imageExists(imageUrl)) {
-        noticiasCargadas.add(
-          Noticia(
-            "",
-            doc['nombre'],
-            doc['cuerpo'],
-            imageUrl,
-          ),
-        );
-      }
-    }
+    List<Noticia> noticiasCargadas = await ValidarDatos().getNoticias();
     if (mounted) {
       setState(() {
         noticias = noticiasCargadas;

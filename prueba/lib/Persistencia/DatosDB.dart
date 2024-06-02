@@ -2,6 +2,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:prueba/Class/Expositor.dart';
 import 'package:prueba/Class/administrador.dart';
+import 'package:prueba/Class/noticias_data.dart';
+import 'package:http/http.dart' as http;
 
 class DatosDB {
   //Funcion que regresa los expositores que han sido creado en forma de lista
@@ -46,6 +48,42 @@ class DatosDB {
     var db = FirebaseFirestore.instance;
     ntf = (await db.collection("expositores").doc(id).get()) as bool;
     return ntf;
+  }
+
+  Future<List<Noticia>> getNoticias() async {
+    var db = FirebaseFirestore.instance;
+    final QuerySnapshot result = await db.collection('noticias').get();
+
+    final List<DocumentSnapshot> documents = result.docs;
+    List<Noticia> noticiasCargadas = [];
+    for (var doc in documents) {
+      String imageUrl = doc['imagenUrl'];
+      bool exists = await _imageExists(imageUrl);
+      if (exists) {
+        noticiasCargadas.add(
+          Noticia(
+            "lib/images-prueba/foto-bazar.jpg",
+            doc['nombre'],
+            doc['cuerpo'],
+            imageUrl,
+          ),
+        );
+      } else {
+        // Eliminar noticia de Firebase si la imagen no existe
+        await db.collection('noticias').doc(doc.id).delete();
+      }
+    }
+    return noticiasCargadas;
+  }
+
+  Future<bool> _imageExists(String url) async {
+    try {
+      final response = await http.head(Uri.parse(url));
+      return response.statusCode == 200;
+    } catch (e) {
+      print('Error checking image existence: $e');
+      return false;
+    }
   }
 
   //Funcion para crear un nuevo expositor, el id se crea automaticamente con firebase

@@ -260,8 +260,10 @@ class _BoxCentral extends State<BoxCentral> {
               elevation: 0,
               heroTag: 'btn1',
               child: isVisible
-                          ? Image.asset('assets/eye.png',color: const Color.fromARGB(101, 255, 255, 255))
-                          : Image.asset('assets/eye-line.png',color: const Color.fromARGB(101, 255, 255, 255)),
+                  ? Image.asset('assets/eye.png',
+                      color: const Color.fromARGB(101, 255, 255, 255))
+                  : Image.asset('assets/eye-line.png',
+                      color: const Color.fromARGB(101, 255, 255, 255)),
             ),
           )
         ],
@@ -341,19 +343,19 @@ class _BoxCentral extends State<BoxCentral> {
             } else {
               setState(() {
                 isErroremail = true;
-              isErrorpwd = true;
+                isErrorpwd = true;
               });
-              
+
               messageError();
             }
-          }else {
+          } else {
             setState(() {
               isErroremail = true;
               isErrorpwd = true;
             });
-              
-              messageError();
-            }
+
+            messageError();
+          }
         }),
         backgroundColor: Colors.white,
         child: const Text(
@@ -366,15 +368,16 @@ class _BoxCentral extends State<BoxCentral> {
 
   // ignore: non_constant_identifier_names
   void funcion_ingreso() {
-    if(mounted){
+    if (mounted) {
       Navigator.pushAndRemoveUntil(
-        context, MaterialPageRoute(builder: (context) => const Home()),(Route<dynamic> route) => false);
+          context,
+          MaterialPageRoute(builder: (context) => const Home()),
+          (Route<dynamic> route) => false);
     }
-    
   }
 
   // ignore: non_constant_identifier_names
-  void funcion_registro(){
+  void funcion_registro() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const Registro()));
   }
@@ -427,31 +430,26 @@ class _BoxCentral extends State<BoxCentral> {
     );
   }
 
-
-
   // ignore: non_constant_identifier_names
   Widget botones_inicio() {
     return SizedBox(
       width: 240,
       height: 60,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          FloatingActionButton(
-            onPressed: () async {
-              bool registrado = await Autenticar().google();
-              if(registrado){
-                funcion_ingreso();
-              }else{
-                Authgoole().singout();
-                funcion_registro();
-              }
-            },
-            heroTag: 'btngoogle',
-            backgroundColor: const Color.fromARGB(117, 87, 87, 95),
-            child: Image.asset('assets/google-icon.png'),
-          ),
-        ],
+      child: Center(
+        child: FloatingActionButton(
+          onPressed: () async {
+            bool registrado = await Autenticar().google();
+            if (registrado) {
+              funcion_ingreso();
+            } else {
+              Authgoole().singout();
+              funcion_registro();
+            }
+          },
+          heroTag: 'btngoogle',
+          backgroundColor: const Color.fromARGB(117, 87, 87, 95),
+          child: Image.asset('assets/google-icon.png'),
+        ),
       ),
     );
   }

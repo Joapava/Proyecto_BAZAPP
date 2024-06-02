@@ -1,12 +1,13 @@
 // ignore_for_file: file_names
 import 'package:prueba/Class/administrador.dart';
+import 'package:prueba/Class/noticias_data.dart';
 import 'package:prueba/Persistencia/Auth.dart';
 import 'package:prueba/Persistencia/DatosDB.dart';
 import 'package:prueba/Class/Expositor.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
 
 class ValidarDatos {
-  Future<int> validarRegistro(String celular) async {
+  Future<int> validarCelular(String celular) async {
     final List<Expositor> expositores = await DatosDB().getExpositores();
     for (var ex in expositores) {
       if (celular == ex.celular) {
@@ -83,5 +84,7 @@ class ValidarDatos {
     await Auth().signOut();
   }
 
-  
+  Future<List<Noticia>> getNoticias() async{
+    return await DatosDB().getNoticias();
+  }
 }

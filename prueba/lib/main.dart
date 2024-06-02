@@ -26,7 +26,6 @@ class BazzApp extends StatelessWidget {
   BazzApp({super.key});
 
   final perfs = Preferencias();
-
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(

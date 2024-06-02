@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:prueba/Negocio/ValidarDatos.dart';
+import 'package:prueba/Persistencia/Preferencias.dart';
 import 'package:prueba/components/agregar_noticia.dart';
-import 'package:prueba/data/noticias_data.dart';
+import 'package:prueba/Class/noticias_data.dart';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'package:prueba/pages/home/ImagenPagina.dart';
@@ -14,6 +16,7 @@ class PaginaNoticias extends StatefulWidget {
 }
 
 class _PaginaNoticiasState extends State<PaginaNoticias> {
+  Preferencias prefs = Preferencias();
   List<Noticia> noticias = [];
 
   @override
@@ -23,43 +26,10 @@ class _PaginaNoticiasState extends State<PaginaNoticias> {
   }
 
   Future<void> _loadNoticias() async {
-    final QuerySnapshot result =
-        await FirebaseFirestore.instance.collection('noticias').get();
-    final List<DocumentSnapshot> documents = result.docs;
-    List<Noticia> noticiasCargadas = [];
-    for (var doc in documents) {
-      String imageUrl = doc['imagenUrl'];
-      bool exists = await _imageExists(imageUrl);
-      if (exists) {
-        noticiasCargadas.add(
-          Noticia(
-            "lib/images-prueba/foto-bazar.jpg",
-            doc['nombre'],
-            doc['cuerpo'],
-            imageUrl,
-          ),
-        );
-      } else {
-        // Eliminar noticia de Firebase si la imagen no existe
-        await FirebaseFirestore.instance
-            .collection('noticias')
-            .doc(doc.id)
-            .delete();
-      }
-    }
+    List<Noticia> noticiasCargadas = await ValidarDatos().getNoticias();
     setState(() {
       noticias = noticiasCargadas;
     });
-  }
-
-  Future<bool> _imageExists(String url) async {
-    try {
-      final response = await http.head(Uri.parse(url));
-      return response.statusCode == 200;
-    } catch (e) {
-      print('Error checking image existence: $e');
-      return false;
-    }
   }
 
   void _agregarNuevaNoticia(Map<String, dynamic> nuevaNoticia) {
@@ -84,35 +54,40 @@ class _PaginaNoticiasState extends State<PaginaNoticias> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Divider(),
-              ListaNoticias(noticias: noticias),
-            ],
-          ),
+        child: Scaffold(
+            body: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const Divider(),
+                  ListaNoticias(noticias: noticias),
+                ],
+              ),
+            ),
+            floatingActionButton: buttonadd(context)));
+  }
+
+  Widget buttonadd(BuildContext context) {
+    if (prefs.lvl == 2) {
+      return FloatingActionButton(
+        foregroundColor: Colors.black,
+        backgroundColor: const Color.fromRGBO(238, 235, 237, 1),
+        onPressed: () async {
+          final resultado = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const agregar_noticia()),
+          );
+          if (resultado != null) {
+            _agregarNuevaNoticia(resultado);
+          }
+        },
+        child: const Padding(
+          padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+          child: Icon(Icons.add_comment),
         ),
-        floatingActionButton: FloatingActionButton(
-          foregroundColor: Colors.black,
-          backgroundColor: const Color.fromRGBO(238, 235, 237, 1),
-          onPressed: () async {
-            final resultado = await Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const agregar_noticia()),
-            );
-            if (resultado != null) {
-              _agregarNuevaNoticia(resultado);
-            }
-          },
-          child: const Padding(
-            padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-            child: Icon(Icons.add_comment),
-          ),
-        ),
-      ),
-    );
+      );
+    }
+    return Container();
   }
 }
 

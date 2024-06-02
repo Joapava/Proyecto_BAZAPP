@@ -16,9 +16,11 @@ class Autenticar {
 
   Future<String> iniciarsesion(
       {required String email, required String pwd}) async {
+        Preferencias prefs = Preferencias();
     try {
       var ex = await Auth().signIn(email: email, pwd: pwd);
       if (ex != null) {
+        prefs.type = 'email';
         return ex;
       }
       return '';
@@ -62,9 +64,12 @@ class Autenticar {
         if (!registrado) {
           return false;
         }
+        perfs.type = 'google';
         return true;
       }
-    } on FirebaseAuthException catch (_) {}
+    } on FirebaseAuthException catch (_) {
+      return false;
+    }
     return false;
   }
 }
