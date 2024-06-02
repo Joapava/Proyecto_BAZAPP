@@ -84,7 +84,7 @@ class ValidarDatos {
     await Auth().signOut();
   }
 
-  Future<List<Noticia>> getNotificias() async{
+  Future<List<Noticia>> getNoticias() async{
     return await DatosDB().getNoticias();
   }
 }

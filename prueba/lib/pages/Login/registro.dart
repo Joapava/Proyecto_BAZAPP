@@ -7,6 +7,7 @@ import 'dart:core';
 import 'package:email_validator/email_validator.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
+import 'package:prueba/pages/Login/login.dart';
 
 class Registro extends StatefulWidget {
   const Registro({super.key});
@@ -291,8 +292,9 @@ class _Getformulario extends State<Getformulario> {
   Column txtvalidaciones() {
     return Column(
       children: [
-        Row(children: [
-          const SizedBox(
+        Row(
+          children: [
+            const SizedBox(
               width: 25,
             ),
             Container(
@@ -309,7 +311,8 @@ class _Getformulario extends State<Getformulario> {
               style: TextStyle(
                   fontFamily: 'Inter', color: ccolor(4), fontSize: 18),
             )
-        ],),
+          ],
+        ),
         Row(
           children: [
             const SizedBox(
@@ -751,8 +754,72 @@ class _Getformulario extends State<Getformulario> {
     }
   }
 
-  void rLogin() {
-    Navigator.pop(context);
+  Future<String?> rLogin() {
+    double ancho = MediaQuery.of(context).size.width;
+    double altura = MediaQuery.of(context).size.height;
+    return showDialog<String>(
+        context: context,
+        builder: (BuildContext context) {
+          return PopScope(
+            canPop: false,
+            onPopInvoked: (didPop) {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const Login()));
+            },
+            child: Dialog(
+              backgroundColor: const Color.fromARGB(255, 53, 53, 53),
+              child: SizedBox(
+                height: altura * .20,
+                width: ancho * .30,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Image.asset('assets/email-verificado.png'),
+                    const FittedBox(
+                      child: Text(
+                        'Se ha enviado un correo de',
+                        style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 16,
+                            color: Colors.white),
+                      ),
+                    ),
+                    const FittedBox(
+                      child: Text(
+                        'verificacion al correo colocado',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Inter',
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: altura * .015),
+                    Container(
+                      height: altura * .043,
+                      width: ancho * .2,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: FloatingActionButton(
+                        backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
+                        heroTag: 'dialogacpt',
+                        elevation: 0,
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Login()));
+                        },
+                        child: const Text('Aceptar'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   bool emailc() {
@@ -801,10 +868,10 @@ class _Getformulario extends State<Getformulario> {
         return Colors.green;
       }
       return Colors.red;
-    }else if(x == 4){
-      if(passwordcontrol.text.isEmpty && !isErrorpwd){
+    } else if (x == 4) {
+      if (passwordcontrol.text.isEmpty && !isErrorpwd) {
         return Colors.white;
-      } else if(passwordcontrol.text.length >= 8){
+      } else if (passwordcontrol.text.length >= 8) {
         return Colors.green;
       }
       return Colors.red;

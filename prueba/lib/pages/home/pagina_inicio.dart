@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:prueba/data/noticias_data.dart';
+import 'package:prueba/class/noticias_data.dart';
 import 'package:prueba/pages/home/imagen_pagina.dart';
 import 'package:prueba/pages/home/pagina_noticias.dart';
 

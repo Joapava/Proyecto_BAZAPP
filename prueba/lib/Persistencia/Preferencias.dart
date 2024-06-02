@@ -49,6 +49,10 @@ class Preferencias {
     _prefs.setString('token', token);
   }
 
+  set type(String type){
+    _prefs.setString('type', type);
+  }
+
   String get nombre {
     return _prefs.getString('nombre') ?? '';
   }
@@ -87,6 +91,10 @@ class Preferencias {
 
   String get token{
     return _prefs.getString('token') ?? '';
+  }
+
+  String get type{
+    return _prefs.getString('type') ?? 'Not found';
   }
 
   void clear() {
