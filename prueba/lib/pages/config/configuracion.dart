@@ -23,7 +23,6 @@ class _ConfiguracionState extends State<Configuracion> {
 
   @override
   Widget build(BuildContext context) {
-    print(perfs.type);
     return Scaffold(
       backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
       body: SafeArea(
