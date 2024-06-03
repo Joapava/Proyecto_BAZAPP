@@ -64,10 +64,10 @@ class _agregar_noticiaState extends State<agregar_noticia> {
       Navigator.pop(
         context,
         Noticia(
-          '', 
-          '', 
-          _nombreUsuario, 
-          _cuerpoController.text, 
+          '',
+          '',
+          _nombreUsuario,
+          _cuerpoController.text,
           _imagenUrlNoticia!,
         ),
       );

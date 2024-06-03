@@ -73,6 +73,19 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
     }
   }
 
+  Future<void> _deleteImage(String imageUrl) async {
+    try {
+      // Eliminar la imagen de Firebase Storage
+      await InsertarDatos().deleteImagen(imageUrl);
+      // Eliminar la URL de la imagen de la lista
+      setState(() {
+        _imageUrls.remove(imageUrl);
+      });
+    } catch (e) {
+      print('Error deleting image: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -320,6 +333,33 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
                     imageName: imageUrl,
                   ),
                 ),
+              );
+            },
+            onLongPress: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Eliminar Imagen'),
+                    content: const Text(
+                        '¿Estás seguro de que deseas eliminar esta imagen?'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('Cancelar'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: const Text('Eliminar'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          _deleteImage(imageUrl);
+                        },
+                      ),
+                    ],
+                  );
+                },
               );
             },
             child: Hero(

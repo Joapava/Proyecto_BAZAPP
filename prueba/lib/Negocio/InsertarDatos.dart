@@ -1,5 +1,6 @@
 import 'dart:io';
 
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:prueba/Class/noticias_data.dart';
 import 'package:prueba/Persistencia/DatosDB.dart';
 import 'package:prueba/Class/Expositor.dart';
@@ -14,7 +15,6 @@ class InsertarDatos {
   }
 
   Future<String> setImagen(File imageFile) async {
-    // String fileName = 'Fotos/${DateTime.now().millisecondsSinceEpoch}.jpg';
     return await DatosDB().setImagen(imageFile);
   }
 

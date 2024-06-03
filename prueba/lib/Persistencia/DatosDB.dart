@@ -1,6 +1,5 @@
 // ignore_for_file: file_names, avoid_print
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:prueba/Class/Expositor.dart';
@@ -9,7 +8,6 @@ import 'package:prueba/Class/noticias_data.dart';
 import 'package:http/http.dart' as http;
 
 class DatosDB {
-  //Funcion que regresa los expositores que han sido creado en forma de lista
 
   Future<List<Expositor>> getExpositores() async {
     List<Expositor> listaExpositores = [];
@@ -128,7 +126,6 @@ class DatosDB {
 
   Future setExpositor(Expositor ex, String id) async {
     var db = FirebaseFirestore.instance;
-    // Create a new user with a first and last name
     final expositor = <String, dynamic>{
       "id": id,
       "correo": ex.correo,
@@ -150,10 +147,11 @@ class DatosDB {
       'urlImagenNoticia': nc.urlImagenNoticia,
     };
 
-    db.collection("noticias").add(noticia).then((value) {
-      db.collection("noticias").doc(value.id).update({"id":value.id});
-    },);
-    
+    db.collection("noticias").add(noticia).then(
+      (value) {
+        db.collection("noticias").doc(value.id).update({"id": value.id});
+      },
+    );
   }
 
   Future<String> setImagen(File imageFile) async {
@@ -161,9 +159,6 @@ class DatosDB {
     await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
     return await FirebaseStorage.instance.ref(fileName).getDownloadURL();
   }
-
-  //Funcion para editar el boleano de las notificaciones
-  // con esto podra recibir o no las notificaciones PUSH
 
   Future editarntf(String id, bool activado) async {
     var db = FirebaseFirestore.instance;
