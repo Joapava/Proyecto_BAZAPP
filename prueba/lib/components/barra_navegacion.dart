@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:prueba/Negocio/autenticar.dart';
-import 'package:prueba/Persistencia/Preferencias.dart';
 import 'package:prueba/generated/l10n.dart';
 import 'package:prueba/pages/config/configuracion.dart';
-import 'package:prueba/pages/config/configuracion_admin.dart';
 import 'package:prueba/pages/home/pagina_inicio.dart';
-import 'package:prueba/pages/home/pagina_inicio_admin.dart';
 import 'package:prueba/pages/home/pagina_noticias.dart';
 import 'package:prueba/pages/home/pagina_puestos.dart';
 
@@ -24,28 +21,6 @@ class BarraNavegacionState extends State<BarraNavegacion> {
     const PaginaPuestos(),
     const Configuracion(),
   ];
-
-  @override
-  void initState() {
-    final perfs = Preferencias();
-    if (perfs.id.isEmpty) {
-      Autenticar().singout();
-      Autenticar().singoutgoogle();
-    }
-    _paginasadd();
-    super.initState();
-  }
-
-  void _paginasadd() {
-    final perfs = Preferencias();
-    if (perfs.lvl == 2) {
-      _paginas.insert(0, const PaginaInicioAdmin());
-      _paginas.add(const ConfiguracionAdmin());
-    } else {
-      _paginas.insert(0, const PaginaInicio());
-      _paginas.add(const Configuracion());
-    }
-  }
 
   void _onItemTapped(int index) {
     setState(() {

@@ -66,7 +66,6 @@ class _agregar_noticiaState extends State<agregar_noticia> {
   void _submitForm() {
     if (_formKey.currentState!.validate() && _imagenUrlNoticia != null) {
       Navigator.pop(
-<<<<<<< Updated upstream
         context,
         Noticia(
           '',
@@ -76,11 +75,6 @@ class _agregar_noticiaState extends State<agregar_noticia> {
           _imagenUrlNoticia!,
         ),
       );
-=======
-          context,
-          Noticia(
-              '', _nombreUsuario, _cuerpoController.text, _imagenUrlNoticia!));
->>>>>>> Stashed changes
     }
   }
 

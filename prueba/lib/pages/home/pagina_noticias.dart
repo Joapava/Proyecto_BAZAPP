@@ -40,6 +40,7 @@ class _PaginaNoticiasState extends State<PaginaNoticias> {
     setState(() {
       noticias.add(
         Noticia(
+          nuevaNoticia.id,
           "lib/images-prueba/foto-bazar.jpg",
           nuevaNoticia.nombrePerfil,
           nuevaNoticia.cuerpoNoticia,
