@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
 import 'package:prueba/Negocio/autenticar.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
-// import 'package:prueba/Persistencia/auth_facebook.dart';
 import 'package:prueba/Persistencia/auth_google.dart';
 import 'package:prueba/generated/l10n.dart';
 import 'package:prueba/pages/Login/registro.dart';
@@ -11,7 +10,6 @@ import 'package:prueba/pages/home/home.dart';
 import 'dart:core';
 import 'package:email_validator/email_validator.dart';
 import 'package:prueba/pages/Login/reiniciar.dart';
-import 'package:prueba/main.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});

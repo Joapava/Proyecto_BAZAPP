@@ -105,20 +105,20 @@ class DatosDB {
 
   Future<void> deleteNoticia(String id, String imageUrl) async {
     var db = FirebaseFirestore.instance;
-    final FirebaseStorage _storage = FirebaseStorage.instance;
+    final FirebaseStorage storage = FirebaseStorage.instance;
 
     // Eliminar la noticia de Firestore
     await db.collection('noticias').doc(id).delete();
 
     // Eliminar la imagen de Firebase Storage
-    Reference photoRef = _storage.refFromURL(imageUrl);
+    Reference photoRef = storage.refFromURL(imageUrl);
     await photoRef.delete();
   }
 
   Future<void> deleteImagen(String imageUrl) async {
-    final FirebaseStorage _storage = FirebaseStorage.instance;
+    final FirebaseStorage storage = FirebaseStorage.instance;
     // Eliminar la imagen de Firebase Storage
-    Reference photoRef = _storage.refFromURL(imageUrl);
+    Reference photoRef = storage.refFromURL(imageUrl);
     await photoRef.delete();
   }
 
