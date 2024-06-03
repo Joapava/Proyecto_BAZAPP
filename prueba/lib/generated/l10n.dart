@@ -729,6 +729,86 @@ class S {
       args: [],
     );
   }
+
+  /// `Available`
+  String get loocate_indication_1 {
+    return Intl.message(
+      'Available',
+      name: 'loocate_indication_1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Selected`
+  String get locate_indication_2 {
+    return Intl.message(
+      'Selected',
+      name: 'locate_indication_2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `occupied`
+  String get locate_indication_3 {
+    return Intl.message(
+      'occupied',
+      name: 'locate_indication_3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Entry`
+  String get locate_entry {
+    return Intl.message(
+      'Entry',
+      name: 'locate_entry',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Summary of purchase`
+  String get locate_resume_buy {
+    return Intl.message(
+      'Summary of purchase',
+      name: 'locate_resume_buy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total selected places:`
+  String get locate_total {
+    return Intl.message(
+      'Total selected places:',
+      name: 'locate_total',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total cost:`
+  String get locate_total_cost {
+    return Intl.message(
+      'Total cost:',
+      name: 'locate_total_cost',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Selected spaces:`
+  String get locate_selected_spaces {
+    return Intl.message(
+      'Selected spaces:',
+      name: 'locate_selected_spaces',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

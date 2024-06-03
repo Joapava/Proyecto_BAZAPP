@@ -43,6 +43,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "home_details": MessageLookupByLibrary.simpleMessage("Detalles"),
         "home_feactured": MessageLookupByLibrary.simpleMessage("Destacados"),
         "home_photos": MessageLookupByLibrary.simpleMessage("Fotos"),
+        "locate_entry": MessageLookupByLibrary.simpleMessage("Entrada"),
+        "locate_indication_2":
+            MessageLookupByLibrary.simpleMessage("Seleccionado"),
+        "locate_indication_3": MessageLookupByLibrary.simpleMessage("Ocupado"),
+        "locate_resume_buy":
+            MessageLookupByLibrary.simpleMessage("Resumen de la Compra"),
+        "locate_selected_spaces":
+            MessageLookupByLibrary.simpleMessage("Lugares seleccionados:"),
+        "locate_total": MessageLookupByLibrary.simpleMessage(
+            "Total de lugares seleccionados:"),
+        "locate_total_cost":
+            MessageLookupByLibrary.simpleMessage("Costo total:"),
+        "loocate_indication_1":
+            MessageLookupByLibrary.simpleMessage("Disponible"),
         "message_error_login": MessageLookupByLibrary.simpleMessage(
             "Correo o contraseña incorrectos"),
         "navbar_item_home": MessageLookupByLibrary.simpleMessage("Inicio"),

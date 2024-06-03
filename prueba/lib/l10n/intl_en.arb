@@ -73,5 +73,14 @@
     "button_send": "Send",
     "reset_dialog_text_1": "An email has been sent to",
     "reset_dialog_text_2": "password reset",
-    "reset_dialog_button": "Accept"
+    "reset_dialog_button": "Accept",
+
+    "loocate_indication_1": "Available",
+    "locate_indication_2": "Selected",
+    "locate_indication_3": "occupied",
+    "locate_entry": "Entry",
+    "locate_resume_buy": "Summary of purchase",
+    "locate_total": "Total selected places:",
+    "locate_total_cost": "Total cost:",
+    "locate_selected_spaces": "Selected spaces:"
 }

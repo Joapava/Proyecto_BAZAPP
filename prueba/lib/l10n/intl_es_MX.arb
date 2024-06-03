@@ -73,5 +73,14 @@
     "button_send": "Enviar",
     "reset_dialog_text_1": "Se ha enviado un correo para",
     "reset_dialog_text_2": "el restablecimiento de la contraseña",
-    "reset_dialog_button": "Aceptar"
+    "reset_dialog_button": "Aceptar",
+
+    "loocate_indication_1": "Disponible",
+    "locate_indication_2": "Seleccionado",
+    "locate_indication_3": "Ocupado",
+    "locate_entry": "Entrada",
+    "locate_resume_buy": "Resumen de la Compra",
+    "locate_total": "Total de lugares seleccionados:",
+    "locate_total_cost": "Costo total:",
+    "locate_selected_spaces": "Lugares seleccionados:"
 }
