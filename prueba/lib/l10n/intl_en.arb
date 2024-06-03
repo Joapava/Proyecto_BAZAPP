@@ -30,7 +30,7 @@
 
     "navbar_item_home": "Home",
     "navbar_item_news": "News",
-    "navbar_item_locate": "Locate",
+    "navbar_item_locate": "Location",
     "navbar_item_user": "User",
 
     "title_regiter": "Signup",
@@ -68,7 +68,7 @@
     "home_photos": "Photos",
 
     "reset_password_title": "Password reset",
-    "reset_password_subtitle_1": "Please enter the email",
+    "reset_password_subtitle_1": "Please enter you email",
     "reset_password_subtitle_2": "that is associated with your account",
     "button_send": "Send",
     "reset_dialog_text_1": "An email has been sent to",
@@ -82,5 +82,6 @@
     "locate_resume_buy": "Summary of purchase",
     "locate_total": "Total selected places:",
     "locate_total_cost": "Total cost:",
-    "locate_selected_spaces": "Selected spaces:"
+    "locate_selected_spaces": "Selected spaces:",
+    "locate_information": "Space 3x3 \n200 pesos (each)"
 }

@@ -18,7 +18,7 @@ Widget informacionCompra() {
   return Container(
     width:
         550, // Aseguramos que el ancho sea el mismo que el contenedor de puestos
-    height: 250,
+    height: 330,
     decoration: BoxDecoration(
       color: const Color.fromRGBO(168, 169, 171, 0.2),
       borderRadius: BorderRadius.circular(10),
@@ -42,6 +42,12 @@ Widget informacionCompra() {
               ),
             ],
           ),
+          Text(S.current.locate_information, style: const TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+            color: Colors.black
+          ),),
           const Divider(color: Colors.black54),
           Text(
             '${S.current.locate_total} $totalSelected',

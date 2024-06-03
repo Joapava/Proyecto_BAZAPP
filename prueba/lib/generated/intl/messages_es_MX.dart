@@ -47,6 +47,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "locate_indication_2":
             MessageLookupByLibrary.simpleMessage("Seleccionado"),
         "locate_indication_3": MessageLookupByLibrary.simpleMessage("Ocupado"),
+        "locate_information": MessageLookupByLibrary.simpleMessage(
+            "Espacios 3x3 \n200 pesos (cada uno)"),
         "locate_resume_buy":
             MessageLookupByLibrary.simpleMessage("Resumen de la Compra"),
         "locate_selected_spaces":

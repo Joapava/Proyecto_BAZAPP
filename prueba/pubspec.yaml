@@ -53,6 +53,6 @@ flutter:
       fonts:
         - asset: assets/fonts/Inter-Regular.ttf
         - asset: assets/fonts/Inter.ttf
-          style: italic
+          # style: italic
 flutter_intl:
   enabled: true

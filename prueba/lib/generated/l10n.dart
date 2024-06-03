@@ -330,10 +330,10 @@ class S {
     );
   }
 
-  /// `Locate`
+  /// `Location`
   String get navbar_item_locate {
     return Intl.message(
-      'Locate',
+      'Location',
       name: 'navbar_item_locate',
       desc: '',
       args: [],
@@ -670,10 +670,10 @@ class S {
     );
   }
 
-  /// `Please enter the email`
+  /// `Please enter you email`
   String get reset_password_subtitle_1 {
     return Intl.message(
-      'Please enter the email',
+      'Please enter you email',
       name: 'reset_password_subtitle_1',
       desc: '',
       args: [],
@@ -805,6 +805,16 @@ class S {
     return Intl.message(
       'Selected spaces:',
       name: 'locate_selected_spaces',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Space 3x3 \n200 pesos (each)`
+  String get locate_information {
+    return Intl.message(
+      'Space 3x3 \n200 pesos (each)',
+      name: 'locate_information',
       desc: '',
       args: [],
     );

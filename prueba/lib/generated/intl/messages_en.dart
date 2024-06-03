@@ -45,6 +45,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "locate_entry": MessageLookupByLibrary.simpleMessage("Entry"),
         "locate_indication_2": MessageLookupByLibrary.simpleMessage("Selected"),
         "locate_indication_3": MessageLookupByLibrary.simpleMessage("occupied"),
+        "locate_information": MessageLookupByLibrary.simpleMessage(
+            "Space 3x3 \n200 pesos (each)"),
         "locate_resume_buy":
             MessageLookupByLibrary.simpleMessage("Summary of purchase"),
         "locate_selected_spaces":
@@ -58,7 +60,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "message_error_login":
             MessageLookupByLibrary.simpleMessage("Incorrect email or password"),
         "navbar_item_home": MessageLookupByLibrary.simpleMessage("Home"),
-        "navbar_item_locate": MessageLookupByLibrary.simpleMessage("Locate"),
+        "navbar_item_locate": MessageLookupByLibrary.simpleMessage("Location"),
         "navbar_item_news": MessageLookupByLibrary.simpleMessage("News"),
         "navbar_item_user": MessageLookupByLibrary.simpleMessage("User"),
         "not_account":
@@ -110,7 +112,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "reset_dialog_text_2":
             MessageLookupByLibrary.simpleMessage("password reset"),
         "reset_password_subtitle_1":
-            MessageLookupByLibrary.simpleMessage("Please enter the email"),
+            MessageLookupByLibrary.simpleMessage("Please enter you email"),
         "reset_password_subtitle_2": MessageLookupByLibrary.simpleMessage(
             "that is associated with your account"),
         "reset_password_title":
