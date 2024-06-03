@@ -24,11 +24,11 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
 
   Future<void> initializePurchasedLocations() async {
     await Preferencias.init();
-    String expositorId = Preferencias().id;
-    List<String> loadedPurchasedLocations =
-        await DatosDB().getPurchasedLocations(expositorId);
+    List<String> allOccupiedLocations =
+        await DatosDB().getAllOccupiedLocations();
+
     setState(() {
-      purchasedLocations = loadedPurchasedLocations;
+      purchasedLocations = allOccupiedLocations;
     });
   }
 
@@ -70,8 +70,7 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
                           String expositorId = Preferencias().id;
                           await DatosDB().savePurchasedLocations(
                               selectedLocations,
-                              expositorId
-                              ); // Guardar en Firebase
+                              expositorId); // Guardar en Firebase
                           setState(() {
                             selectedLocations.clear();
                           });

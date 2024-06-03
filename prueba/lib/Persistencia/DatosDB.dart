@@ -8,6 +8,24 @@ import 'package:prueba/Class/noticias_data.dart';
 import 'package:http/http.dart' as http;
 
 class DatosDB {
+  Future<List<String>> getAllOccupiedLocations() async {
+    var db = FirebaseFirestore.instance;
+    var snapshot = await db.collection('registroEspacio').get();
+
+    List<String> allOccupiedLocations = [];
+    for (var doc in snapshot.docs) {
+      var data = doc.data();
+      print(data); // Depurar datos
+      if (data.containsKey('id_espacio') && data['id_espacio'] is String) {
+        String idEspacio = data['id_espacio'];
+        allOccupiedLocations.add(idEspacio);
+      } else {
+        print('Tipo de dato incorrecto para id_espacio: ${data['id_espacio']}');
+      }
+    }
+    return allOccupiedLocations;
+  }
+
   Future<List<String>> getPurchasedLocations(String expositorId) async {
     var db = FirebaseFirestore.instance;
     var snapshot = await db
