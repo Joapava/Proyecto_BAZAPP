@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
 import 'package:prueba/generated/l10n.dart';
-import 'package:prueba/main.dart';
 
 class Lenguaje extends StatefulWidget {
   final Preferencias perfs;
@@ -153,9 +152,6 @@ class _LenguajeState extends State<Lenguaje> {
                 selected: isSeleted(nom[index]),
                 onTap: () {
                   setState(() {
-                    final appState =
-                        context.findAncestorStateOfType<BazzAppState>();
-                    appState?.changelang(nm[index]);
                     cambiarl(nom[index]);
                   });
                 },
@@ -190,14 +186,7 @@ class _LenguajeState extends State<Lenguaje> {
     );
   }
 
-  List<String> dataleng = [
-    'Español',
-    'English',
-    'English (UK)',
-    'Français',
-    'Deutsch',
-    '日本語'
-  ];
+  List<String> dataleng = ['Español', 'English','English (UK)','Français','Deutsch','日本語'];
 
   List<String> typeleng = [
     'Español (latinoamerica)',
@@ -208,15 +197,7 @@ class _LenguajeState extends State<Lenguaje> {
     'Japones'
   ];
 
-  List<String> nom = ['es_MX', 'en_US', 'en_UK', 'fr', 'de', 'ja'];
-  List<Locale> nm = [
-    const Locale('es', 'MX'),
-    const Locale('en', 'US'),
-    const Locale('en', 'UK'),
-    const Locale('fr'),
-    const Locale('de'),
-    const Locale('ja')
-  ];
+  List<String> nom = ['es_MX', 'en_US','en_UK','fr','de','ja'];
 
   bool isSeleted(String lenguaje) {
     if (lenguaje == perfs.lenguaje) {

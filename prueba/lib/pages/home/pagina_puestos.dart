@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:prueba/Persistencia/DatosDB.dart';
-import 'package:prueba/Persistencia/Preferencias.dart';
 import 'package:prueba/components/generar_botones.dart';
 import 'package:prueba/components/informacion_compra_puesto.dart';
-import 'package:prueba/generated/l10n.dart';
 
 class PaginaPuestos extends StatefulWidget {
   const PaginaPuestos({super.key});
@@ -15,22 +12,6 @@ class PaginaPuestos extends StatefulWidget {
 class _PaginaPuestosState extends State<PaginaPuestos> {
   void updateState() {
     setState(() {});
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    initializePurchasedLocations();
-  }
-
-  Future<void> initializePurchasedLocations() async {
-    await Preferencias.init();
-    List<String> allOccupiedLocations =
-        await DatosDB().getAllOccupiedLocations();
-
-    setState(() {
-      purchasedLocations = allOccupiedLocations;
-    });
   }
 
   // Función para generar etiquetas únicas con letras y números consecutivos
@@ -60,25 +41,17 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
                     const SizedBox(height: 10), // Espacio entre elementos
                     if (selectedLocations.isNotEmpty)
                       ElevatedButton(
-                        onPressed: () async {
+                        onPressed: () {
                           setState(() {
                             for (var label in selectedLocations) {
+                              // Aquí marcamos los lugares comprados como no interactivos
                               purchasedLocations.add(label);
                             }
-                          });
-                          await Preferencias
-                              .init(); // Inicializar Preferencias si no está hecho ya
-                          String expositorId = Preferencias().id;
-                          await DatosDB().savePurchasedLocations(
-                              selectedLocations,
-                              expositorId); // Guardar en Firebase
-                          setState(() {
                             selectedLocations.clear();
                           });
                         },
-                        child: const Text('Comprar',
-                            style: TextStyle(color: Colors.black)),
-                      )
+                        child: const Text('Comprar',style: TextStyle(color: Colors.black),),
+                      ),
                   ],
                 ),
               ),
@@ -251,9 +224,9 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
                           color: Color.fromRGBO(168, 169, 171, 1.0),
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
-                        child: Center(
-                          child: Text(S.of(context).locate_entry,
-                              style: const TextStyle(
+                        child: const Center(
+                          child: Text("Entrada",
+                              style: TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.bold)),
                         ),
                       ),
@@ -270,9 +243,9 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
                           color: Color.fromRGBO(168, 169, 171, 1.0),
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
-                        child: Center(
-                          child: Text(S.of(context).locate_entry,
-                              style: const TextStyle(
+                        child: const Center(
+                          child: Text("Entrada",
+                              style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold)),
                         ),
                       ),
@@ -309,7 +282,7 @@ Widget significadoColorPuesto() {
                 borderRadius: BorderRadius.circular(3),
               ),
             ),
-            Text(S.current.loocate_indication_1)
+            const Text("Disponible")
           ],
         ),
         const SizedBox(height: 10),
@@ -324,7 +297,7 @@ Widget significadoColorPuesto() {
                 borderRadius: BorderRadius.circular(3),
               ),
             ),
-            Text(S.current.locate_indication_2)
+            const Text("Seleccionado")
           ],
         ),
         const SizedBox(height: 10),
@@ -339,7 +312,7 @@ Widget significadoColorPuesto() {
                 borderRadius: BorderRadius.circular(3),
               ),
             ),
-            Text(S.current.locate_indication_3)
+            const Text("Ocupado")
           ],
         ),
       ],

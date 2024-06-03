@@ -1,9 +1,11 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:prueba/Class/noticias_data.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:prueba/Class/aviso.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
 import 'package:prueba/generated/l10n.dart';
 import 'package:prueba/pages/home/imagen_pagina.dart';
-import 'package:prueba/pages/home/pagina_noticias.dart';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
@@ -15,21 +17,21 @@ class PaginaInicio extends StatefulWidget {
 }
 
 class _PaginaInicioState extends State<PaginaInicio> {
-  List<Noticia> noticias = [];
+  List<Aviso> avisos = [];
   List<String> _imageUrls = [];
 
   @override
   void initState() {
     super.initState();
     _loadImages();
-    _loadNoticias();
+    _loadAvisos();
   }
 
-  Future<void> _loadNoticias() async {
-    List<Noticia> noticiasCargadas = await ValidarDatos().getNoticias();
+  Future<void> _loadAvisos() async {
+    List<Aviso> avisosCargados = await ValidarDatos().getAvisos();
     if (mounted) {
       setState(() {
-        noticias = noticiasCargadas;
+        avisos = avisosCargados;
       });
     }
   }
@@ -45,11 +47,41 @@ class _PaginaInicioState extends State<PaginaInicio> {
   }
 
   Future<void> _loadImages() async {
-    List<String> urls = await ValidarDatos().getImagenes();
+    ListResult result = await FirebaseStorage.instance.ref('uploads').listAll();
+    List<String> urls = [];
+    for (var ref in result.items) {
+      try {
+        String url = await ref.getDownloadURL();
+        urls.add(url);
+      } catch (e) {
+        print('Error al cargar la imagen: $e');
+      }
+    }
     if (mounted) {
       setState(() {
         _imageUrls = urls;
       });
+    }
+  }
+
+  Future<void> _pickImage() async {
+    final XFile? image =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      File imageFile = File(image.path);
+      String fileName = 'uploads/${DateTime.now().millisecondsSinceEpoch}.jpg';
+      try {
+        await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
+        String downloadURL =
+            await FirebaseStorage.instance.ref(fileName).getDownloadURL();
+        if (mounted) {
+          setState(() {
+            _imageUrls.add(downloadURL);
+          });
+        }
+      } catch (e) {
+        print('Error uploading image: $e');
+      }
     }
   }
 
@@ -69,7 +101,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
   }
 
   Widget getDestacados(context) {
-    List<Noticia> noticiasDestacadas = noticias.take(3).toList();
+    List<Aviso> avisosDestacados = avisos.take(3).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,12 +114,12 @@ class _PaginaInicioState extends State<PaginaInicio> {
           ),
         ),
         SizedBox(
-          height: 300,
+          height: 200,  // Ajustar altura del contenedor
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: noticiasDestacadas.length,
+            itemCount: avisosDestacados.length,
             itemBuilder: (context, index) {
-              return formatoNoticia(noticiasDestacadas[index], context);
+              return formatoAviso(avisosDestacados[index], context);
             },
           ),
         ),
@@ -95,15 +127,15 @@ class _PaginaInicioState extends State<PaginaInicio> {
     );
   }
 
-  Widget formatoNoticia(Noticia noticia, context) {
+  Widget formatoAviso(Aviso aviso, context) {
     return GestureDetector(
-      onTap: () => {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const PaginaNoticias()))
+      onTap: () {
+        // Aquí puedes manejar la acción al tocar un aviso, si es necesario
       },
       child: Container(
-        width: 270,
+        width: 200,  // Ajustar ancho del contenedor
         margin: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),  // Añadir padding para el texto
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
@@ -119,43 +151,25 @@ class _PaginaInicioState extends State<PaginaInicio> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              margin: const EdgeInsets.fromLTRB(10, 5, 0, 5),
-              child: Text(noticia.nombrePerfil,
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+              aviso.titulo,
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(10, 0, 10, 5),
-              child: Text(noticia.cuerpoNoticia,
-                  overflow: TextOverflow.ellipsis, maxLines: 2),
-            ),
-            if (noticia.urlImagenNoticia.isNotEmpty)
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(10),
-                    bottomRight: Radius.circular(10),
-                  ),
-                  child: FutureBuilder<bool>(
-                    future: _imageExists(noticia.urlImagenNoticia),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError ||
-                          !snapshot.hasData ||
-                          !snapshot.data!) {
-                        return const Icon(Icons.broken_image);
-                      } else {
-                        return Image.network(
-                          noticia.urlImagenNoticia,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        );
-                      }
-                    },
-                  ),
-                ),
+            const SizedBox(height: 5),
+            Expanded(
+              child: Text(
+                aviso.cuerpo,
+                maxLines: 5,
+                overflow: TextOverflow.ellipsis,
               ),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Text(
+                aviso.fecha,
+                style: const TextStyle(color: Colors.grey, fontSize: 10),
+              ),
+            ),
           ],
         ),
       ),

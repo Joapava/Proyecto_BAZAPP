@@ -40,11 +40,11 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
           const SizedBox(
             height: 35,
           ),
-          Center(
+          const Center(
             child: FittedBox(
               child: Text(
-                S.of(context).tittle_settings,
-                style: const TextStyle(fontFamily: 'Inter', fontSize: 20),
+                'Ajustes',
+                style: TextStyle(fontFamily: 'Inter', fontSize: 20),
               ),
             ),
           ),
@@ -81,18 +81,17 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
               backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
               elevation: 0,
               onPressed: () {
-                String x = perfs.type;
                 perfs.clear();
-                if (x == 'email') Auth().signOut();
-                if (x == "google") Authgoole().singout();
+                Auth().signOut();
+                Authgoole().singout();
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const Login()));
               },
-              child: Center(
+              child: const Center(
                 child: FittedBox(
                   child: Text(
-                    S.of(context).title_signout,
-                    style: const TextStyle(
+                    'Cerrar Sesion',
+                    style: TextStyle(
                         fontFamily: 'Inter', fontSize: 18, color: Colors.black),
                   ),
                 ),
@@ -112,15 +111,15 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
           borderRadius: BorderRadius.circular(15), color: Colors.white),
       child: Column(
         children: [
-          Row(
+          const Row(
             children: [
-              const SizedBox(
+              SizedBox(
                 width: 15,
               ),
               FittedBox(
                 child: Text(
-                  S.of(context).subtitle_box_policy,
-                  style: const TextStyle(
+                  'Politica, Terminos y Condiciones',
+                  style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 18,
                       color: Color.fromRGBO(113, 113, 113, 1)),
@@ -141,9 +140,9 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                   borderRadius: BorderRadius.circular(0)),
               backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
               elevation: 0,
-              child: Row(
+              child: const Row(
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     width: 35,
                   ),
                   SizedBox(
@@ -151,14 +150,14 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                     height: 35,
                     child: Row(
                       children: [
-                        const Icon(Icons.edit_document),
-                        const SizedBox(
+                        Icon(Icons.edit_document),
+                        SizedBox(
                           width: 5,
                         ),
                         FittedBox(
                           child: Text(
-                            S.of(context).subtitle_policy_privacy,
-                            style: const TextStyle(
+                            'Politica de Privacidad',
+                            style: TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 18,
                                 color: Color.fromRGBO(113, 113, 113, 1)),
@@ -167,7 +166,7 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                       ],
                     ),
                   ),
-                  const Icon(Icons.arrow_forward_ios_outlined)
+                  Icon(Icons.arrow_forward_ios_outlined)
                 ],
               ),
             ),
@@ -189,9 +188,9 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                         bottomRight: Radius.circular(15))),
                 backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
                 elevation: 0,
-                child: Row(
+                child: const Row(
                   children: [
-                    const SizedBox(
+                    SizedBox(
                       width: 35,
                     ),
                     SizedBox(
@@ -199,14 +198,14 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                       height: 35,
                       child: Row(
                         children: [
-                          const Icon(Icons.edit_document),
-                          const SizedBox(
+                          Icon(Icons.edit_document),
+                          SizedBox(
                             width: 5,
                           ),
                           FittedBox(
                             child: Text(
-                              S.of(context).subtitle_policy_term,
-                              style: const TextStyle(
+                              'Terminos y Condiciones',
+                              style: TextStyle(
                                   fontFamily: 'Inter',
                                   fontSize: 18,
                                   color: Color.fromRGBO(113, 113, 113, 1)),
@@ -215,7 +214,7 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                         ],
                       ),
                     ),
-                    const Icon(Icons.arrow_forward_ios_outlined)
+                    Icon(Icons.arrow_forward_ios_outlined)
                   ],
                 ),
               ))
@@ -232,15 +231,15 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
           borderRadius: BorderRadius.circular(15), color: Colors.white),
       child: Column(
         children: [
-          Row(
+          const Row(
             children: [
-              const SizedBox(
+              SizedBox(
                 width: 15,
               ),
               FittedBox(
                 child: Text(
-                  S.of(context).subtitle_box_account,
-                  style: const TextStyle(fontFamily: 'Inter', fontSize: 18),
+                  'Cuenta',
+                  style: TextStyle(fontFamily: 'Inter', fontSize: 18),
                 ),
               )
             ],
@@ -262,9 +261,9 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                   borderRadius: BorderRadius.circular(0)),
               backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
               elevation: 0,
-              child: Row(
+              child: const Row(
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     width: 35,
                   ),
                   SizedBox(
@@ -272,14 +271,14 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                     height: 35,
                     child: Row(
                       children: [
-                        const Icon(Icons.person_2_sharp),
-                        const SizedBox(
+                        Icon(Icons.person_2_sharp),
+                        SizedBox(
                           width: 5,
                         ),
                         FittedBox(
                           child: Text(
-                            S.of(context).subtitle_account_profile,
-                            style: const TextStyle(
+                            'Perfil',
+                            style: TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 18,
                                 color: Color.fromRGBO(109, 106, 106, 1)),
@@ -288,7 +287,7 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                       ],
                     ),
                   ),
-                  const Icon(Icons.arrow_forward_ios_outlined)
+                  Icon(Icons.arrow_forward_ios_outlined)
                 ],
               ),
             ),
@@ -308,9 +307,9 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                       bottomRight: Radius.circular(15))),
               backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
               elevation: 0,
-              child: Row(
+              child: const Row(
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     width: 35,
                   ),
                   SizedBox(
@@ -318,14 +317,14 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                     height: 35,
                     child: Row(
                       children: [
-                        const Icon(Icons.lock_person),
-                        const SizedBox(
+                        Icon(Icons.lock_person),
+                        SizedBox(
                           width: 5,
                         ),
                         FittedBox(
                           child: Text(
-                            S.of(context).subtitle_account_password,
-                            style: const TextStyle(
+                            'Contraseña',
+                            style: TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 18,
                                 color: Color.fromRGBO(109, 106, 106, 1)),
@@ -334,7 +333,7 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                       ],
                     ),
                   ),
-                  const Icon(Icons.arrow_forward_ios_outlined)
+                  Icon(Icons.arrow_forward_ios_outlined)
                 ],
               ),
             ),
@@ -462,15 +461,15 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
           borderRadius: BorderRadius.circular(15), color: Colors.white),
       child: Column(
         children: [
-          Row(
+          const Row(
             children: [
-              const SizedBox(
+              SizedBox(
                 width: 15,
               ),
               FittedBox(
                 child: Text(
-                  S.of(context).subtitle_box_app,
-                  style: const TextStyle(fontFamily: 'Inter', fontSize: 18),
+                  'Aplicacion',
+                  style: TextStyle(fontFamily: 'Inter', fontSize: 18),
                 ),
               )
             ],
@@ -489,15 +488,14 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                         builder: (context) => Lenguaje(
                               perfs: perfs,
                             )));
-                setState(() {});
               },
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0)),
               backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
               elevation: 0,
-              child: Row(
+              child: const Row(
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     width: 35,
                   ),
                   SizedBox(
@@ -505,14 +503,14 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                     height: 35,
                     child: Row(
                       children: [
-                        const Icon(Icons.translate_outlined),
-                        const SizedBox(
+                        Icon(Icons.translate_outlined),
+                        SizedBox(
                           width: 5,
                         ),
                         FittedBox(
                           child: Text(
-                            S.of(context).subtitle_app_lang,
-                            style: const TextStyle(
+                            'Lenguaje',
+                            style: TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 18,
                                 color: Color.fromRGBO(109, 106, 106, 1)),
@@ -521,7 +519,7 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                       ],
                     ),
                   ),
-                  const Icon(Icons.arrow_forward_ios_outlined)
+                  Icon(Icons.arrow_forward_ios_outlined)
                 ],
               ),
             ),
@@ -548,9 +546,9 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                       bottomRight: Radius.circular(15))),
               backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
               elevation: 0,
-              child: Row(
+              child: const Row(
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     width: 35,
                   ),
                   SizedBox(
@@ -558,14 +556,14 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                     width: 320,
                     child: Row(
                       children: [
-                        const Icon(Icons.notifications),
-                        const SizedBox(
+                        Icon(Icons.notifications),
+                        SizedBox(
                           width: 5,
                         ),
                         FittedBox(
                           child: Text(
-                            S.of(context).subtitle_app_noti,
-                            style: const TextStyle(
+                            'Notificaciones',
+                            style: TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 18,
                                 color: Color.fromRGBO(109, 106, 106, 1)),
@@ -574,7 +572,7 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                       ],
                     ),
                   ),
-                  const Icon(Icons.arrow_forward_ios_outlined)
+                  Icon(Icons.arrow_forward_ios_outlined)
                 ],
               ),
             ),

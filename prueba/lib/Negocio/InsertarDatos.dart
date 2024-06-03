@@ -1,16 +1,16 @@
-import 'dart:io';
 
+import 'dart:io';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:prueba/Class/noticias_data.dart';
 import 'package:prueba/Persistencia/DatosDB.dart';
 import 'package:prueba/Class/Expositor.dart';
 
-class InsertarDatos {
-  void setExpositor(Expositor ex, String id) {
+class InsertarDatos{
+  void setExpositor(Expositor ex, String id){
     DatosDB().setExpositor(ex, id);
   }
 
-  void setNoticia(Noticia noticia) {
+  void setNoticia(Noticia noticia){
     DatosDB().setNoticia(noticia);
   }
 

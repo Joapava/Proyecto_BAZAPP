@@ -1,7 +1,7 @@
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:prueba/Negocio/InsertarDatos.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
 import 'package:prueba/generated/l10n.dart';
 import 'package:prueba/pages/home/imagen_pagina.dart';
@@ -48,7 +48,16 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
   }
 
   Future<void> _loadImages() async {
-    List<String> urls = await ValidarDatos().getImagenes();
+    ListResult result = await FirebaseStorage.instance.ref('uploads').listAll();
+    List<String> urls = [];
+    for (var ref in result.items) {
+      try {
+        String url = await ref.getDownloadURL();
+        urls.add(url);
+      } catch (e) {
+        print('Error al cargar la imagen: $e');
+      }
+    }
     if (mounted) {
       setState(() {
         _imageUrls = urls;
@@ -61,8 +70,11 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image != null) {
       File imageFile = File(image.path);
+      String fileName = 'uploads/${DateTime.now().millisecondsSinceEpoch}.jpg';
       try {
-        String downloadURL = await InsertarDatos().setImagen(imageFile);
+        await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
+        String downloadURL =
+            await FirebaseStorage.instance.ref(fileName).getDownloadURL();
         if (mounted) {
           setState(() {
             _imageUrls.add(downloadURL);

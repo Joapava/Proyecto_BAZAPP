@@ -2,10 +2,13 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:intl/intl.dart';
+import 'package:prueba/Class/aviso.dart';
 import 'package:prueba/Class/Expositor.dart';
 import 'package:prueba/Class/administrador.dart';
 import 'package:prueba/Class/noticias_data.dart';
 import 'package:http/http.dart' as http;
+import 'package:prueba/Persistencia/Preferencias.dart';
 
 class DatosDB {
   Future<List<String>> getAllOccupiedLocations() async {
@@ -51,6 +54,7 @@ class DatosDB {
     }
   }
 
+  //Funcion que regresa los expositores que han sido creado en forma de lista
   Future<List<Expositor>> getExpositores() async {
     List<Expositor> listaExpositores = [];
     var db = FirebaseFirestore.instance;
@@ -120,21 +124,6 @@ class DatosDB {
     return noticiasCargadas;
   }
 
-  Future<List<String>> getImagenes() async {
-    var db = FirebaseStorage.instance;
-    ListResult result = await db.ref('Fotos').listAll();
-    List<String> urls = [];
-    for (var ref in result.items) {
-      try {
-        String url = await ref.getDownloadURL();
-        urls.add(url);
-      } catch (e) {
-        print('Error al cargar la imagen: $e');
-      }
-    }
-    return urls;
-  }
-
   Future<bool> _imageExists(String url) async {
     try {
       final response = await http.head(Uri.parse(url));
@@ -184,9 +173,9 @@ class DatosDB {
     var db = FirebaseFirestore.instance;
 
     final noticia = <String, dynamic>{
-      'nombrePerfil': nc.nombrePerfil,
-      'cuerpoNoticia': nc.cuerpoNoticia,
-      'urlImagenNoticia': nc.urlImagenNoticia,
+      'nombre': nc.nombrePerfil,
+      'cuerpo': nc.cuerpoNoticia,
+      'imagenUrl': nc.urlImagenNoticia,
     };
 
     db.collection("noticias").add(noticia).then(
@@ -196,10 +185,60 @@ class DatosDB {
     );
   }
 
+  Future setAviso(Aviso aviso) async {
+    var db = FirebaseFirestore.instance;
+    final avisoData = aviso.toMap();
+    await db.collection("aviso").add(avisoData);
+  }
+
   Future<String> setImagen(File imageFile) async {
     String fileName = 'Fotos/${DateTime.now().millisecondsSinceEpoch}.jpg';
     await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
     return await FirebaseStorage.instance.ref(fileName).getDownloadURL();
+  }
+
+  Future<List<Aviso>> getAvisos() async {
+    List<Aviso> listaAvisos = [];
+    var db = FirebaseFirestore.instance;
+    await db.collection("aviso").get().then((event) {
+      for (var doc in event.docs) {
+        var data = doc.data();
+        Aviso aviso = Aviso.fromMap(data);
+        aviso.id = doc.id; // asignar el ID del documento
+        listaAvisos.add(aviso);
+      }
+    });
+    return listaAvisos;
+  }
+
+  Future<List<String>> getImagenes() async{
+    var db = FirebaseStorage.instance;
+    ListResult result = await db.ref('Fotos').listAll();
+    List<String> urls = [];
+    for (var ref in result.items) {
+      try {
+        String url = await ref.getDownloadURL();
+        urls.add(url);
+      } catch (e) {
+        print('Error al cargar la imagen: $e');
+      }
+    }
+    return urls;
+  }
+
+  Future<void> deleteAviso(String id) async {
+    var db = FirebaseFirestore.instance;
+    await db.collection("aviso").doc(id).delete();
+  }
+
+  Future<void> updateAvisoEstado(String id, String nuevoEstado) async {
+    var db = FirebaseFirestore.instance;
+    await db.collection("aviso").doc(id).update({
+      'estado': nuevoEstado,
+      'fecha': nuevoEstado == 'Activo'
+          ? DateFormat('dd-MM-yyyy').format(DateTime.now())
+          : 'N/A',
+    });
   }
 
   Future editarntf(String id, bool activado) async {
@@ -232,5 +271,67 @@ class DatosDB {
     final idRef = db.collection("expositores").doc(id);
     idRef.update({"correo": correo}).then((value) => print("Update email!"),
         onError: (e) => print("Error updating document $e"));
+  }
+//GUARDAR COMPRA
+
+  Future<void> saveCompra(String expositorId, int total) async {
+    var db = FirebaseFirestore.instance;
+    Preferencias preferencias = Preferencias();
+    String nombreExpositor = preferencias.nombre;
+
+    await db.collection('compra').add({
+      'nombre': nombreExpositor,
+      'fecha': DateFormat('dd/MM/yyyy').format(DateTime.now()),
+      'hora': DateFormat('hh:mm a').format(DateTime.now()),
+      'total': total,
+    });
+  }
+
+//TODOS LOS OCUPADOS
+
+//COMPRAS MAS RECIENTES
+  Future<List<Map<String, dynamic>>> getRecentTransactions() async {
+    var db = FirebaseFirestore.instance;
+    QuerySnapshot querySnapshot = await db
+        .collection('compra')
+        .orderBy('fecha', descending: true)
+        .get(); // Quita el .limit(5)
+
+    List<Map<String, dynamic>> transactions = [];
+    for (var doc in querySnapshot.docs) {
+      transactions.add(doc.data() as Map<String, dynamic>);
+    }
+    return transactions;
+  }
+
+//OBTENER EL TOTAL DE VENTAS
+
+  Future<int> getTotalVentas() async {
+    var db = FirebaseFirestore.instance;
+    QuerySnapshot querySnapshot = await db.collection('compra').get();
+
+    int totalVentas = 0;
+    for (var doc in querySnapshot.docs) {
+      var data = doc.data() as Map<String, dynamic>;
+      totalVentas += (data['total'] as num).toInt(); // Convertir a int
+    }
+    return totalVentas;
+  }
+
+//OBTENER TODOS LOS ESPACIOS DISPONIBLES
+
+  Future<int> getAvailableSpacesCount() async {
+    var db = FirebaseFirestore.instance;
+
+    // Supongamos que tienes una colección "espacios" que contiene todos los espacios.
+    QuerySnapshot allSpacesSnapshot = await db.collection('espacios').get();
+    QuerySnapshot registeredSpacesSnapshot =
+        await db.collection('registroEspacio').get();
+
+    int totalSpaces = allSpacesSnapshot.size;
+    int registeredSpaces = registeredSpacesSnapshot.size;
+
+    int availableSpaces = 158 - registeredSpaces;
+    return availableSpaces;
   }
 }

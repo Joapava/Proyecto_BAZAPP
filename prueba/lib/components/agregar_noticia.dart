@@ -32,6 +32,7 @@ class _agregar_noticiaState extends State<agregar_noticia> {
     });
   }
 
+  // colocar los metodos en las capas correspondientes
   Future<void> _pickImage() async {
     if (isPickingImage) return;
 
@@ -40,12 +41,15 @@ class _agregar_noticiaState extends State<agregar_noticia> {
     });
 
     try {
-      final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final XFile? image =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image != null) {
         File imageFile = File(image.path);
-        String fileName = 'Noticias/${DateTime.now().millisecondsSinceEpoch}.jpg';
+        String fileName =
+            'uploads/${DateTime.now().millisecondsSinceEpoch}.jpg';
         await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
-        String downloadURL = await FirebaseStorage.instance.ref(fileName).getDownloadURL();
+        String downloadURL =
+            await FirebaseStorage.instance.ref(fileName).getDownloadURL();
         setState(() {
           _imagenUrlNoticia = downloadURL;
         });
@@ -62,6 +66,7 @@ class _agregar_noticiaState extends State<agregar_noticia> {
   void _submitForm() {
     if (_formKey.currentState!.validate() && _imagenUrlNoticia != null) {
       Navigator.pop(
+<<<<<<< Updated upstream
         context,
         Noticia(
           '',
@@ -71,6 +76,11 @@ class _agregar_noticiaState extends State<agregar_noticia> {
           _imagenUrlNoticia!,
         ),
       );
+=======
+          context,
+          Noticia(
+              '', _nombreUsuario, _cuerpoController.text, _imagenUrlNoticia!));
+>>>>>>> Stashed changes
     }
   }
 
@@ -116,11 +126,13 @@ class _agregar_noticiaState extends State<agregar_noticia> {
                             label: const Text('Seleccionar Imagen',
                                 style: TextStyle(color: Colors.black)),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromRGBO(168, 169, 171, 0.1),
+                              backgroundColor:
+                                  const Color.fromRGBO(168, 169, 171, 0.1),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
                             ),
                           )
                         : ClipRRect(
@@ -144,7 +156,8 @@ class _agregar_noticiaState extends State<agregar_noticia> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
                     ),
                   ),
                 ],
