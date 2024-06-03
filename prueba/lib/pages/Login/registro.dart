@@ -7,6 +7,7 @@ import 'dart:core';
 import 'package:email_validator/email_validator.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
+import 'package:prueba/generated/l10n.dart';
 import 'package:prueba/pages/Login/login.dart';
 
 class Registro extends StatefulWidget {
@@ -62,11 +63,11 @@ class Texto extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: Text(
-        'Registro',
+        S.of(context).register,
         style:
-            TextStyle(fontFamily: 'Inter', fontSize: 35, color: Colors.white),
+            const TextStyle(fontFamily: 'Inter', fontSize: 35, color: Colors.white),
       ),
     );
   }
@@ -107,14 +108,14 @@ class _Getformulario extends State<Getformulario> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Row(
+        Row(
           children: [
-            SizedBox(
+            const SizedBox(
               width: 30,
             ),
             Text(
-              'Nombre',
-              style: TextStyle(
+              S.of(context).regiter_subtitle_name,
+              style: const TextStyle(
                 color: Colors.white,
                 fontFamily: 'Inter',
                 fontSize: 18,
@@ -129,14 +130,14 @@ class _Getformulario extends State<Getformulario> {
         const SizedBox(
           height: 15,
         ),
-        const Row(
+        Row(
           children: [
-            SizedBox(
+            const SizedBox(
               width: 30,
             ),
             Text(
-              'Correo',
-              style: TextStyle(
+              S.of(context).register_subtitle_email,
+              style: const TextStyle(
                 color: Colors.white,
                 fontFamily: 'Inter',
                 fontSize: 18,
@@ -160,14 +161,14 @@ class _Getformulario extends State<Getformulario> {
             )
           ],
         ),
-        const Row(
+        Row(
           children: [
-            SizedBox(
+            const SizedBox(
               width: 30,
             ),
             Text(
-              'Contraseña',
-              style: TextStyle(
+              S.of(context).register_subtitle_password,
+              style: const TextStyle(
                 color: Colors.white,
                 fontFamily: 'Inter',
                 fontSize: 18,
@@ -179,14 +180,14 @@ class _Getformulario extends State<Getformulario> {
         const SizedBox(
           height: 20,
         ),
-        const Row(
+        Row(
           children: [
-            SizedBox(
+            const SizedBox(
               width: 30,
             ),
             Text(
-              'Verificar contraseña',
-              style: TextStyle(
+              S.of(context).register_placeholder_passwordvry,
+              style: const TextStyle(
                 color: Colors.white,
                 fontFamily: 'Inter',
                 fontSize: 18,
@@ -198,14 +199,14 @@ class _Getformulario extends State<Getformulario> {
         const SizedBox(
           height: 15,
         ),
-        const Row(
+        Row(
           children: [
-            SizedBox(
+            const SizedBox(
               width: 30,
             ),
             Text(
-              'Celular',
-              style: TextStyle(
+              S.of(context).register_subtitle_phone,
+              style: const TextStyle(
                 color: Colors.white,
                 fontFamily: 'Inter',
                 fontSize: 18,
@@ -282,9 +283,9 @@ class _Getformulario extends State<Getformulario> {
             }
           },
           backgroundColor: Colors.white,
-          child: const Text(
-            "Registrar",
-            style: TextStyle(fontFamily: 'Inter', fontSize: 18),
+          child: Text(
+            S.of(context).register_button,
+            style: const TextStyle(fontFamily: 'Inter', fontSize: 18),
           )),
     );
   }
@@ -307,7 +308,7 @@ class _Getformulario extends State<Getformulario> {
               width: 10,
             ),
             Text(
-              'Minimo 8 caracteres',
+              S.of(context).register_condition_1,
               style: TextStyle(
                   fontFamily: 'Inter', color: ccolor(4), fontSize: 18),
             )
@@ -328,7 +329,7 @@ class _Getformulario extends State<Getformulario> {
               width: 10,
             ),
             Text(
-              'Incluir minimo un numero',
+              S.of(context).register_condition_2,
               style: TextStyle(
                   fontFamily: 'Inter', color: ccolor(1), fontSize: 18),
             )
@@ -349,7 +350,7 @@ class _Getformulario extends State<Getformulario> {
               width: 10,
             ),
             Text(
-              'Incluir minimo una letra mayuscusla',
+              S.of(context).register_condition_3,
               style: TextStyle(
                   fontFamily: 'Inter', color: ccolor(2), fontSize: 18),
             )
@@ -370,7 +371,7 @@ class _Getformulario extends State<Getformulario> {
               width: 10,
             ),
             Text(
-              'Deben de coincidir las contraseñas',
+              S.of(context).register_condition_4,
               style: TextStyle(
                   fontFamily: 'Inter', color: ccolor(3), fontSize: 18),
             )
@@ -398,14 +399,14 @@ class _Getformulario extends State<Getformulario> {
             if (value!.length <= 10) {
               setState(() {
                 isErrorphone = true;
-                phoneError = 'Celular a 10 digitos';
+                phoneError = S.of(context).register_error_phone_1;
               });
               return null;
             }
             if (x == 2 || x == 3) {
               setState(() {
                 isErrorphone = true;
-                phoneError = 'Numero ya registrado';
+                phoneError = S.of(context).register_error_phone_2;
               });
               return null;
             }
@@ -419,12 +420,12 @@ class _Getformulario extends State<Getformulario> {
               color: Colors.white, fontFamily: 'Inter', fontSize: 18),
           keyboardType: TextInputType.phone,
           maxLength: 10, // Alinea el texto al centro
-          decoration: const InputDecoration(
-            errorStyle: TextStyle(color: Colors.red),
-            hintStyle: TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
+          decoration: InputDecoration(
+            errorStyle: const TextStyle(color: Colors.red),
+            hintStyle: const TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
             border: InputBorder.none,
-            hintText: 'Ingrese su número celular',
-            prefixIcon: Icon(
+            hintText: S.of(context).register_placeholder_phone,
+            prefixIcon: const Icon(
               Icons.phone,
               color: Color.fromARGB(101, 255, 255, 255),
             ),
@@ -478,13 +479,13 @@ class _Getformulario extends State<Getformulario> {
                     style: const TextStyle(
                         color: Colors.white, fontFamily: 'Inter', fontSize: 18),
                     obscureText: isVisiblebtn2,
-                    decoration: const InputDecoration(
-                        errorStyle: TextStyle(color: Colors.red),
-                        contentPadding: EdgeInsets.only(bottom: 10),
-                        hintText: 'Vuelva a ingresar su contraseña',
-                        hintStyle: TextStyle(
+                    decoration: InputDecoration(
+                        errorStyle: const TextStyle(color: Colors.red),
+                        contentPadding: const EdgeInsets.only(bottom: 10),
+                        hintText: S.of(context).register_placeholder_passwordvry,
+                        hintStyle: const TextStyle(
                             color: Color.fromARGB(101, 255, 255, 255)),
-                        prefixIcon: Icon(Icons.lock_person_outlined,
+                        prefixIcon: const Icon(Icons.lock_person_outlined,
                             color: Color.fromARGB(101, 255, 255, 255)),
                         focusedBorder: InputBorder.none,
                         border: InputBorder.none),
@@ -563,12 +564,12 @@ class _Getformulario extends State<Getformulario> {
                     style: const TextStyle(
                         color: Colors.white, fontFamily: 'Inter', fontSize: 18),
                     obscureText: isVisible,
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.only(bottom: 10),
-                      hintText: 'Ingrese su contraseña',
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.only(bottom: 10),
+                      hintText: S.of(context).register_placeholder_password,
                       hintStyle:
-                          TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
-                      prefixIcon: Icon(Icons.lock_person_outlined,
+                          const TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
+                      prefixIcon: const Icon(Icons.lock_person_outlined,
                           color: Color.fromARGB(101, 255, 255, 255)),
                       focusedBorder: InputBorder.none,
                       border: InputBorder.none,
@@ -623,14 +624,14 @@ class _Getformulario extends State<Getformulario> {
               if (!EmailValidator.validate(value.toString())) {
                 setState(() {
                   isErroremail = true;
-                  emailError = 'Coloca un correo valido';
+                  emailError = S.of(context).register_error_email_1;
                 });
                 return null;
               }
               if (x == 1 || x == 3) {
                 setState(() {
                   isErroremail = true;
-                  emailError = 'Correo ya registrado';
+                  emailError = S.of(context).register_error_email_2;
                 });
                 return null;
               }
@@ -644,12 +645,12 @@ class _Getformulario extends State<Getformulario> {
                 color: Colors.white, fontFamily: 'Inter', fontSize: 18),
             controller: emailcontrol,
             keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(
-                errorStyle: TextStyle(color: Colors.red),
-                hintStyle: TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
+            decoration: InputDecoration(
+                errorStyle: const TextStyle(color: Colors.red),
+                hintStyle: const TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
                 border: InputBorder.none,
-                hintText: 'Ingresa tu correo',
-                prefixIcon: Icon(
+                hintText: S.of(context).register_placeholder_email,
+                prefixIcon: const Icon(
                   Icons.email_outlined,
                   color: Color.fromARGB(101, 255, 255, 255),
                 )),
@@ -705,14 +706,14 @@ class _Getformulario extends State<Getformulario> {
                 color: Colors.white, fontSize: 18, fontFamily: 'Inter'),
             controller: name,
             keyboardType: TextInputType.name,
-            decoration: const InputDecoration(
-              hintStyle: TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
-              prefixIcon: Icon(
+            decoration: InputDecoration(
+              hintStyle: const TextStyle(color: Color.fromARGB(101, 255, 255, 255)),
+              prefixIcon: const Icon(
                 Icons.account_box_rounded,
                 color: Color.fromARGB(101, 255, 255, 255),
               ),
               border: InputBorder.none,
-              hintText: 'Ingresa tu nombre',
+              hintText: S.of(context).regiter_placeholder_name,
             ),
           ),
         ),

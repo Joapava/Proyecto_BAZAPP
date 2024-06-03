@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:prueba/Negocio/autenticar.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
-import 'package:prueba/pages/Login/login.dart';
+import 'package:prueba/generated/l10n.dart';
 import 'package:prueba/pages/config/configuracion.dart';
 import 'package:prueba/pages/config/configuracion_admin.dart';
 import 'package:prueba/pages/home/pagina_inicio.dart';
@@ -8,28 +9,39 @@ import 'package:prueba/pages/home/pagina_inicio_admin.dart';
 import 'package:prueba/pages/home/pagina_noticias.dart';
 import 'package:prueba/pages/home/pagina_puestos.dart';
 
-void main() => runApp(const MyApp());
+// void main() => runApp(const MyApp());
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: BarraNavegacion(),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return const MaterialApp(
+//       home: BarraNavegacion(),
+//     );
+//   }
+// }
 
 class BarraNavegacion extends StatefulWidget {
   const BarraNavegacion({super.key});
 
   @override
-  _BarraNavegacionState createState() => _BarraNavegacionState();
+  BarraNavegacionState createState() => BarraNavegacionState();
 }
 
-class _BarraNavegacionState extends State<BarraNavegacion> {
+class BarraNavegacionState extends State<BarraNavegacion> {
   int _indiceSeleccionado = 0;
+  
+  void act() {
+    print("entraaaaaaaaaaaaaaaaaaaaa");
+    setState(() {
+      
+      S.of(context).navbar_item_home;
+      S.of(context).navbar_item_news;
+      S.of(context).navbar_item_locate;
+      S.of(context).navbar_item_user;
+    });
+  }
 
   final List<Widget> _paginas = [
     const PaginaNoticias(),
@@ -38,18 +50,17 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
 
   @override
   void initState() {
+    final perfs = Preferencias();
+    if (perfs.id.isEmpty) {
+      Autenticar().singout();
+      Autenticar().singoutgoogle();
+    }
     _paginasadd();
     super.initState();
   }
 
   void _paginasadd() {
     final perfs = Preferencias();
-    if(perfs.id.isEmpty){
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const Login()),
-          (Route<dynamic> route) => false);
-    }
     if (perfs.lvl == 2) {
       _paginas.insert(0, const PaginaInicioAdmin());
       _paginas.add(const ConfiguracionAdmin());
@@ -82,10 +93,14 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            navBarItem('Inicio', 'lib/images/home.png', 0),
-            navBarItem('Noticias', 'lib/images/news.png', 1),
-            navBarItem('Ubicación', 'lib/images/location.png', 2),
-            navBarItem('Usuario', 'lib/images/profile.png', 3),
+            navBarItem(
+                S.of(context).navbar_item_home, 'lib/images/home.png', 0),
+            navBarItem(
+                S.of(context).navbar_item_news, 'lib/images/news.png', 1),
+            navBarItem(
+                S.of(context).navbar_item_locate, 'lib/images/location.png', 2),
+            navBarItem(
+                S.of(context).navbar_item_user, 'lib/images/profile.png', 3),
           ],
         ),
       ),
@@ -112,4 +127,5 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
       ),
     );
   }
+
 }

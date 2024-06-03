@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:prueba/Class/languajeProvider.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
+import 'package:prueba/generated/l10n.dart';
 import 'package:prueba/main.dart';
 
 class Lenguaje extends StatefulWidget {
@@ -34,11 +34,11 @@ class _LenguajeState extends State<Lenguaje> {
         const SizedBox(
           height: 30,
         ),
-        const Center(
+        Center(
           child: FittedBox(
             child: Text(
-              'Seleccionar idioma',
-              style: TextStyle(fontFamily: 'Inter', fontSize: 20),
+              S.of(context).tittle_lang,
+              style: const TextStyle(fontFamily: 'Inter', fontSize: 20),
             ),
           ),
         ),
@@ -75,10 +75,10 @@ class _LenguajeState extends State<Lenguaje> {
                       search = value.toLowerCase();
                     });
                   },
-                  decoration: const InputDecoration(
-                      contentPadding: EdgeInsetsDirectional.all(7),
-                      hintText: 'Buscar',
-                      prefixIcon: Icon(Icons.search),
+                  decoration: InputDecoration(
+                      contentPadding: const EdgeInsetsDirectional.all(7),
+                      hintText: S.of(context).search_box,
+                      prefixIcon: const Icon(Icons.search),
                       focusedBorder: InputBorder.none,
                       border: InputBorder.none),
                   style: const TextStyle(fontFamily: 'Inter', fontSize: 18),
@@ -95,9 +95,9 @@ class _LenguajeState extends State<Lenguaje> {
               });
               FocusScope.of(context).unfocus();
             },
-            child: const Text(
-              'Cancelar',
-              style: TextStyle(
+            child: Text(
+              S.of(context).buttom_cancel,
+              style: const TextStyle(
                   fontFamily: 'Inter', fontSize: 18, color: Colors.black),
             ))
       ],
@@ -226,6 +226,9 @@ class _LenguajeState extends State<Lenguaje> {
   }
 
   void cambiarl(String lenguaje) {
+    if (lenguaje == 'en') {
+      lenguaje = 'en_US';
+    }
     perfs.lenguaje = lenguaje;
     setState(() {
       isSeleted(lenguaje);

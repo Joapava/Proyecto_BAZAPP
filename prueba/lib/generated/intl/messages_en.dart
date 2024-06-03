@@ -22,9 +22,32 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "alert_button": MessageLookupByLibrary.simpleMessage("Accept"),
+        "alert_is_google_1":
+            MessageLookupByLibrary.simpleMessage("When logging in with Google"),
+        "alert_is_google_2": MessageLookupByLibrary.simpleMessage(
+            "you will have to change your password"),
+        "alert_is_google_3":
+            MessageLookupByLibrary.simpleMessage("from your google account"),
+        "buttom_cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "button_save": MessageLookupByLibrary.simpleMessage("Save"),
+        "button_send": MessageLookupByLibrary.simpleMessage("Send"),
+        "change_password_placeholder_password":
+            MessageLookupByLibrary.simpleMessage("Password new"),
+        "change_password_placeholder_passwordvry":
+            MessageLookupByLibrary.simpleMessage("Confirm Password"),
+        "change_password_title":
+            MessageLookupByLibrary.simpleMessage("Change Passowrd"),
         "forget": MessageLookupByLibrary.simpleMessage("Forget your password?"),
+        "home_details": MessageLookupByLibrary.simpleMessage("Details"),
+        "home_feactured": MessageLookupByLibrary.simpleMessage("Feactured"),
+        "home_photos": MessageLookupByLibrary.simpleMessage("Photos"),
         "message_error_login":
             MessageLookupByLibrary.simpleMessage("Incorrect email or password"),
+        "navbar_item_home": MessageLookupByLibrary.simpleMessage("Home"),
+        "navbar_item_locate": MessageLookupByLibrary.simpleMessage("Locate"),
+        "navbar_item_news": MessageLookupByLibrary.simpleMessage("News"),
+        "navbar_item_user": MessageLookupByLibrary.simpleMessage("User"),
         "not_account":
             MessageLookupByLibrary.simpleMessage("Don\'t have an account?"),
         "placeholder_box_email":
@@ -32,6 +55,54 @@ class MessageLookup extends MessageLookupByLibrary {
         "placeholder_box_pwd":
             MessageLookupByLibrary.simpleMessage("Enter your password"),
         "register": MessageLookupByLibrary.simpleMessage("Signup"),
+        "register_button": MessageLookupByLibrary.simpleMessage("Register"),
+        "register_condition_1":
+            MessageLookupByLibrary.simpleMessage("Minimum 8 characters"),
+        "register_condition_2":
+            MessageLookupByLibrary.simpleMessage("Include at least one number"),
+        "register_condition_3": MessageLookupByLibrary.simpleMessage(
+            "Include at least one capital letter"),
+        "register_condition_4":
+            MessageLookupByLibrary.simpleMessage("Passwords must match"),
+        "register_error_email_1":
+            MessageLookupByLibrary.simpleMessage("Enter a valid email"),
+        "register_error_email_2":
+            MessageLookupByLibrary.simpleMessage("Email already registered"),
+        "register_error_phone_1":
+            MessageLookupByLibrary.simpleMessage("10 digit cell phone"),
+        "register_error_phone_2":
+            MessageLookupByLibrary.simpleMessage("Number already registered"),
+        "register_placeholder_email":
+            MessageLookupByLibrary.simpleMessage("Enter your email"),
+        "register_placeholder_password":
+            MessageLookupByLibrary.simpleMessage("Enter your password"),
+        "register_placeholder_passwordvry":
+            MessageLookupByLibrary.simpleMessage("Re-enter your password"),
+        "register_placeholder_phone":
+            MessageLookupByLibrary.simpleMessage("Enter your phone"),
+        "register_subtitle_email":
+            MessageLookupByLibrary.simpleMessage("Email"),
+        "register_subtitle_password":
+            MessageLookupByLibrary.simpleMessage("Password"),
+        "register_subtitle_passwordvry":
+            MessageLookupByLibrary.simpleMessage("Verify password"),
+        "register_subtitle_phone":
+            MessageLookupByLibrary.simpleMessage("Phone"),
+        "regiter_placeholder_name":
+            MessageLookupByLibrary.simpleMessage("Enter your name"),
+        "regiter_subtitle_name": MessageLookupByLibrary.simpleMessage("Name"),
+        "reset_dialog_button": MessageLookupByLibrary.simpleMessage("Accept"),
+        "reset_dialog_text_1":
+            MessageLookupByLibrary.simpleMessage("An email has been sent to"),
+        "reset_dialog_text_2":
+            MessageLookupByLibrary.simpleMessage("password reset"),
+        "reset_password_subtitle_1":
+            MessageLookupByLibrary.simpleMessage("Please enter the email"),
+        "reset_password_subtitle_2": MessageLookupByLibrary.simpleMessage(
+            "that is associated with your account"),
+        "reset_password_title":
+            MessageLookupByLibrary.simpleMessage("Password reset"),
+        "search_box": MessageLookupByLibrary.simpleMessage("Search"),
         "subtitle_1": MessageLookupByLibrary.simpleMessage(
             "Welcome back! Please enter your data"),
         "subtitle_account_password":
@@ -55,7 +126,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "title_box_pwd": MessageLookupByLibrary.simpleMessage("Password"),
         "title_is":
             MessageLookupByLibrary.simpleMessage("Login to your account"),
+        "title_regiter": MessageLookupByLibrary.simpleMessage("Signup"),
         "title_signout": MessageLookupByLibrary.simpleMessage("Sign out"),
+        "tittle_lang": MessageLookupByLibrary.simpleMessage("Select language"),
         "tittle_settings": MessageLookupByLibrary.simpleMessage("Settings")
       };
 }

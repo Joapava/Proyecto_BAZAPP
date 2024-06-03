@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prueba/Negocio/autenticar.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
+import 'package:prueba/generated/l10n.dart';
 import 'package:prueba/pages/Login/login.dart';
 
 class Password extends StatefulWidget {
@@ -57,29 +58,29 @@ class _PasswordState extends State<Password> {
                     SizedBox(
                       height: altura * .010,
                     ),
-                    const FittedBox(
+                    FittedBox(
                       child: Text(
-                        'Al iniciar sesion con google',
-                        style: TextStyle(
+                        S.of(context).alert_is_google_1,
+                        style: const TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 16,
                             color: Colors.white),
                       ),
                     ),
-                    const FittedBox(
+                    FittedBox(
                       child: Text(
-                        'tendra que cambiar su contraseña',
-                        style: TextStyle(
+                        S.of(context).alert_is_google_2,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontFamily: 'Inter',
                           fontSize: 16,
                         ),
                       ),
                     ),
-                    const FittedBox(
+                    FittedBox(
                       child: Text(
-                        'desde ajustes de google',
-                        style: TextStyle(
+                        S.of(context).alert_is_google_3,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontFamily: 'Inter',
                           fontSize: 16,
@@ -100,7 +101,7 @@ class _PasswordState extends State<Password> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: const Text('Aceptar'),
+                        child: Text(S.of(context).alert_button),
                       ),
                     ),
                   ],
@@ -117,11 +118,11 @@ class _PasswordState extends State<Password> {
         const SizedBox(
           height: 35,
         ),
-        const Center(
+        Center(
           child: FittedBox(
             child: Text(
-              'Cambiar Contraseña',
-              style: TextStyle(fontFamily: 'Inter', fontSize: 20),
+              S.of(context).change_password_title,
+              style: const TextStyle(fontFamily: 'Inter', fontSize: 20),
             ),
           ),
         ),
@@ -203,7 +204,7 @@ class _PasswordState extends State<Password> {
               width: 10,
             ),
             Text(
-              'Incluir minimo un numero',
+              S.of(context).register_condition_1,
               style: TextStyle(
                   fontFamily: 'Inter', color: colorc(1), fontSize: 18),
             ),
@@ -224,7 +225,7 @@ class _PasswordState extends State<Password> {
               width: 10,
             ),
             Text(
-              'Incluir minimo una letra mayuscusla',
+              S.of(context).register_condition_2,
               style: TextStyle(
                   fontFamily: 'Inter', color: colorc(2), fontSize: 18),
             )
@@ -245,7 +246,7 @@ class _PasswordState extends State<Password> {
               width: 10,
             ),
             Text(
-              'Longitud minima de 8',
+              S.of(context).register_condition_3,
               style: TextStyle(
                   fontFamily: 'Inter', color: colorc(3), fontSize: 18),
             )
@@ -266,7 +267,7 @@ class _PasswordState extends State<Password> {
               width: 10,
             ),
             Text(
-              'Deben de coincidir las contraseñas',
+              S.of(context).register_condition_4,
               style: TextStyle(
                   fontFamily: 'Inter', color: colorc(4), fontSize: 18),
             )
@@ -330,10 +331,10 @@ class _PasswordState extends State<Password> {
                         obscureText: isVisiblepwd2,
                         style:
                             const TextStyle(fontFamily: 'Inter', fontSize: 18),
-                        decoration: const InputDecoration(
-                            hintText: 'Contraseña nueva',
-                            contentPadding: EdgeInsets.only(top: 10),
-                            prefixIcon: Icon(Icons.password_rounded),
+                        decoration: InputDecoration(
+                            hintText: S.of(context).change_password_placeholder_password,
+                            contentPadding: const EdgeInsets.only(top: 10),
+                            prefixIcon: const Icon(Icons.password_rounded),
                             focusedBorder: InputBorder.none,
                             border: InputBorder.none),
                       )),
@@ -391,10 +392,10 @@ class _PasswordState extends State<Password> {
                         obscureText: isVisiblepwd3,
                         style:
                             const TextStyle(fontFamily: 'Inter', fontSize: 18),
-                        decoration: const InputDecoration(
-                            hintText: 'Confirmar contraseña',
-                            contentPadding: EdgeInsets.only(top: 10),
-                            prefixIcon: Icon(Icons.password_rounded),
+                        decoration: InputDecoration(
+                            hintText: S.of(context).change_password_placeholder_passwordvry,
+                            contentPadding: const EdgeInsets.only(top: 10),
+                            prefixIcon: const Icon(Icons.password_rounded),
                             focusedBorder: InputBorder.none,
                             border: InputBorder.none),
                       )),

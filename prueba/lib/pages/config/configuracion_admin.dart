@@ -481,6 +481,8 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
             child: FloatingActionButton(
               heroTag: 'lenguaje',
               onPressed: () async {
+                if(S.current.tittle_settings == "Ajustes") perfs.lenguaje = "es_MX";
+                if(S.current.tittle_settings == "Settings") perfs.lenguaje = "en_US";
                 await Navigator.push(
                     context,
                     MaterialPageRoute(

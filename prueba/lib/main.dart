@@ -34,7 +34,6 @@ class BazzApp extends StatefulWidget {
 
 class BazzAppState extends State<BazzApp> {
   final perfs = Preferencias();
-  
 
 
   @override

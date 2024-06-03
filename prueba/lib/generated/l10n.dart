@@ -279,6 +279,456 @@ class S {
       args: [],
     );
   }
+
+  /// `Select language`
+  String get tittle_lang {
+    return Intl.message(
+      'Select language',
+      name: 'tittle_lang',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search`
+  String get search_box {
+    return Intl.message(
+      'Search',
+      name: 'search_box',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get buttom_cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'buttom_cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Home`
+  String get navbar_item_home {
+    return Intl.message(
+      'Home',
+      name: 'navbar_item_home',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `News`
+  String get navbar_item_news {
+    return Intl.message(
+      'News',
+      name: 'navbar_item_news',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Locate`
+  String get navbar_item_locate {
+    return Intl.message(
+      'Locate',
+      name: 'navbar_item_locate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User`
+  String get navbar_item_user {
+    return Intl.message(
+      'User',
+      name: 'navbar_item_user',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Signup`
+  String get title_regiter {
+    return Intl.message(
+      'Signup',
+      name: 'title_regiter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name`
+  String get regiter_subtitle_name {
+    return Intl.message(
+      'Name',
+      name: 'regiter_subtitle_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your name`
+  String get regiter_placeholder_name {
+    return Intl.message(
+      'Enter your name',
+      name: 'regiter_placeholder_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email`
+  String get register_subtitle_email {
+    return Intl.message(
+      'Email',
+      name: 'register_subtitle_email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your email`
+  String get register_placeholder_email {
+    return Intl.message(
+      'Enter your email',
+      name: 'register_placeholder_email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password`
+  String get register_subtitle_password {
+    return Intl.message(
+      'Password',
+      name: 'register_subtitle_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your password`
+  String get register_placeholder_password {
+    return Intl.message(
+      'Enter your password',
+      name: 'register_placeholder_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verify password`
+  String get register_subtitle_passwordvry {
+    return Intl.message(
+      'Verify password',
+      name: 'register_subtitle_passwordvry',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Re-enter your password`
+  String get register_placeholder_passwordvry {
+    return Intl.message(
+      'Re-enter your password',
+      name: 'register_placeholder_passwordvry',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone`
+  String get register_subtitle_phone {
+    return Intl.message(
+      'Phone',
+      name: 'register_subtitle_phone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your phone`
+  String get register_placeholder_phone {
+    return Intl.message(
+      'Enter your phone',
+      name: 'register_placeholder_phone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Minimum 8 characters`
+  String get register_condition_1 {
+    return Intl.message(
+      'Minimum 8 characters',
+      name: 'register_condition_1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Include at least one number`
+  String get register_condition_2 {
+    return Intl.message(
+      'Include at least one number',
+      name: 'register_condition_2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Include at least one capital letter`
+  String get register_condition_3 {
+    return Intl.message(
+      'Include at least one capital letter',
+      name: 'register_condition_3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Passwords must match`
+  String get register_condition_4 {
+    return Intl.message(
+      'Passwords must match',
+      name: 'register_condition_4',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Register`
+  String get register_button {
+    return Intl.message(
+      'Register',
+      name: 'register_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter a valid email`
+  String get register_error_email_1 {
+    return Intl.message(
+      'Enter a valid email',
+      name: 'register_error_email_1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email already registered`
+  String get register_error_email_2 {
+    return Intl.message(
+      'Email already registered',
+      name: 'register_error_email_2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `10 digit cell phone`
+  String get register_error_phone_1 {
+    return Intl.message(
+      '10 digit cell phone',
+      name: 'register_error_phone_1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Number already registered`
+  String get register_error_phone_2 {
+    return Intl.message(
+      'Number already registered',
+      name: 'register_error_phone_2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When logging in with Google`
+  String get alert_is_google_1 {
+    return Intl.message(
+      'When logging in with Google',
+      name: 'alert_is_google_1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `you will have to change your password`
+  String get alert_is_google_2 {
+    return Intl.message(
+      'you will have to change your password',
+      name: 'alert_is_google_2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `from your google account`
+  String get alert_is_google_3 {
+    return Intl.message(
+      'from your google account',
+      name: 'alert_is_google_3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accept`
+  String get alert_button {
+    return Intl.message(
+      'Accept',
+      name: 'alert_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change Passowrd`
+  String get change_password_title {
+    return Intl.message(
+      'Change Passowrd',
+      name: 'change_password_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password new`
+  String get change_password_placeholder_password {
+    return Intl.message(
+      'Password new',
+      name: 'change_password_placeholder_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm Password`
+  String get change_password_placeholder_passwordvry {
+    return Intl.message(
+      'Confirm Password',
+      name: 'change_password_placeholder_passwordvry',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get button_save {
+    return Intl.message(
+      'Save',
+      name: 'button_save',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Feactured`
+  String get home_feactured {
+    return Intl.message(
+      'Feactured',
+      name: 'home_feactured',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Details`
+  String get home_details {
+    return Intl.message(
+      'Details',
+      name: 'home_details',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Photos`
+  String get home_photos {
+    return Intl.message(
+      'Photos',
+      name: 'home_photos',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password reset`
+  String get reset_password_title {
+    return Intl.message(
+      'Password reset',
+      name: 'reset_password_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter the email`
+  String get reset_password_subtitle_1 {
+    return Intl.message(
+      'Please enter the email',
+      name: 'reset_password_subtitle_1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `that is associated with your account`
+  String get reset_password_subtitle_2 {
+    return Intl.message(
+      'that is associated with your account',
+      name: 'reset_password_subtitle_2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send`
+  String get button_send {
+    return Intl.message(
+      'Send',
+      name: 'button_send',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An email has been sent to`
+  String get reset_dialog_text_1 {
+    return Intl.message(
+      'An email has been sent to',
+      name: 'reset_dialog_text_1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `password reset`
+  String get reset_dialog_text_2 {
+    return Intl.message(
+      'password reset',
+      name: 'reset_dialog_text_2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accept`
+  String get reset_dialog_button {
+    return Intl.message(
+      'Accept',
+      name: 'reset_dialog_button',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

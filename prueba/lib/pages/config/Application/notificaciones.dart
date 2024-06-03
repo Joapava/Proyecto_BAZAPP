@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:prueba/Negocio/EditarDatos.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
+import 'package:prueba/generated/l10n.dart';
 
 class Notificaciones extends StatefulWidget {
   const Notificaciones({super.key});
@@ -28,11 +29,11 @@ class _Notificaciones extends State<Notificaciones> {
         const SizedBox(
           height: 40,
         ),
-        const Center(
+        Center(
           child: FittedBox(
             child: Text(
-              'Notificaciones',
-              style: TextStyle(fontFamily: 'Inter', fontSize: 20),
+              S.of(context).subtitle_app_noti,
+              style: const TextStyle(fontFamily: 'Inter', fontSize: 20),
             ),
           ),
         ),
@@ -48,20 +49,20 @@ class _Notificaciones extends State<Notificaciones> {
   Container toogle_buttom() {
     return Container(
       width: 400,
-      height: 120,
+      height: 90,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15), color: Colors.white),
       child: Column(
         children: [
-          const Row(
+          Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               FittedBox(
                 child: Text(
-                  'Aplicacion',
-                  style: TextStyle(
+                  S.of(context).subtitle_box_app,
+                  style: const TextStyle(
                       fontFamily: 'Inter', fontSize: 18, color: Colors.black),
                 ),
               )
@@ -75,19 +76,19 @@ class _Notificaciones extends State<Notificaciones> {
                   const SizedBox(
                     width: 20,
                   ),
-                  const SizedBox(
+                  SizedBox(
                     width: 300,
                     height: 35,
                     child: Row(
                       children: [
-                        Icon(Icons.notifications_active),
-                        SizedBox(
+                        const Icon(Icons.notifications_active),
+                        const SizedBox(
                           width: 5,
                         ),
                         FittedBox(
                           child: Text(
-                            'Notificaciones',
-                            style: TextStyle(fontFamily: 'Inter', fontSize: 16),
+                            S.of(context).subtitle_app_noti,
+                            style: const TextStyle(fontFamily: 'Inter', fontSize: 16),
                           ),
                         ),
                       ],
@@ -100,47 +101,6 @@ class _Notificaciones extends State<Notificaciones> {
                     onChanged: (bool value) {
                       setState(() {
                         perfs.notificaciones = value;
-                      });
-                    },
-                  )
-                ],
-              )),
-          const SizedBox(
-            height: 5,
-          ),
-          SizedBox(
-              width: 400,
-              height: 35,
-              child: Row(
-                children: [
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  const SizedBox(
-                    width: 300,
-                    height: 35,
-                    child: Row(
-                      children: [
-                        Icon(Icons.messenger_sharp),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        FittedBox(
-                          child: Text(
-                            'Notificaciones PUSH',
-                            style: TextStyle(fontFamily: 'Inter', fontSize: 16),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Switch(
-                    value: npush,
-                    activeColor: const Color.fromRGBO(81, 126, 225, 1),
-                    inactiveTrackColor: Colors.white,
-                    onChanged: (bool value) {
-                      setState(() {
-                        npush = value;
                       });
                     },
                   )

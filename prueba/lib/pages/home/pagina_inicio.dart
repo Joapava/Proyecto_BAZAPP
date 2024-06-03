@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prueba/Class/noticias_data.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
+import 'package:prueba/generated/l10n.dart';
 import 'package:prueba/pages/home/imagen_pagina.dart';
 import 'package:prueba/pages/home/pagina_noticias.dart';
 // ignore: depend_on_referenced_packages
@@ -75,9 +76,9 @@ class _PaginaInicioState extends State<PaginaInicio> {
       children: [
         Container(
           margin: const EdgeInsets.fromLTRB(10, 20, 0, 0),
-          child: const Text(
-            "Destacados",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          child: Text(
+            S.of(context).home_feactured,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
         ),
         SizedBox(
@@ -168,9 +169,9 @@ class _PaginaInicioState extends State<PaginaInicio> {
           alignment: Alignment.topLeft,
           child: Container(
             margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
-            child: const Text(
-              "Detalles",
-              style: TextStyle(
+            child: Text(
+              S.of(context).home_details,
+              style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                   fontFamily: "Arial"),
@@ -247,9 +248,9 @@ class _PaginaInicioState extends State<PaginaInicio> {
             children: [
               Container(
                 margin: const EdgeInsets.fromLTRB(10, 30, 10, 5),
-                child: const Text(
-                  "Fotos",
-                  style: TextStyle(
+                child: Text(
+                  S.of(context).home_photos,
+                  style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontFamily: "Arial",
                       fontSize: 25),
