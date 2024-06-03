@@ -145,12 +145,15 @@ class DatosDB {
     var db = FirebaseFirestore.instance;
 
     final noticia = <String, dynamic>{
-      'nombre': nc.nombrePerfil,
-      'cuerpo': nc.cuerpoNoticia,
-      'imagenUrl': nc.urlImagenNoticia,
+      'nombrePerfil': nc.nombrePerfil,
+      'cuerpoNoticia': nc.cuerpoNoticia,
+      'urlImagenNoticia': nc.urlImagenNoticia,
     };
 
-    db.collection("noticias").add(noticia);
+    db.collection("noticias").add(noticia).then((value) {
+      db.collection("noticias").doc(value.id).update({"id":value.id});
+    },);
+    
   }
 
   Future<String> setImagen(File imageFile) async {
