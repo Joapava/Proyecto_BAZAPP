@@ -5,7 +5,6 @@ import 'package:prueba/Negocio/autenticar.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
 // import 'package:prueba/Persistencia/auth_facebook.dart';
 import 'package:prueba/Persistencia/auth_google.dart';
-import 'package:prueba/generated/l10n.dart';
 import 'package:prueba/pages/Login/registro.dart';
 import 'package:prueba/pages/home/home.dart';
 import 'dart:core';
@@ -59,10 +58,10 @@ class _BoxCentral extends State<BoxCentral> {
         const SizedBox(
           height: 55,
         ),
-        FittedBox(
+        const FittedBox(
           child: Text(
-            S.of(context).title_is,
-            style: const TextStyle(
+            'Inicia Sesión en tu cuenta',
+            style: TextStyle(
                 fontSize: 25,
                 fontFamily: 'Inter',
                 color: Colors.white,
@@ -72,10 +71,10 @@ class _BoxCentral extends State<BoxCentral> {
         const SizedBox(
           height: 10,
         ),
-        FittedBox(
+        const FittedBox(
           child: Text(
-            S.of(context).subtitle_1,
-            style: const TextStyle(
+            'Bienvenido de nuevo! Por favor ingresa tus datos',
+            style: TextStyle(
                 fontSize: 18,
                 color: Color.fromARGB(101, 255, 255, 255),
                 fontFamily: 'inter',
@@ -98,14 +97,14 @@ class _BoxCentral extends State<BoxCentral> {
         const SizedBox(
           height: 30,
         ),
-        Row(
+        const Row(
           children: [
-            const SizedBox(
+            SizedBox(
               width: 28,
             ),
             Text(
-              S.of(context).title_box_email,
-              style: const TextStyle(
+              'Correo',
+              style: TextStyle(
                   decoration: TextDecoration.none,
                   color: Colors.white,
                   fontFamily: 'inter',
@@ -120,14 +119,14 @@ class _BoxCentral extends State<BoxCentral> {
         const SizedBox(
           height: 25,
         ),
-        Row(
+        const Row(
           children: [
-            const SizedBox(
+            SizedBox(
               width: 28,
             ),
             Text(
-              S.of(context).title_box_pwd,
-              style: const TextStyle(
+              'Contraseña',
+              style: TextStyle(
                   fontFamily: 'Inter', color: Colors.white, fontSize: 20),
             )
           ],
@@ -145,9 +144,9 @@ class _BoxCentral extends State<BoxCentral> {
                     MaterialPageRoute(builder: (context) => const Reiniciar()));
                 // cleancontroller();
               }),
-              child: Text(
-                S.of(context).forget,
-                style: const TextStyle(
+              child: const Text(
+                '¿Olvidaste tu contraseña?',
+                style: TextStyle(
                     color: Colors.blue,
                     decoration: TextDecoration.underline,
                     decorationColor: Colors.blue,
@@ -160,10 +159,10 @@ class _BoxCentral extends State<BoxCentral> {
         const SizedBox(
           height: 40,
         ),
-        Center(
+        const Center(
           child: Text(
-            S.of(context).subtitle_enter,
-            style: const TextStyle(
+            'O ingresa con',
+            style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 18,
                 color: Color.fromARGB(117, 255, 255, 255)),
@@ -183,11 +182,11 @@ class _BoxCentral extends State<BoxCentral> {
 
   FittedBox messageError() {
     if (isErroremail || isErrorpwd) {
-      return FittedBox(
+      return const FittedBox(
         child: Text(
-          S.of(context).message_error_login,
-          style: const TextStyle(
-              color: Colors.red, fontFamily: 'Inter', fontSize: 18),
+          'Correo o contraseña incorrectos',
+          style:
+              TextStyle(color: Colors.red, fontFamily: 'Inter', fontSize: 18),
         ),
       );
     }
@@ -236,14 +235,14 @@ class _BoxCentral extends State<BoxCentral> {
                   style: const TextStyle(
                       color: Colors.white, fontFamily: 'Inter', fontSize: 18),
                   obscureText: isVisible,
-                  decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.only(bottom: 12),
-                      hintText: S.of(context).placeholder_box_pwd,
-                      hintStyle: const TextStyle(
+                  decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: 12),
+                      hintText: 'Ingrese su contraseña',
+                      hintStyle: TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 18,
                           color: Color.fromARGB(101, 255, 255, 255)),
-                      prefixIcon: const Icon(Icons.lock_person_outlined,
+                      prefixIcon: Icon(Icons.lock_person_outlined,
                           color: Color.fromARGB(101, 255, 255, 255)),
                       focusedBorder: InputBorder.none,
                       border: InputBorder.none),
@@ -309,14 +308,14 @@ class _BoxCentral extends State<BoxCentral> {
                   keyboardType: TextInputType.emailAddress,
                   style: const TextStyle(
                       color: Colors.white, fontFamily: 'Inter', fontSize: 18),
-                  decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.only(bottom: 12),
-                      hintText: S.of(context).placeholder_box_email,
-                      hintStyle: const TextStyle(
+                  decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: 12),
+                      hintText: 'Ingrese su correo',
+                      hintStyle: TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 18,
                           color: Color.fromARGB(101, 255, 255, 255)),
-                      prefixIcon: const Icon(Icons.email_outlined,
+                      prefixIcon: Icon(Icons.email_outlined,
                           color: Color.fromARGB(101, 255, 255, 255)),
                       focusedBorder: InputBorder.none,
                       border: InputBorder.none),
@@ -340,7 +339,7 @@ class _BoxCentral extends State<BoxCentral> {
             String id = await Autenticar().iniciarsesion(
                 email: emailcontrol.text, pwd: passwordcontrol.text);
             if (id.isNotEmpty) {
-              await ValidarDatos().datoslogin(id);
+             await ValidarDatos().datoslogin(id);
               funcion_ingreso();
             } else {
               setState(() {
@@ -360,9 +359,9 @@ class _BoxCentral extends State<BoxCentral> {
           }
         }),
         backgroundColor: Colors.white,
-        child: Text(
-          S.of(context).title_box_enter,
-          style: const TextStyle(fontFamily: 'Inter', fontSize: 18),
+        child: const Text(
+          'Ingresar',
+          style: TextStyle(fontFamily: 'Inter', fontSize: 18),
         ),
       ),
     );
@@ -370,7 +369,6 @@ class _BoxCentral extends State<BoxCentral> {
 
   // ignore: non_constant_identifier_names
   void funcion_ingreso() {
-    perfs.lenguaje = Localizations.localeOf(context).languageCode;
     if (mounted) {
       Navigator.pushAndRemoveUntil(
           context,
@@ -398,9 +396,9 @@ class _BoxCentral extends State<BoxCentral> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          S.of(context).not_account,
-          style: const TextStyle(
+        const Text(
+          '¿Aún no tienes cuenta?',
+          style: TextStyle(
             fontFamily: 'Inter',
             fontSize: 18,
             color: Colors.white,
@@ -420,9 +418,9 @@ class _BoxCentral extends State<BoxCentral> {
                       MaterialPageRoute(
                           builder: (context) => const Registro()));
                 }),
-                child: Text(
-                  S.of(context).register,
-                  style: const TextStyle(
+                child: const Text(
+                  'Registrate aqui',
+                  style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 18,
                       color: Colors.blue,
@@ -441,16 +439,12 @@ class _BoxCentral extends State<BoxCentral> {
       child: Center(
         child: FloatingActionButton(
           onPressed: () async {
-            try {
-              bool registrado = await Autenticar().google();
-              if (registrado) {
-                funcion_ingreso();
-              } else {
-                Authgoole().singout();
-                funcion_registro();
-              }
-            } catch (e) {
-              print('Error $e');
+            bool registrado = await Autenticar().google();
+            if (registrado) {
+              funcion_ingreso();
+            } else {
+              Authgoole().singout();
+              funcion_registro();
             }
           },
           heroTag: 'btngoogle',

@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 import 'package:prueba/Class/administrador.dart';
+import 'package:prueba/Class/aviso.dart';
 import 'package:prueba/Class/noticias_data.dart';
 import 'package:prueba/Persistencia/Auth.dart';
 import 'package:prueba/Persistencia/DatosDB.dart';
@@ -31,7 +32,6 @@ class ValidarDatos {
         return true;
       }
     }
-    
     return false;
   }
 
@@ -89,7 +89,12 @@ class ValidarDatos {
     return await DatosDB().getNoticias();
   }
 
+<<<<<<< Updated upstream
   Future<List<String>> getImagenes() async{
     return await DatosDB().getImagenes();
+=======
+  Future<List<Aviso>> getAvisos() async{
+    return await DatosDB().getAvisos();
+>>>>>>> Stashed changes
   }
 }

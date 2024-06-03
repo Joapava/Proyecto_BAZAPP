@@ -1,17 +1,21 @@
+<<<<<<< Updated upstream
 import 'dart:io';
 
+=======
+>>>>>>> Stashed changes
 import 'package:prueba/Class/noticias_data.dart';
 import 'package:prueba/Persistencia/DatosDB.dart';
 import 'package:prueba/Class/Expositor.dart';
 
-class InsertarDatos {
-  void setExpositor(Expositor ex, String id) {
+class InsertarDatos{
+  void setExpositor(Expositor ex, String id){
     DatosDB().setExpositor(ex, id);
   }
 
-  void setNoticia(Noticia noticia) {
+  void setNoticia(Noticia noticia){
     DatosDB().setNoticia(noticia);
   }
+<<<<<<< Updated upstream
 
   Future<String> setImagen(File imageFile) async {
     // String fileName = 'Fotos/${DateTime.now().millisecondsSinceEpoch}.jpg';
@@ -26,3 +30,6 @@ class InsertarDatos {
     await DatosDB().deleteImagen(imageUrl);
   }
 }
+=======
+}
+>>>>>>> Stashed changes

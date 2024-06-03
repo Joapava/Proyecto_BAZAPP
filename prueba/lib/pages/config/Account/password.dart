@@ -170,7 +170,6 @@ class _PasswordState extends State<Password> {
           if (!isErrorpwd2 && !isErrorpwd3) {
             Autenticar().cambiarpwd(pwd3control.text);
             perfs.clear();
-            // Autenticar().singout();
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const Login()));
           }

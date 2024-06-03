@@ -11,10 +11,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_localizations:
-    sdk: flutter
-  photo_view: ^0.14.0
+  photo_view: ^0.14.0 
 
+  intl: ^0.17.0 
   cupertino_icons: ^1.0.6
   google_nav_bar: ^5.0.6
   email_validator: ^2.1.17
@@ -30,7 +29,6 @@ dependencies:
   flutter_bloc: ^8.1.5
   equatable: ^2.0.5
   http: ^1.2.1
-  intl: ^0.19.0
 
 dev_dependencies:
   change_app_package_name: ^1.1.0
@@ -43,10 +41,11 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  assets:
+  assets: 
     - lib/images/
     # - lib/images-prueba/
     - assets/
+
 
   fonts:
     - family: Inter
@@ -54,5 +53,3 @@ flutter:
         - asset: assets/fonts/Inter-Regular.ttf
         - asset: assets/fonts/Inter.ttf
           style: italic
-flutter_intl:
-  enabled: true

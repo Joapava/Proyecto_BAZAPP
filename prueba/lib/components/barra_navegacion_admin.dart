@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:prueba/pages/config/configuracion.dart';
-import 'package:prueba/pages/home/pagina_inicio.dart';
+import 'package:prueba/pages/config/configuracion_admin.dart';
+import 'package:prueba/pages/home/pagina_inicio_admin.dart';
 import 'package:prueba/pages/home/pagina_noticias.dart';
 import 'package:prueba/pages/home/pagina_puestos.dart';
+import 'package:prueba/pages/home/pagina_avisos_admin.dart';
+import 'package:prueba/pages/home/estadisticas.dart'; // Asegúrate de importar la página de analítica
 
-class BarraNavegacion extends StatefulWidget {
-  const BarraNavegacion({super.key});
+class BarraNavegacionAdmin extends StatefulWidget {
+  const BarraNavegacionAdmin({super.key});
 
   @override
-  _BarraNavegacionState createState() => _BarraNavegacionState();
+  _BarraNavegacionAdminState createState() => _BarraNavegacionAdminState();
 }
 
-class _BarraNavegacionState extends State<BarraNavegacion> {
+class _BarraNavegacionAdminState extends State<BarraNavegacionAdmin> {
   int _indiceSeleccionado = 0;
   final List<Widget> _paginas = [
-    const PaginaInicio(),
+    const PaginaInicioAdmin(),
     const PaginaNoticias(),
+    const PaginaAvisosAdmin(),
     const PaginaPuestos(),
-    const Configuracion(),
+    const MenuAdmin(),
+    const ConfiguracionAdmin(),
+     // Añade la página de analítica
   ];
 
   void _onItemTapped(int index) {
@@ -52,8 +57,11 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
     return [
       navBarItem('Inicio', 'lib/images/home.png', 0),
       navBarItem('Noticias', 'lib/images/news.png', 1),
-      navBarItem('Ubicación', 'lib/images/location.png', 2),
-      navBarItem('Usuario', 'lib/images/profile.png', 3),
+      navBarItem('Avisos', 'lib/images/alerta.png', 2),
+      navBarItem('Ubicación', 'lib/images/location.png', 3),
+       navBarItem('Estadisticas', 'lib/images/analitica.png', 4), 
+      navBarItem('Usuario', 'lib/images/profile.png', 5),
+     // Añade el nuevo ítem
     ];
   }
 
