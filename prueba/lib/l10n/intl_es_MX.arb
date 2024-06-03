@@ -30,7 +30,9 @@
 
     "navbar_item_home": "Inicio",
     "navbar_item_news": "Noticias",
+    "navbar_item_alerts": "Avisos",
     "navbar_item_locate": "Ubicacion",
+    "navbar_item_stacs": "Estadisticas",
     "navbar_item_user": "Usuario",
 
     "title_regiter": "Registro",
@@ -75,7 +77,7 @@
     "reset_dialog_text_2": "el restablecimiento de la contraseña",
     "reset_dialog_button": "Aceptar",
 
-    "loocate_indication_1": "Disponible",
+    "locate_indication_1": "Disponible",
     "locate_indication_2": "Seleccionado",
     "locate_indication_3": "Ocupado",
     "locate_entry": "Entrada",

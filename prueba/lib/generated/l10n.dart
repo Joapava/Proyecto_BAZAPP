@@ -330,11 +330,31 @@ class S {
     );
   }
 
+  /// `AD`
+  String get navbar_item_alerts {
+    return Intl.message(
+      'AD',
+      name: 'navbar_item_alerts',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Location`
   String get navbar_item_locate {
     return Intl.message(
       'Location',
       name: 'navbar_item_locate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Statistics`
+  String get navbar_item_stacs {
+    return Intl.message(
+      'Statistics',
+      name: 'navbar_item_stacs',
       desc: '',
       args: [],
     );
@@ -731,10 +751,10 @@ class S {
   }
 
   /// `Available`
-  String get loocate_indication_1 {
+  String get locate_indication_1 {
     return Intl.message(
       'Available',
-      name: 'loocate_indication_1',
+      name: 'locate_indication_1',
       desc: '',
       args: [],
     );

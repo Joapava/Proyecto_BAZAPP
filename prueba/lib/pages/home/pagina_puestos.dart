@@ -3,6 +3,7 @@ import 'package:prueba/Persistencia/DatosDB.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
 import 'package:prueba/components/generar_botones.dart';
 import 'package:prueba/components/informacion_compra_puesto.dart';
+import 'package:prueba/generated/l10n.dart';
 
 class PaginaPuestos extends StatefulWidget {
   const PaginaPuestos({super.key});
@@ -254,9 +255,9 @@ Widget build(BuildContext context) {
                           color: Color.fromRGBO(168, 169, 171, 1.0),
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
-                        child: const Center(
-                          child: Text("Entrada",
-                              style: TextStyle(
+                        child: Center(
+                          child: Text(S.of(context).locate_entry,
+                              style: const TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.bold)),
                         ),
                       ),
@@ -273,9 +274,9 @@ Widget build(BuildContext context) {
                           color: Color.fromRGBO(168, 169, 171, 1.0),
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
-                        child: const Center(
-                          child: Text("Entrada",
-                              style: TextStyle(
+                        child: Center(
+                          child: Text(S.of(context).locate_entry,
+                              style: const TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold)),
                         ),
                       ),
@@ -312,7 +313,7 @@ Widget significadoColorPuesto() {
                 borderRadius: BorderRadius.circular(3),
               ),
             ),
-            const Text("Disponible")
+            Text(S.current.locate_indication_1)
           ],
         ),
         const SizedBox(height: 10),
@@ -327,7 +328,7 @@ Widget significadoColorPuesto() {
                 borderRadius: BorderRadius.circular(3),
               ),
             ),
-            const Text("Seleccionado")
+            Text(S.current.locate_indication_2)
           ],
         ),
         const SizedBox(height: 10),
@@ -342,7 +343,7 @@ Widget significadoColorPuesto() {
                 borderRadius: BorderRadius.circular(3),
               ),
             ),
-            const Text("Ocupado")
+            Text(S.current.locate_indication_3)
           ],
         ),
       ],

@@ -44,6 +44,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "home_feactured": MessageLookupByLibrary.simpleMessage("Destacados"),
         "home_photos": MessageLookupByLibrary.simpleMessage("Fotos"),
         "locate_entry": MessageLookupByLibrary.simpleMessage("Entrada"),
+        "locate_indication_1":
+            MessageLookupByLibrary.simpleMessage("Disponible"),
         "locate_indication_2":
             MessageLookupByLibrary.simpleMessage("Seleccionado"),
         "locate_indication_3": MessageLookupByLibrary.simpleMessage("Ocupado"),
@@ -57,13 +59,14 @@ class MessageLookup extends MessageLookupByLibrary {
             "Total de lugares seleccionados:"),
         "locate_total_cost":
             MessageLookupByLibrary.simpleMessage("Costo total:"),
-        "loocate_indication_1":
-            MessageLookupByLibrary.simpleMessage("Disponible"),
         "message_error_login": MessageLookupByLibrary.simpleMessage(
             "Correo o contraseña incorrectos"),
+        "navbar_item_alerts": MessageLookupByLibrary.simpleMessage("Avisos"),
         "navbar_item_home": MessageLookupByLibrary.simpleMessage("Inicio"),
         "navbar_item_locate": MessageLookupByLibrary.simpleMessage("Ubicacion"),
         "navbar_item_news": MessageLookupByLibrary.simpleMessage("Noticias"),
+        "navbar_item_stacs":
+            MessageLookupByLibrary.simpleMessage("Estadisticas"),
         "navbar_item_user": MessageLookupByLibrary.simpleMessage("Usuario"),
         "not_account":
             MessageLookupByLibrary.simpleMessage("¿Aún no tienes cuenta?"),

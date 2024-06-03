@@ -30,7 +30,9 @@
 
     "navbar_item_home": "Home",
     "navbar_item_news": "News",
+    "navbar_item_alerts": "AD",
     "navbar_item_locate": "Location",
+    "navbar_item_stacs": "Statistics",
     "navbar_item_user": "User",
 
     "title_regiter": "Signup",
@@ -75,7 +77,7 @@
     "reset_dialog_text_2": "password reset",
     "reset_dialog_button": "Accept",
 
-    "loocate_indication_1": "Available",
+    "locate_indication_1": "Available",
     "locate_indication_2": "Selected",
     "locate_indication_3": "occupied",
     "locate_entry": "Entry",
