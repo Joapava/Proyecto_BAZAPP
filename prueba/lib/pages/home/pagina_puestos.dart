@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:prueba/Persistencia/DatosDB.dart';
+import 'package:prueba/Persistencia/Preferencias.dart';
 import 'package:prueba/components/generar_botones.dart';
 import 'package:prueba/components/informacion_compra_puesto.dart';
 
@@ -12,6 +14,22 @@ class PaginaPuestos extends StatefulWidget {
 class _PaginaPuestosState extends State<PaginaPuestos> {
   void updateState() {
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initializePurchasedLocations();
+  }
+
+  Future<void> initializePurchasedLocations() async {
+    await Preferencias.init();
+    String expositorId = Preferencias().id;
+    List<String> loadedPurchasedLocations =
+        await DatosDB().getPurchasedLocations(expositorId);
+    setState(() {
+      purchasedLocations = loadedPurchasedLocations;
+    });
   }
 
   // Función para generar etiquetas únicas con letras y números consecutivos
@@ -41,17 +59,26 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
                     const SizedBox(height: 10), // Espacio entre elementos
                     if (selectedLocations.isNotEmpty)
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           setState(() {
                             for (var label in selectedLocations) {
-                              // Aquí marcamos los lugares comprados como no interactivos
                               purchasedLocations.add(label);
                             }
+                          });
+                          await Preferencias
+                              .init(); // Inicializar Preferencias si no está hecho ya
+                          String expositorId = Preferencias().id;
+                          await DatosDB().savePurchasedLocations(
+                              selectedLocations,
+                              expositorId
+                              ); // Guardar en Firebase
+                          setState(() {
                             selectedLocations.clear();
                           });
                         },
-                        child: const Text('Comprar',style: TextStyle(color: Colors.black),),
-                      ),
+                        child: const Text('Comprar',
+                            style: TextStyle(color: Colors.black)),
+                      )
                   ],
                 ),
               ),

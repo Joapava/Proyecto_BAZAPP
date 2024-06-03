@@ -8,6 +8,30 @@ import 'package:prueba/Class/noticias_data.dart';
 import 'package:http/http.dart' as http;
 
 class DatosDB {
+  Future<List<String>> getPurchasedLocations(String expositorId) async {
+    var db = FirebaseFirestore.instance;
+    var snapshot = await db
+        .collection('registroEspacio')
+        .where('id_expositor', isEqualTo: expositorId)
+        .get();
+
+    List<String> purchasedLocations = [];
+    for (var doc in snapshot.docs) {
+      purchasedLocations.add(doc['id_espacio']);
+    }
+    return purchasedLocations;
+  }
+
+  Future<void> savePurchasedLocations(
+      List<String> locations, String expositorId) async {
+    var db = FirebaseFirestore.instance;
+    for (String location in locations) {
+      await db.collection('registroEspacio').add({
+        'id_espacio': location,
+        'id_expositor': expositorId,
+      });
+    }
+  }
 
   Future<List<Expositor>> getExpositores() async {
     List<Expositor> listaExpositores = [];
