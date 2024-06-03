@@ -5,6 +5,14 @@ import 'package:prueba/Persistencia/Preferencias.dart';
 import 'package:prueba/Persistencia/auth_google.dart';
 
 class Autenticar {
+  Future singout()async{
+    Auth().signOut();
+  }
+
+  Future singoutgoogle() async{
+    Authgoole().singout();
+  }
+
   Future<String> cambiarpwd(String pwd) async {
     try {
       await Auth().cambiarpwd(pwd);

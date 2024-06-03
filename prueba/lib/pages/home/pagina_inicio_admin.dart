@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:prueba/Negocio/InsertarDatos.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
+import 'package:prueba/generated/l10n.dart';
 import 'package:prueba/pages/home/imagen_pagina.dart';
 import 'package:prueba/Class/noticias_data.dart';
 import 'package:prueba/pages/home/pagina_noticias.dart';
@@ -47,7 +49,16 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
   }
 
   Future<void> _loadImages() async {
-    List<String> urls = await ValidarDatos().getImagenes();
+    ListResult result = await FirebaseStorage.instance.ref('uploads').listAll();
+    List<String> urls = [];
+    for (var ref in result.items) {
+      try {
+        String url = await ref.getDownloadURL();
+        urls.add(url);
+      } catch (e) {
+        print('Error al cargar la imagen: $e');
+      }
+    }
     if (mounted) {
       setState(() {
         _imageUrls = urls;
@@ -60,8 +71,11 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image != null) {
       File imageFile = File(image.path);
+      String fileName = 'uploads/${DateTime.now().millisecondsSinceEpoch}.jpg';
       try {
-        String downloadURL = await InsertarDatos().setImagen(imageFile);
+        await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
+        String downloadURL =
+            await FirebaseStorage.instance.ref(fileName).getDownloadURL();
         if (mounted) {
           setState(() {
             _imageUrls.add(downloadURL);
@@ -70,6 +84,19 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
       } catch (e) {
         print('Error uploading image: $e');
       }
+    }
+  }
+
+  Future<void> _deleteImage(String imageUrl) async {
+    try {
+      // Eliminar la imagen de Firebase Storage
+      await InsertarDatos().deleteImagen(imageUrl);
+      // Eliminar la URL de la imagen de la lista
+      setState(() {
+        _imageUrls.remove(imageUrl);
+      });
+    } catch (e) {
+      print('Error deleting image: $e');
     }
   }
 
@@ -102,9 +129,9 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
       children: [
         Container(
           margin: const EdgeInsets.fromLTRB(10, 20, 0, 0),
-          child: const Text(
-            "Destacados",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          child: Text(
+            S.of(context).home_feactured,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
         ),
         SizedBox(
@@ -195,9 +222,9 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
           alignment: Alignment.topLeft,
           child: Container(
             margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
-            child: const Text(
-              "Detalles",
-              style: TextStyle(
+            child: Text(
+              S.of(context).home_details,
+              style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                   fontFamily: "Arial"),
@@ -274,9 +301,9 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
             children: [
               Container(
                 margin: const EdgeInsets.fromLTRB(10, 30, 10, 5),
-                child: const Text(
-                  "Fotos",
-                  style: TextStyle(
+                child: Text(
+                  S.of(context).home_photos,
+                  style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontFamily: "Arial",
                       fontSize: 25),
@@ -320,6 +347,33 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
                     imageName: imageUrl,
                   ),
                 ),
+              );
+            },
+            onLongPress: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Eliminar Imagen'),
+                    content: const Text(
+                        '¿Estás seguro de que deseas eliminar esta imagen?'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('Cancelar'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: const Text('Eliminar'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          _deleteImage(imageUrl);
+                        },
+                      ),
+                    ],
+                  );
+                },
               );
             },
             child: Hero(

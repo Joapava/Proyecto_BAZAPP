@@ -32,6 +32,7 @@ class _agregar_noticiaState extends State<agregar_noticia> {
     });
   }
 
+  // colocar los metodos en las capas correspondientes
   Future<void> _pickImage() async {
     if (isPickingImage) return;
 
@@ -45,7 +46,7 @@ class _agregar_noticiaState extends State<agregar_noticia> {
       if (image != null) {
         File imageFile = File(image.path);
         String fileName =
-            'Noticias/${DateTime.now().millisecondsSinceEpoch}.jpg';
+            'uploads/${DateTime.now().millisecondsSinceEpoch}.jpg';
         await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
         String downloadURL =
             await FirebaseStorage.instance.ref(fileName).getDownloadURL();
@@ -65,9 +66,15 @@ class _agregar_noticiaState extends State<agregar_noticia> {
   void _submitForm() {
     if (_formKey.currentState!.validate() && _imagenUrlNoticia != null) {
       Navigator.pop(
-          context,
-          Noticia(
-              '', _nombreUsuario, _cuerpoController.text, _imagenUrlNoticia!));
+        context,
+        Noticia(
+          '',
+          '',
+          _nombreUsuario,
+          _cuerpoController.text,
+          _imagenUrlNoticia!,
+        ),
+      );
     }
   }
 

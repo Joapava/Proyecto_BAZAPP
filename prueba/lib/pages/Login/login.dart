@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
 import 'package:prueba/Negocio/autenticar.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
-// import 'package:prueba/Persistencia/auth_facebook.dart';
 import 'package:prueba/Persistencia/auth_google.dart';
 import 'package:prueba/pages/Login/registro.dart';
 import 'package:prueba/pages/home/home.dart';
@@ -338,7 +337,7 @@ class _BoxCentral extends State<BoxCentral> {
             String id = await Autenticar().iniciarsesion(
                 email: emailcontrol.text, pwd: passwordcontrol.text);
             if (id.isNotEmpty) {
-              ValidarDatos().datoslogin(id);
+             await ValidarDatos().datoslogin(id);
               funcion_ingreso();
             } else {
               setState(() {

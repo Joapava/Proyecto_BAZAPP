@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prueba/generated/l10n.dart';
 
 class Terminos extends StatefulWidget {
   const Terminos({super.key});
@@ -24,11 +25,11 @@ class _TerminosState extends State<Terminos> {
         const SizedBox(
           height: 30,
         ),
-        const Center(
+        Center(
           child: FittedBox(
             child: Text(
-              'Terminos y Condiciones',
-              style: TextStyle(fontFamily: 'Inter', fontSize: 25),
+              S.of(context).subtitle_policy_term,
+              style: const TextStyle(fontFamily: 'Inter', fontSize: 25),
             ),
           ),
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prueba/components/generar_botones.dart';
+import 'package:prueba/generated/l10n.dart';
 
 class InformacionBarraCompra extends StatelessWidget {
   const InformacionBarraCompra({super.key});
@@ -17,7 +18,7 @@ Widget informacionCompra() {
   return Container(
     width:
         550, // Aseguramos que el ancho sea el mismo que el contenedor de puestos
-    height: 250,
+    height: 330,
     decoration: BoxDecoration(
       color: const Color.fromRGBO(168, 169, 171, 0.2),
       borderRadius: BorderRadius.circular(10),
@@ -27,13 +28,13 @@ Widget informacionCompra() {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.shopping_cart, color: Colors.black54),
-              SizedBox(width: 10),
+              const Icon(Icons.shopping_cart, color: Colors.black54),
+              const SizedBox(width: 10),
               Text(
-                'Resumen de la Compra',
-                style: TextStyle(
+                S.current.locate_resume_buy,
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
@@ -41,20 +42,26 @@ Widget informacionCompra() {
               ),
             ],
           ),
+          Text(S.current.locate_information, style: const TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+            color: Colors.black
+          ),),
           const Divider(color: Colors.black54),
           Text(
-            'Total lugares seleccionados: $totalSelected',
+            '${S.current.locate_total} $totalSelected',
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           Text(
-            'Costo total: $totalPrice pesos',
+            '${S.current.locate_total_cost} $totalPrice pesos',
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
-          const Text(
-            'Lugares seleccionados:',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          Text(
+            S.current.locate_selected_spaces,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           Expanded(

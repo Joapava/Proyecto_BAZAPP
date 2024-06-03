@@ -1,6 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:prueba/Negocio/autenticar.dart';
+import 'package:prueba/generated/l10n.dart';
 
 class Reiniciar extends StatefulWidget {
   const Reiniciar({super.key});
@@ -48,10 +49,10 @@ class _ReiniciarState extends State<Reiniciar> {
         const SizedBox(
           height: 30,
         ),
-        const FittedBox(
+        FittedBox(
           child: Text(
-            'Recuperacion de Contraseña',
-            style: TextStyle(
+            S.of(context).reset_password_title,
+            style: const TextStyle(
                 fontFamily: 'Inter', fontSize: 25, color: Colors.white),
           ),
         ),
@@ -90,9 +91,9 @@ class _ReiniciarState extends State<Reiniciar> {
           }
         }),
         backgroundColor: Colors.white,
-        child: const Text(
-          'Enviar',
-          style: TextStyle(fontFamily: 'Inter', fontSize: 18),
+        child: Text(
+          S.of(context).button_send,
+          style: const TextStyle(fontFamily: 'Inter', fontSize: 18),
         ),
       ),
     );
@@ -124,20 +125,20 @@ class _ReiniciarState extends State<Reiniciar> {
               const SizedBox(
                 height: 35,
               ),
-              const Center(
+              Center(
                 child: FittedBox(
                   child: Text(
-                    'Se ha enviado un correo para',
-                    style: TextStyle(
+                    S.of(context).reset_dialog_text_1,
+                    style: const TextStyle(
                         fontFamily: 'Inter', fontSize: 18, color: Colors.white),
                   ),
                 ),
               ),
-              const Center(
+              Center(
                 child: FittedBox(
                   child: Text(
-                    'el restablecimiento de la contraseña',
-                    style: TextStyle(
+                    S.of(context).reset_dialog_text_2,
+                    style: const TextStyle(
                         fontFamily: 'Inter', fontSize: 18, color: Colors.white),
                   ),
                 ),
@@ -158,9 +159,9 @@ class _ReiniciarState extends State<Reiniciar> {
                   },
                   elevation: 0,
                   backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
-                  child: const Text(
-                    'Confirmar',
-                    style: TextStyle(fontFamily: 'Inter', fontSize: 18),
+                  child: Text(
+                    S.of(context).reset_dialog_button,
+                    style: const TextStyle(fontFamily: 'Inter', fontSize: 18),
                   ),
                 ),
               ),
@@ -205,14 +206,14 @@ class _ReiniciarState extends State<Reiniciar> {
                 keyboardType: TextInputType.emailAddress,
                 style: const TextStyle(
                     color: Colors.white, fontFamily: 'Inter', fontSize: 18),
-                decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.only(bottom: 12),
-                    hintText: 'Ingrese su correo',
-                    hintStyle: TextStyle(
+                decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.only(bottom: 12),
+                    hintText: S.of(context).placeholder_box_email,
+                    hintStyle: const TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 18,
                         color: Color.fromARGB(101, 255, 255, 255)),
-                    prefixIcon: Icon(Icons.email_outlined,
+                    prefixIcon: const Icon(Icons.email_outlined,
                         color: Color.fromARGB(101, 255, 255, 255)),
                     focusedBorder: InputBorder.none,
                     border: InputBorder.none),
@@ -221,20 +222,20 @@ class _ReiniciarState extends State<Reiniciar> {
   }
 
   Center indicacion() {
-    return const Center(
+    return Center(
         child: Column(
       children: [
         FittedBox(
           child: Text(
-            'Favor de ingresar el correo',
-            style: TextStyle(
+            S.of(context).reset_password_subtitle_1,
+            style: const TextStyle(
                 fontFamily: 'Inter', fontSize: 20, color: Colors.white),
           ),
         ),
         FittedBox(
           child: Text(
-            'que esta asociado su cuenta',
-            style: TextStyle(
+            S.of(context).reset_password_subtitle_2,
+            style: const TextStyle(
                 fontFamily: 'Inter', fontSize: 20, color: Colors.white),
           ),
         ),

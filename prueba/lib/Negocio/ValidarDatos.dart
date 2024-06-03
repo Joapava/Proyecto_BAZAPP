@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 import 'package:prueba/Class/administrador.dart';
+import 'package:prueba/Class/aviso.dart';
 import 'package:prueba/Class/noticias_data.dart';
 import 'package:prueba/Persistencia/Auth.dart';
 import 'package:prueba/Persistencia/DatosDB.dart';
@@ -35,17 +36,17 @@ class ValidarDatos {
   }
 
   String mayus(String str) {
-  if (str.isEmpty) {
-    return str;
+    if (str.isEmpty) {
+      return str;
+    }
+    return str[0].toUpperCase() + str.substring(1).toLowerCase();
   }
-  return str[0].toUpperCase() + str.substring(1).toLowerCase();
-}
 
-  Future<void> administrador(String id)async{
+  Future<void> administrador(String id) async {
     final perfs = Preferencias();
     final List<Administrador> admins = await DatosDB().getAdmin();
-    for(var ad in admins){
-      if(id == ad.idexpositor){
+    for (var ad in admins) {
+      if (id == ad.idexpositor) {
         perfs.admin = ad.idadministrador;
         perfs.lvl = ad.nivel;
       }
@@ -84,11 +85,16 @@ class ValidarDatos {
     await Auth().signOut();
   }
 
-  Future<List<Noticia>> getNoticias() async{
+  Future<List<Noticia>> getNoticias() async {
     return await DatosDB().getNoticias();
   }
 
-  Future<List<String>> getImagenes() async{
+  Future<List<String>> getImagenes() async {
     return await DatosDB().getImagenes();
+  }
+
+  Future<List<Aviso>> getAvisos() async{
+    return await DatosDB().getAvisos();
+
   }
 }

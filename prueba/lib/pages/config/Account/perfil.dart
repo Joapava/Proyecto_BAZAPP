@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:prueba/Negocio/EditarDatos.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
+import 'package:prueba/generated/l10n.dart';
 
 class Perfil extends StatefulWidget {
   final Preferencias perfs;
@@ -43,11 +44,11 @@ class _Perfil extends State<Perfil> {
         const SizedBox(
           height: 40,
         ),
-        const Center(
+        Center(
           child: FittedBox(
             child: Text(
-              'Perfil',
-              style: TextStyle(fontFamily: 'Inter', fontSize: 24),
+              S.of(context).subtitle_account_profile,
+              style: const TextStyle(fontFamily: 'Inter', fontSize: 24),
             ),
           ),
         ),
@@ -55,15 +56,15 @@ class _Perfil extends State<Perfil> {
         const SizedBox(
           height: 20,
         ),
-        const Row(
+        Row(
           children: [
-            SizedBox(
+            const SizedBox(
               width: 30,
             ),
             FittedBox(
               child: Text(
-                'Nombre',
-                style: TextStyle(fontFamily: 'Inter', fontSize: 20),
+                S.of(context).regiter_subtitle_name,
+                style: const TextStyle(fontFamily: 'Inter', fontSize: 20),
               ),
             ),
           ],
@@ -72,15 +73,15 @@ class _Perfil extends State<Perfil> {
         const SizedBox(
           height: 20,
         ),
-        const Row(
+        Row(
           children: [
-            SizedBox(
+            const SizedBox(
               width: 30,
             ),
             FittedBox(
               child: Text(
-                'Celular',
-                style: TextStyle(fontFamily: 'Inter', fontSize: 20),
+                S.of(context).register_subtitle_phone,
+                style: const TextStyle(fontFamily: 'Inter', fontSize: 20),
               ),
             ),
           ],

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:prueba/Persistencia/DatosDB.dart';
+import 'package:prueba/Persistencia/Preferencias.dart';
 import 'package:prueba/components/generar_botones.dart';
 import 'package:prueba/components/informacion_compra_puesto.dart';
 
@@ -14,53 +16,81 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
     setState(() {});
   }
 
+  @override
+  void initState() {
+    super.initState();
+    initializePurchasedLocations();
+  }
+// GUARDAR COMPRAS
+
+
+
+
+ Future<void> initializePurchasedLocations() async {
+    await Preferencias.init();
+    List<String> allOccupiedLocations =
+        await DatosDB().getAllOccupiedLocations();
+
+    setState(() {
+      purchasedLocations = allOccupiedLocations;
+    });
+  }
+
   // Función para generar etiquetas únicas con letras y números consecutivos
   List<String> generateLabels(String letter, int start, int count) {
     return List<String>.generate(
         count, (index) => '$letter${start + index + 1}');
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            return SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(
-                    10.0), // Margen alrededor de la pantalla
-                child: Column(
-                  children: [
-                    significadoColorPuesto(),
-                    const SizedBox(height: 10), // Espacio entre elementos
-                    contenedorPuestos(updateState, constraints.maxWidth,
-                        constraints.maxHeight),
-                    const SizedBox(height: 10), // Espacio entre elementos
-                    visualizarInformacionCompta(),
-                    const SizedBox(height: 10), // Espacio entre elementos
-                    if (selectedLocations.isNotEmpty)
-                      ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            for (var label in selectedLocations) {
-                              // Aquí marcamos los lugares comprados como no interactivos
-                              purchasedLocations.add(label);
-                            }
-                            selectedLocations.clear();
-                          });
-                        },
-                        child: const Text('Comprar',style: TextStyle(color: Colors.black),),
-                      ),
-                  ],
-                ),
+   @override
+Widget build(BuildContext context) {
+  return SafeArea(
+    child: Scaffold(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  significadoColorPuesto(),
+                  const SizedBox(height: 10),
+                  contenedorPuestos(updateState, constraints.maxWidth, constraints.maxHeight),
+                  const SizedBox(height: 10),
+                  visualizarInformacionCompta(),
+                  const SizedBox(height: 10),
+                  if (selectedLocations.isNotEmpty)
+                    ElevatedButton(
+                      onPressed: () async {
+                        await Preferencias.init();
+                        String expositorId = Preferencias().id;
+                        int total = selectedLocations.length * 200;
+
+                        // Guardar la compra en la colección "compra"
+                        await DatosDB().saveCompra(expositorId, total);
+
+                        // Guardar las ubicaciones compradas en la colección "registroEspacio"
+                        await DatosDB().savePurchasedLocations(selectedLocations, expositorId);
+
+                        // Actualizar el estado de los botones a gris (ocupado)
+                        setState(() {
+                          for (var label in selectedLocations) {
+                            purchasedLocations.add(label);
+                          }
+                          selectedLocations.clear();
+                        });
+                      },
+                      child: const Text('Comprar', style: TextStyle(color: Colors.black)),
+                    )
+                ],
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget contenedorPuestos(
       Function updateCallback, double maxWidth, double maxHeight) {

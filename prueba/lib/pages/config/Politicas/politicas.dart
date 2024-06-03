@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prueba/generated/l10n.dart';
 
 class Politicas extends StatefulWidget {
   const Politicas({super.key});
@@ -24,11 +25,11 @@ class _PoliticasState extends State<Politicas> {
         const SizedBox(
           height: 30,
         ),
-        const Center(
+        Center(
           child: FittedBox(
             child: Text(
-              'Politicas de privacidad',
-              style: TextStyle(fontFamily: 'Inter', fontSize: 25),
+              S.of(context).subtitle_policy_privacy,
+              style: const TextStyle(fontFamily: 'Inter', fontSize: 25),
             ),
           ),
         ),
