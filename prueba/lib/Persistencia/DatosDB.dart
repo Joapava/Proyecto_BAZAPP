@@ -1,5 +1,8 @@
 // ignore_for_file: file_names, avoid_print
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:prueba/Class/Expositor.dart';
 import 'package:prueba/Class/administrador.dart';
 import 'package:prueba/Class/noticias_data.dart';
@@ -76,6 +79,21 @@ class DatosDB {
     return noticiasCargadas;
   }
 
+  Future<List<String>> getImagenes() async{
+    var db = FirebaseStorage.instance;
+    ListResult result = await db.ref('Fotos').listAll();
+    List<String> urls = [];
+    for (var ref in result.items) {
+      try {
+        String url = await ref.getDownloadURL();
+        urls.add(url);
+      } catch (e) {
+        print('Error al cargar la imagen: $e');
+      }
+    }
+    return urls;
+  }
+
   Future<bool> _imageExists(String url) async {
     try {
       final response = await http.head(Uri.parse(url));
@@ -113,6 +131,12 @@ class DatosDB {
     };
 
     db.collection("noticias").add(noticia);
+  }
+
+  Future<String> setImagen(File imageFile) async{
+    String fileName = 'Fotos/${DateTime.now().millisecondsSinceEpoch}.jpg';
+    await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
+    return await FirebaseStorage.instance.ref(fileName).getDownloadURL();
   }
 
   //Funcion para editar el boleano de las notificaciones

@@ -87,4 +87,8 @@ class ValidarDatos {
   Future<List<Noticia>> getNoticias() async{
     return await DatosDB().getNoticias();
   }
+
+  Future<List<String>> getImagenes() async{
+    return await DatosDB().getImagenes();
+  }
 }
