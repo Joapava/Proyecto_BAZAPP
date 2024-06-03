@@ -65,9 +65,15 @@ class _agregar_noticiaState extends State<agregar_noticia> {
   void _submitForm() {
     if (_formKey.currentState!.validate() && _imagenUrlNoticia != null) {
       Navigator.pop(
-          context,
-          Noticia(
-              '', _nombreUsuario, _cuerpoController.text, _imagenUrlNoticia!));
+        context,
+        Noticia(
+          '',
+          '',
+          _nombreUsuario,
+          _cuerpoController.text,
+          _imagenUrlNoticia!,
+        ),
+      );
     }
   }
 

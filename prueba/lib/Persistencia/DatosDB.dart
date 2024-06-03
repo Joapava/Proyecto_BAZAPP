@@ -1,6 +1,5 @@
 // ignore_for_file: file_names, avoid_print
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:prueba/Class/Expositor.dart';
@@ -9,7 +8,23 @@ import 'package:prueba/Class/noticias_data.dart';
 import 'package:http/http.dart' as http;
 
 class DatosDB {
-  //Funcion que regresa los expositores que han sido creado en forma de lista
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+
+  Future<void> deleteNoticia(String id, String imageUrl) async {
+    // Eliminar la noticia de Firestore
+    await _firestore.collection('noticias').doc(id).delete();
+
+    // Eliminar la imagen de Firebase Storage
+    Reference photoRef = _storage.refFromURL(imageUrl);
+    await photoRef.delete();
+  }
+
+  Future<void> deleteImagen(String imageUrl) async {
+    // Eliminar la imagen de Firebase Storage
+    Reference photoRef = _storage.refFromURL(imageUrl);
+    await photoRef.delete();
+  }
 
   Future<List<Expositor>> getExpositores() async {
     List<Expositor> listaExpositores = [];
@@ -60,14 +75,15 @@ class DatosDB {
     final List<DocumentSnapshot> documents = result.docs;
     List<Noticia> noticiasCargadas = [];
     for (var doc in documents) {
-      String imageUrl = doc['imagenUrl'];
+      String imageUrl = doc['urlImagenNoticia'];
       bool exists = await _imageExists(imageUrl);
       if (exists) {
         noticiasCargadas.add(
           Noticia(
-            "lib/images-prueba/foto-bazar.jpg",
-            doc['nombre'],
-            doc['cuerpo'],
+            doc.id,
+            '',
+            doc['nombrePerfil'],
+            doc['cuerpoNoticia'],
             imageUrl,
           ),
         );
@@ -79,7 +95,7 @@ class DatosDB {
     return noticiasCargadas;
   }
 
-  Future<List<String>> getImagenes() async{
+  Future<List<String>> getImagenes() async {
     var db = FirebaseStorage.instance;
     ListResult result = await db.ref('Fotos').listAll();
     List<String> urls = [];
@@ -104,11 +120,8 @@ class DatosDB {
     }
   }
 
-  //Funcion para crear un nuevo expositor, el id se crea automaticamente con firebase
-
   Future setExpositor(Expositor ex, String id) async {
     var db = FirebaseFirestore.instance;
-    // Create a new user with a first and last name
     final expositor = <String, dynamic>{
       "id": id,
       "correo": ex.correo,
@@ -121,26 +134,27 @@ class DatosDB {
     db.collection("expositores").doc(id).set(expositor);
   }
 
-  Future setNoticia(Noticia nc) async{
+  Future setNoticia(Noticia nc) async {
     var db = FirebaseFirestore.instance;
 
     final noticia = <String, dynamic>{
-      'nombre': nc.nombrePerfil,
-      'cuerpo': nc.cuerpoNoticia,
-      'imagenUrl': nc.urlImagenNoticia,
+      'nombrePerfil': nc.nombrePerfil,
+      'cuerpoNoticia': nc.cuerpoNoticia,
+      'urlImagenNoticia': nc.urlImagenNoticia,
     };
 
-    db.collection("noticias").add(noticia);
+    db.collection("noticias").add(noticia).then(
+      (value) {
+        db.collection("noticias").doc(value.id).update({"id": value.id});
+      },
+    );
   }
 
-  Future<String> setImagen(File imageFile) async{
+  Future<String> setImagen(File imageFile) async {
     String fileName = 'Fotos/${DateTime.now().millisecondsSinceEpoch}.jpg';
     await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
     return await FirebaseStorage.instance.ref(fileName).getDownloadURL();
   }
-
-  //Funcion para editar el boleano de las notificaciones
-  // con esto podra recibir o no las notificaciones PUSH
 
   Future editarntf(String id, bool activado) async {
     var db = FirebaseFirestore.instance;
