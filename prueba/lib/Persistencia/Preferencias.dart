@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:prueba/Class/languajeProvider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Preferencias {
@@ -70,7 +71,7 @@ class Preferencias {
   }
 
   String get lenguaje {
-    return _prefs.getString('lenguaje') ?? 'es_MX';
+    return _prefs.getString('lenguaje') ?? 'en';
   }
 
   bool get notificaciones {

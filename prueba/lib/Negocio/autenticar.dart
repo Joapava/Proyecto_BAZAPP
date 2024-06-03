@@ -72,4 +72,12 @@ class Autenticar {
     }
     return false;
   }
+
+  Future<void> singoutgoogle() async {
+    await Authgoole().singout();
+  }
+
+  Future<void> singout() async{
+    await Auth().signOut();
+  }
 }

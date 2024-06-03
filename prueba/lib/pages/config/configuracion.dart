@@ -1,8 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 import 'package:flutter/material.dart';
-import 'package:prueba/Persistencia/Auth.dart';
+import 'package:prueba/Negocio/autenticar.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
-import 'package:prueba/Persistencia/auth_google.dart';
 import 'package:prueba/pages/config/Application/lenguaje.dart';
 import 'package:prueba/pages/config/Application/notificaciones.dart';
 import 'package:prueba/pages/config/Account/password.dart';
@@ -77,9 +76,10 @@ class _ConfiguracionState extends State<Configuracion> {
               backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
               elevation: 0,
               onPressed: () {
+                String x = perfs.type;
                 perfs.clear();
-                Auth().signOut();
-                Authgoole().singout();
+                if(x == "email") Autenticar().singout();
+                if(x == "google") Autenticar().singoutgoogle();
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const Login()));
               },

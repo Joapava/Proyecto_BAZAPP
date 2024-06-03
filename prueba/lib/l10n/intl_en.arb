@@ -1,0 +1,26 @@
+{
+    "title_is": "Login to your account",
+    "subtitle_1": "Welcome back! Please enter your data",
+    "title_box_email": "Email",
+    "placeholder_box_email": "Enter your email",
+    "title_box_pwd": "Password",
+    "placeholder_box_pwd": "Enter your password",
+    "forget": "Forget your password?",
+    "title_box_enter": "login",
+    "subtitle_enter": "or",
+    "not_account": "Don't have an account?",
+    "register": "Signup",
+    "message_error_login": "Incorrect email or password",
+
+    "tittle_settings": "Settings",
+    "subtitle_box_app": "App",
+    "subtitle_app_lang": "Language",
+    "subtitle_app_noti": "Notifications",
+    "subtitle_box_account": "Account",
+    "subtitle_account_profile": "Profile",
+    "subtitle_account_password": "Password",
+    "subtitle_box_policy": "Policy, Terms and Conditions",
+    "subtitle_policy_privacy": "Privacy Policy",
+    "subtitle_policy_term": "Terms and Conditions",
+    "title_signout": "Sign out"
+}

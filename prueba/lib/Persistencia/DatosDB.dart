@@ -60,14 +60,15 @@ class DatosDB {
     final List<DocumentSnapshot> documents = result.docs;
     List<Noticia> noticiasCargadas = [];
     for (var doc in documents) {
-      String imageUrl = doc['imagenUrl'];
+      String imageUrl = doc['urlImagenNoticia'];
       bool exists = await _imageExists(imageUrl);
       if (exists) {
         noticiasCargadas.add(
           Noticia(
-            "lib/images-prueba/foto-bazar.jpg",
-            doc['nombre'],
-            doc['cuerpo'],
+            doc.id,
+            '',
+            doc['nombrePerfil'],
+            doc['cuerpoNoticia'],
             imageUrl,
           ),
         );
@@ -79,7 +80,7 @@ class DatosDB {
     return noticiasCargadas;
   }
 
-  Future<List<String>> getImagenes() async{
+  Future<List<String>> getImagenes() async {
     var db = FirebaseStorage.instance;
     ListResult result = await db.ref('Fotos').listAll();
     List<String> urls = [];
@@ -104,6 +105,25 @@ class DatosDB {
     }
   }
 
+  Future<void> deleteNoticia(String id, String imageUrl) async {
+    var db = FirebaseFirestore.instance;
+    final FirebaseStorage _storage = FirebaseStorage.instance;
+
+    // Eliminar la noticia de Firestore
+    await db.collection('noticias').doc(id).delete();
+
+    // Eliminar la imagen de Firebase Storage
+    Reference photoRef = _storage.refFromURL(imageUrl);
+    await photoRef.delete();
+  }
+
+  Future<void> deleteImagen(String imageUrl) async {
+    final FirebaseStorage _storage = FirebaseStorage.instance;
+    // Eliminar la imagen de Firebase Storage
+    Reference photoRef = _storage.refFromURL(imageUrl);
+    await photoRef.delete();
+  }
+
   //Funcion para crear un nuevo expositor, el id se crea automaticamente con firebase
 
   Future setExpositor(Expositor ex, String id) async {
@@ -121,7 +141,7 @@ class DatosDB {
     db.collection("expositores").doc(id).set(expositor);
   }
 
-  Future setNoticia(Noticia nc) async{
+  Future setNoticia(Noticia nc) async {
     var db = FirebaseFirestore.instance;
 
     final noticia = <String, dynamic>{
@@ -133,7 +153,7 @@ class DatosDB {
     db.collection("noticias").add(noticia);
   }
 
-  Future<String> setImagen(File imageFile) async{
+  Future<String> setImagen(File imageFile) async {
     String fileName = 'Fotos/${DateTime.now().millisecondsSinceEpoch}.jpg';
     await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
     return await FirebaseStorage.instance.ref(fileName).getDownloadURL();

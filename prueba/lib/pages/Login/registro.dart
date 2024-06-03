@@ -395,7 +395,7 @@ class _Getformulario extends State<Getformulario> {
         key: formphone,
         child: TextFormField(
           validator: (value) {
-            if (value!.length < 10) {
+            if (value!.length <= 10) {
               setState(() {
                 isErrorphone = true;
                 phoneError = 'Celular a 10 digitos';

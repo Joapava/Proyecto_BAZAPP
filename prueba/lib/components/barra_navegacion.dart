@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
+import 'package:prueba/pages/Login/login.dart';
 import 'package:prueba/pages/config/configuracion.dart';
 import 'package:prueba/pages/config/configuracion_admin.dart';
 import 'package:prueba/pages/home/pagina_inicio.dart';
@@ -43,6 +44,12 @@ class _BarraNavegacionState extends State<BarraNavegacion> {
 
   void _paginasadd() {
     final perfs = Preferencias();
+    if(perfs.id.isEmpty){
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const Login()),
+          (Route<dynamic> route) => false);
+    }
     if (perfs.lvl == 2) {
       _paginas.insert(0, const PaginaInicioAdmin());
       _paginas.add(const ConfiguracionAdmin());

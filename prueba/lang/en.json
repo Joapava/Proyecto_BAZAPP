@@ -1,0 +1,13 @@
+{
+    "title_is": "Login to your account",
+    "subtitle_1": "Welcome back! Please enter your data",
+    "title_box_email": "Email",
+    "placeholder_box_email": "Enter your email",
+    "title_box_pwd": "Password",
+    "placeholder_box_pwd": "Enter your password",
+    "forget": "Forget your password?",
+    "title_box_enter": "login",
+    "subtitle_enter": "or",
+    "not_account": "Don't have an account?",
+    "register": "Signup"
+}
