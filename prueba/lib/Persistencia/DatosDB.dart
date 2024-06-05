@@ -9,12 +9,14 @@ import 'package:prueba/Class/administrador.dart';
 import 'package:prueba/Class/noticias_data.dart';
 import 'package:http/http.dart' as http;
 import 'package:prueba/Persistencia/Preferencias.dart';
+import 'package:uuid/uuid.dart';
 
 class DatosDB {
+   final Uuid _uuid = Uuid();
   Future<List<String>> getAllOccupiedLocations() async {
     var db = FirebaseFirestore.instance;
     var snapshot = await db.collection('compra').get();
-
+ 
     List<String> allOccupiedLocations = [];
     for (var doc in snapshot.docs) {
       var data = doc.data();
@@ -56,22 +58,26 @@ Future<List<String>> getDisabledLocations() async {
     }
     return disabledLocations;
   }
- Future<void> savePurchasedLocations(
-  List<String> locations, String expositorId, double totalPrice) async {
-  var db = FirebaseFirestore.instance;
+ 
+  Future<void> savePurchasedLocations(List<String> locations, String expositorId, double totalPrice) async {
+    var db = FirebaseFirestore.instance;
 
-  // Crea una copia de la lista para evitar modificaciones concurrentes
-  List<String> locationsCopy = List.from(locations);
+    // Generar un identificador único para la compra
+    String idCompra = _uuid.v4();
 
-  for (String location in locationsCopy) {
-    await db.collection('compra').add({
-      'id_espacio': location,
-      'id_expositor': expositorId,
-      'fecha_compra': DateTime.now(),
-      'precio_total': totalPrice,
-    });
+    // Crea una copia de la lista para evitar modificaciones concurrentes
+    List<String> locationsCopy = List.from(locations);
+
+    for (String location in locationsCopy) {
+      await db.collection('compra').add({
+        'id_espacio': location,
+        'id_expositor': expositorId,
+        'fecha_compra': DateTime.now(),
+        'precio_total': totalPrice,
+        'id_compra': idCompra,  // Agrega el identificador de compra
+      });
+    }
   }
-}
   //Funcion que regresa los expositores que han sido creado en forma de lista
   Future<List<Expositor>> getExpositores() async {
     List<Expositor> listaExpositores = [];
@@ -322,20 +328,61 @@ Future<List<String>> getDisabledLocations() async {
     return transactions;
   }
 
-//OBTENER EL TOTAL DE VENTAS
+// Método para obtener el total de ventas agrupadas por transacción
+Future<int> getTotalVentas() async {
+  var db = FirebaseFirestore.instance;
+  QuerySnapshot querySnapshot = await db.collection('compra').get();
 
-  Future<int> getTotalVentas() async {
-    var db = FirebaseFirestore.instance;
-    QuerySnapshot querySnapshot = await db.collection('compra').get();
-
-    int totalVentas = 0;
-    for (var doc in querySnapshot.docs) {
-      var data = doc.data() as Map<String, dynamic>;
-      totalVentas += (data['precio_total'] as num).toInt(); // Convertir a int
-    }
-    return totalVentas;
+  // Check if we have documents
+  if (querySnapshot.docs.isEmpty) {
+    print("No documents found in 'compra' collection.");
+    return 0;
   }
 
+  // Map to hold grouped transactions
+  Map<String, Map<String, dynamic>> grouped = {};
+
+  // Iterate through each document
+  for (var doc in querySnapshot.docs) {
+    var data = doc.data() as Map<String, dynamic>;
+
+    // Print each document data for debugging
+    print("Document data: $data");
+
+    // Creating a unique key based on the purchase date and exhibitor ID
+    String key = '${(data['fecha_compra'] as Timestamp).toDate().toLocal().toString().substring(0, 16)}_${data['id_expositor']}';
+
+    // Initialize the group if it doesn't exist
+    if (!grouped.containsKey(key)) {
+      grouped[key] = {
+        'id_espacios': [],
+        'fecha_compra': data['fecha_compra'],
+        'precio_total': 0.0,
+      };
+
+      // Set the price for this group once
+      if (data['precio_total'] != null) {
+        grouped[key]!['precio_total'] = (data['precio_total'] as num).toDouble();
+      } else {
+        print("Warning: precio_total is null for document: ${doc.id}");
+      }
+    }
+
+    // Add id_espacio to the list
+    grouped[key]!['id_espacios'].add(data['id_espacio']);
+  }
+
+  // Print grouped data for debugging
+  print("Grouped data: $grouped");
+
+  // Calculate the total sales from the grouped transactions
+  double totalVentas = grouped.values.fold(0.0, (sum, transaction) => sum + transaction['precio_total']);
+
+  // Print the total sales for debugging
+  print("Total ventas: $totalVentas");
+
+  return totalVentas.toInt();
+}
 //OBTENER TODOS LOS ESPACIOS DISPONIBLES
 
   Future<int> getAvailableSpacesCount() async {

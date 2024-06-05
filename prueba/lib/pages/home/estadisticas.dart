@@ -70,11 +70,30 @@ class _MenuAdminState extends State<MenuAdmin> {
       if (mounted) {
         setState(() {
           _recentTransactions = transactions;
+          _recentTransactions = _groupTransactionsByCompra(_recentTransactions);
         });
       }
     } catch (e) {
       print('Error loading transactions: $e');
     }
+  }
+
+  List<Map<String, dynamic>> _groupTransactionsByCompra(List<Map<String, dynamic>> transactions) {
+    Map<String, List<Map<String, dynamic>>> groupedTransactions = {};
+
+    for (var transaction in transactions) {
+      String idCompra = transaction['id_compra'];
+      if (!groupedTransactions.containsKey(idCompra)) {
+        groupedTransactions[idCompra] = [];
+      }
+      groupedTransactions[idCompra]!.add(transaction);
+    }
+
+    return groupedTransactions.values.map((group) {
+      var firstTransaction = group.first;
+      firstTransaction['espacios_comprados'] = group.map((t) => t['id_espacio']).toList();
+      return firstTransaction;
+    }).toList();
   }
 
   Future<void> _loadTotalVentas() async {
@@ -219,9 +238,17 @@ class _MenuAdminState extends State<MenuAdmin> {
                       ? '${expositor.nombre} ${expositor.apellidos}'
                       : 'Expositor no encontrado';
 
+                  List<String> espaciosComprados = List<String>.from(transaction['espacios_comprados'] ?? []);
+
                   return ListTile(
                     title: Text(expositorNombreCompleto),
-                    subtitle: Text('Fecha: $fechaFormateada'),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Fecha: $fechaFormateada'),
+                        Text('Espacios: ${espaciosComprados.join(", ")}'),
+                      ],
+                    ),
                     trailing: Text('+\$${transaction['precio_total']}'),
                   );
                 },
