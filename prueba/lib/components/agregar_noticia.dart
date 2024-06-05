@@ -135,7 +135,6 @@ class _agregar_noticiaState extends State<agregar_noticia> {
                               _imagenUrlNoticia!,
                               height: 200,
                               width: double.infinity,
-                              fit: BoxFit.cover,
                             ),
                           ),
                   ),
