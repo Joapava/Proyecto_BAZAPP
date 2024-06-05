@@ -8,6 +8,7 @@ import 'package:prueba/Class/noticias_data.dart';
 import 'package:http/http.dart' as http;
 
 class DatosDB {
+  
   Future<void> enableLocation(String idEspacio) async {
     var db = FirebaseFirestore.instance;
     await db.collection('espacio').doc(idEspacio).update({
@@ -92,17 +93,22 @@ class DatosDB {
   }
 
   Future<void> savePurchasedLocations(
-      List<String> locations, String expositorId, double totalPrice) async {
-    var db = FirebaseFirestore.instance;
-    for (String location in locations) {
-      await db.collection('compra').add({
-        'id_espacio': location,
-        'id_expositor': expositorId,
-        'fecha_compra': DateTime.now(),
-        'precio_total': totalPrice,
-      });
-    }
+  List<String> locations, String expositorId, double totalPrice) async {
+  var db = FirebaseFirestore.instance;
+
+  // Crea una copia de la lista para evitar modificaciones concurrentes
+  List<String> locationsCopy = List.from(locations);
+
+  for (String location in locationsCopy) {
+    await db.collection('compra').add({
+      'id_espacio': location,
+      'id_expositor': expositorId,
+      'fecha_compra': DateTime.now(),
+      'precio_total': totalPrice,
+    });
   }
+}
+
 
   Future<List<Expositor>> getExpositores() async {
     List<Expositor> listaExpositores = [];
