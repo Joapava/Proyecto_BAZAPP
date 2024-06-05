@@ -6,9 +6,10 @@ import 'package:prueba/Class/aviso.dart';
 import 'package:prueba/Negocio/InsertarDatos.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
 import 'package:prueba/generated/l10n.dart';
+import 'package:prueba/pages/home/aviso_detalle_page.dart';
 import 'package:prueba/pages/home/imagen_pagina.dart';
 import 'package:prueba/Class/noticias_data.dart';
-import 'package:prueba/pages/home/pagina_noticias.dart';
+// import 'package:prueba/pages/home/pagina_noticias.dart';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
@@ -23,15 +24,14 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
   List<Noticia> noticias = [];
   List<String> _imageUrls = [];
 
-    List<Aviso> avisos = [];
+  List<Aviso> avisos = [];
 
   @override
   void initState() {
     super.initState();
     _loadImages();
     _loadNoticias();
-
-      _loadAvisos();
+    _loadAvisos();
   }
 
   Future<void> _loadNoticias() async {
@@ -43,7 +43,7 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
     }
   }
 
-   Future<void> _loadAvisos() async {
+  Future<void> _loadAvisos() async {
     List<Aviso> avisosCargados = await ValidarDatos().getAvisos();
     if (mounted) {
       setState(() {
@@ -80,13 +80,14 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
     }
   }
 
- Future<void> _pickImage() async {
+  Future<void> _pickImage() async {
     final XFile? image =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image != null) {
       File imageFile = File(image.path);
       try {
-        String downloadURL = await InsertarDatos().setImagen(imageFile);
+        String downloadURL = await InsertarDatos()
+            .setImagenAviso(imageFile); // Usa setImagenAviso
         if (mounted) {
           setState(() {
             _imageUrls.add(downloadURL);
@@ -97,6 +98,7 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
       }
     }
   }
+
   Future<void> _deleteImage(String imageUrl) async {
     try {
       // Eliminar la imagen de Firebase Storage
@@ -132,45 +134,51 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
   }
 
   Widget getDestacados(context) {
-  // Filtrar los avisos que están activos
-  List<Aviso> avisosActivos = avisos.where((aviso) => aviso.estado == 'Activo').toList();
-  
-  // Tomar los primeros 3 avisos activos
-  List<Aviso> avisosDestacados = avisosActivos.take(3).toList();
+    // Filtrar los avisos que están activos
+    List<Aviso> avisosActivos =
+        avisos.where((aviso) => aviso.estado == 'Activo').toList();
 
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Container(
-        margin: const EdgeInsets.fromLTRB(10, 20, 0, 0),
-        child: const Text(
-          "Destacados",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+    // Tomar los primeros 3 avisos activos
+    List<Aviso> avisosDestacados = avisosActivos.take(3).toList();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.fromLTRB(10, 20, 0, 0),
+          child: const Text(
+            "Avisos",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
         ),
-      ),
-      SizedBox(
-        height: 200,  // Ajustar altura del contenedor
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: avisosDestacados.length,
-          itemBuilder: (context, index) {
-            return formatoAviso(avisosDestacados[index], context);
-          },
+        SizedBox(
+          height: 300, // Ajustar altura del contenedor
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: avisosDestacados.length,
+            itemBuilder: (context, index) {
+              return formatoAviso(avisosDestacados[index], context);
+            },
+          ),
         ),
-      ),
-    ],
-  );
-}
+      ],
+    );
+  }
 
   Widget formatoAviso(Aviso aviso, context) {
     return GestureDetector(
       onTap: () {
-        // Aquí puedes manejar la acción al tocar un aviso, si es necesario
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AvisoDetallePage(aviso: aviso),
+          ),
+        );
       },
       child: Container(
-        width: 200,  // Ajustar ancho del contenedor
+        width: 270, // Ajustar ancho del contenedor
         margin: const EdgeInsets.all(10),
-        padding: const EdgeInsets.all(10),  // Añadir padding para el texto
+        padding: const EdgeInsets.all(10), // Añadir padding para el texto
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
@@ -194,15 +202,29 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
             Expanded(
               child: Text(
                 aviso.cuerpo,
-                maxLines: 5,
+                maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Text(
-                aviso.fecha,
-                style: const TextStyle(color: Colors.grey, fontSize: 10),
+            const SizedBox(height: 5), // Reduced space
+            if (aviso.imageUrl.isNotEmpty)
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  aviso.imageUrl,
+                  height: 190,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            Container(
+              margin: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  aviso.fecha,
+                  style: const TextStyle(color: Colors.grey, fontSize: 10),
+                ),
               ),
             ),
           ],

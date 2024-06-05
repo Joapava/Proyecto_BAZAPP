@@ -13,10 +13,11 @@ import 'package:uuid/uuid.dart';
 
 class DatosDB {
    final Uuid _uuid = Uuid();
+  
   Future<List<String>> getAllOccupiedLocations() async {
     var db = FirebaseFirestore.instance;
     var snapshot = await db.collection('compra').get();
- 
+  
     List<String> allOccupiedLocations = [];
     for (var doc in snapshot.docs) {
       var data = doc.data();
@@ -161,7 +162,7 @@ Future<List<Noticia>> getNoticias() async {
       return false;
     }
   }
-
+ 
   Future<void> deleteNoticia(String id, String imageUrl) async {
     var db = FirebaseFirestore.instance;
     final FirebaseStorage storage = FirebaseStorage.instance;
@@ -331,31 +332,30 @@ Future setNoticia(Noticia nc) async {
     return transactions;
   }
 
-// Método para obtener el total de ventas agrupadas por transacción
-Future<int> getTotalVentas() async {
+Future<int> getTotalVentasDelMes() async {
   var db = FirebaseFirestore.instance;
-  QuerySnapshot querySnapshot = await db.collection('compra').get();
+  DateTime now = DateTime.now();
+  DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
+  DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
 
-  // Check if we have documents
+  QuerySnapshot querySnapshot = await db
+      .collection('compra')
+      .where('fecha_compra', isGreaterThanOrEqualTo: Timestamp.fromDate(firstDayOfMonth))
+      .where('fecha_compra', isLessThanOrEqualTo: Timestamp.fromDate(lastDayOfMonth))
+      .get();
+
   if (querySnapshot.docs.isEmpty) {
-    print("No documents found in 'compra' collection.");
+    print("No documents found in 'compra' collection for the current month.");
     return 0;
   }
 
-  // Map to hold grouped transactions
   Map<String, Map<String, dynamic>> grouped = {};
 
-  // Iterate through each document
   for (var doc in querySnapshot.docs) {
     var data = doc.data() as Map<String, dynamic>;
-
-    // Print each document data for debugging
     print("Document data: $data");
-
-    // Using id_compra to group transactions
     String key = data['id_compra'];
 
-    // Initialize the group if it doesn't exist
     if (!grouped.containsKey(key)) {
       grouped[key] = {
         'id_espacios': [],
@@ -363,7 +363,6 @@ Future<int> getTotalVentas() async {
         'precio_total': 0.0,
       };
 
-      // Set the price for this group once
       if (data['precio_total'] != null) {
         grouped[key]!['precio_total'] = (data['precio_total'] as num).toDouble();
       } else {
@@ -371,21 +370,71 @@ Future<int> getTotalVentas() async {
       }
     }
 
-    // Add id_espacio to the list
     grouped[key]!['id_espacios'].add(data['id_espacio']);
   }
 
-  // Print grouped data for debugging
   print("Grouped data: $grouped");
-
-  // Calculate the total sales from the grouped transactions
   double totalVentas = grouped.values.fold(0.0, (sum, transaction) => sum + transaction['precio_total']);
-
-  // Print the total sales for debugging
-  print("Total ventas: $totalVentas");
+  print("Total ventas del mes: $totalVentas");
 
   return totalVentas.toInt();
 }
+
+
+
+// Método para obtener el total de ventas agrupadas por transacción
+Future<int> getTotalVentasDelDia() async {
+  var db = FirebaseFirestore.instance;
+  DateTime now = DateTime.now();
+  DateTime startOfDay = DateTime(now.year, now.month, now.day);
+  DateTime endOfDay = DateTime(now.year, now.month, now.day, 23, 59, 59);
+
+  QuerySnapshot querySnapshot = await db
+      .collection('compra')
+      .where('fecha_compra', isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay))
+      .where('fecha_compra', isLessThanOrEqualTo: Timestamp.fromDate(endOfDay))
+      .get();
+
+  if (querySnapshot.docs.isEmpty) {
+    print("No documents found in 'compra' collection for the current day.");
+    return 0;
+  }
+
+  Map<String, Map<String, dynamic>> grouped = {};
+
+  for (var doc in querySnapshot.docs) {
+    var data = doc.data() as Map<String, dynamic>;
+    print("Document data: $data");
+    String key = data['id_compra'];
+
+    if (!grouped.containsKey(key)) {
+      grouped[key] = {
+        'id_espacios': [],
+        'fecha_compra': data['fecha_compra'],
+        'precio_total': 0.0,
+      };
+
+      if (data['precio_total'] != null) {
+        grouped[key]!['precio_total'] = (data['precio_total'] as num).toDouble();
+      } else {
+        print("Warning: precio_total is null for document: ${doc.id}");
+      }
+    }
+
+    grouped[key]!['id_espacios'].add(data['id_espacio']);
+  }
+
+  print("Grouped data: $grouped");
+  double totalVentas = grouped.values.fold(0.0, (sum, transaction) => sum + transaction['precio_total']);
+  print("Total ventas del día: $totalVentas");
+
+  return totalVentas.toInt();
+}
+Future<String> setImagenAvisos(File imageFile) async {
+    String fileName = 'Avisos/${DateTime.now().millisecondsSinceEpoch}.jpg';
+    await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
+    return await FirebaseStorage.instance.ref(fileName).getDownloadURL();
+  }
 //OBTENER TODOS LOS ESPACIOS DISPONIBLES
 
   Future<int> getAvailableSpacesCount() async {

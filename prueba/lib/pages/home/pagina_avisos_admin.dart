@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
+// import 'package:intl/intl.dart';
 
 import 'package:prueba/Class/aviso.dart';
 import 'package:prueba/Persistencia/DatosDB.dart';
@@ -21,6 +24,9 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
   bool _isTituloEmpty = false;
   bool _isCuerpoEmpty = false;
 
+  File? _image;
+  final ImagePicker _picker = ImagePicker();
+
   @override
   void initState() {
     super.initState();
@@ -33,6 +39,18 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
       _anuncios = avisos;
     });
   }
+
+// Method to pick an image
+  Future<void> _pickImage() async {
+    final XFile? pickedFile =
+        await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
+
   void _showMaxLimitSnackbar() {
     final snackBar = SnackBar(
       content: const Text('Se ha alcanzado el límite máximo de anuncios (15)'),
@@ -47,43 +65,85 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
       return;
     }
 
-
-
     final titulo = _tituloController.text.trim();
     final cuerpo = _cuerpoController.text.trim();
 
     setState(() {
       _isTituloEmpty = titulo.isEmpty;
       _isCuerpoEmpty = cuerpo.isEmpty;
+    });
 
-      if (!_isTituloEmpty && !_isCuerpoEmpty) {
-        Aviso nuevoAviso = Aviso(
-          id: '',
-          titulo: titulo,
-          cuerpo: cuerpo,
-          fecha: 'N/A',
-          estado: 'Inactivo',
-        );
-        db.setAviso(nuevoAviso).then((_) {
-          _loadAvisos();
-          _tituloController.clear();
-          _cuerpoController.clear();
+    if (!_isTituloEmpty && !_isCuerpoEmpty) {
+      String imageUrl = '';
+      if (_image != null) {
+        imageUrl = await db.setImagenAvisos(_image!); // Usa el nuevo método
+      }
+
+      Aviso nuevoAviso = Aviso(
+        id: '',
+        titulo: titulo,
+        cuerpo: cuerpo,
+        fecha: 'N/A',
+        estado: 'Inactivo',
+        imageUrl: imageUrl, // Add this line
+      );
+
+      db.setAviso(nuevoAviso).then((_) {
+        _loadAvisos();
+        _tituloController.clear();
+        _cuerpoController.clear();
+        setState(() {
           _isTituloEmpty = false;
           _isCuerpoEmpty = false;
+          _image = null;
         });
-      }
-    });
+      });
+    }
+  }
+
+// Add a button to pick an image
+  Widget _buildImagePicker() {
+    return Column(
+      children: [
+        if (_image != null)
+          Container(
+            margin: const EdgeInsets.symmetric(
+                vertical: 15.0), // Add vertical margin
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.file(
+                _image!,
+                width: double
+                    .infinity, // Make image take full width of the container
+                height: 250, // Increase the height of the image
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ElevatedButton(
+          onPressed: _pickImage,
+          child: const Text(
+            'Seleccionar Imagen',
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      ],
+    );
   }
 
   void _toggleEstado(String id) async {
-  int index = _anuncios.indexWhere((aviso) => aviso.id == id);
-  if (index != -1) {
-    String nuevoEstado = _anuncios[index].estado == 'Inactivo' ? 'Activo' : 'Inactivo';
-    await db.updateAvisoEstado(id, nuevoEstado);
-    _loadAvisos();
+    int index = _anuncios.indexWhere((aviso) => aviso.id == id);
+    if (index != -1) {
+      String nuevoEstado =
+          _anuncios[index].estado == 'Inactivo' ? 'Activo' : 'Inactivo';
+      await db.updateAvisoEstado(id, nuevoEstado);
+      _loadAvisos();
+    }
   }
-}
-
 
   void _eliminarAnuncio(String id) async {
     await db.deleteAviso(id);
@@ -129,6 +189,7 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
             _buildAnunciosTable(currentAnuncios),
             _buildPagination(totalPages),
             _buildInputField(),
+            _buildImagePicker(), // Add this line
             const SizedBox(height: 10),
             _buildAddButton(),
             const SizedBox(height: 10),
@@ -212,32 +273,36 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
                           Expanded(child: Text(currentAnuncios[index].titulo)),
                           Expanded(child: Text(currentAnuncios[index].fecha)),
                           Expanded(
-  child: GestureDetector(
-    onTap: () => _toggleEstado(currentAnuncios[index].id),
-    child: Container(
-      padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-      decoration: BoxDecoration(
-        color: currentAnuncios[index].estado == 'Activo'
-            ? Colors.green.withOpacity(0.1)
-            : Colors.red.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Text(
-        currentAnuncios[index].estado,
-        style: TextStyle(
-          color: currentAnuncios[index].estado == 'Activo'
-              ? Colors.green
-              : Colors.red,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    ),
-  ),
-),
-
+                            child: GestureDetector(
+                              onTap: () =>
+                                  _toggleEstado(currentAnuncios[index].id),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 4.0, horizontal: 8.0),
+                                decoration: BoxDecoration(
+                                  color:
+                                      currentAnuncios[index].estado == 'Activo'
+                                          ? Colors.green.withOpacity(0.1)
+                                          : Colors.red.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Text(
+                                  currentAnuncios[index].estado,
+                                  style: TextStyle(
+                                    color: currentAnuncios[index].estado ==
+                                            'Activo'
+                                        ? Colors.green
+                                        : Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                           IconButton(
                             icon: Icon(Icons.delete, color: Colors.red),
-                            onPressed: () => _eliminarAnuncio(currentAnuncios[index].id),
+                            onPressed: () =>
+                                _eliminarAnuncio(currentAnuncios[index].id),
                           ),
                         ],
                       ),
@@ -263,7 +328,7 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
     );
   }
 
- Widget _buildPagination(int totalPages) {
+  Widget _buildPagination(int totalPages) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
@@ -273,8 +338,10 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
           child: ElevatedButton(
             onPressed: () => _goToPage(index),
             style: ElevatedButton.styleFrom(
-              backgroundColor: index == _currentPage ? Colors.black : Colors.white,
-              foregroundColor: index == _currentPage ? Colors.white : Colors.black,
+              backgroundColor:
+                  index == _currentPage ? Colors.black : Colors.white,
+              foregroundColor:
+                  index == _currentPage ? Colors.white : Colors.black,
               shape: CircleBorder(),
               padding: EdgeInsets.all(10),
             ),
@@ -284,12 +351,13 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
       ),
     );
   }
+
   String _truncateText(String text) {
     const maxLength = 50;
-    return text.length > maxLength ? '${text.substring(0, maxLength)}...' : text;
+    return text.length > maxLength
+        ? '${text.substring(0, maxLength)}...'
+        : text;
   }
-
- 
 
   Widget _buildInputField() {
     return Column(
@@ -318,7 +386,9 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
               ),
             ),
             hintText: 'Cuerpo del anuncio',
-            errorText: _isCuerpoEmpty ? 'El cuerpo del anuncio no puede estar vacío' : null,
+            errorText: _isCuerpoEmpty
+                ? 'El cuerpo del anuncio no puede estar vacío'
+                : null,
           ),
           maxLines: 5,
         ),

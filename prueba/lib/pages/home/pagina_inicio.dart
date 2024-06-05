@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:prueba/Class/aviso.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
+import 'package:prueba/pages/home/aviso_detalle_page.dart';
 import 'package:prueba/pages/home/imagen_pagina.dart';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
@@ -98,9 +99,13 @@ class _PaginaInicioState extends State<PaginaInicio> {
       ),
     );
   }
+ Widget getDestacados(context) {
+    // Filtrar los avisos que están activos
+    List<Aviso> avisosActivos =
+        avisos.where((aviso) => aviso.estado == 'Activo').toList();
 
-  Widget getDestacados(context) {
-    List<Aviso> avisosDestacados = avisos.take(3).toList();
+    // Tomar los primeros 3 avisos activos
+    List<Aviso> avisosDestacados = avisosActivos.take(3).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,12 +113,12 @@ class _PaginaInicioState extends State<PaginaInicio> {
         Container(
           margin: const EdgeInsets.fromLTRB(10, 20, 0, 0),
           child: const Text(
-            "Destacados",
+            "Avisos",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
         ),
         SizedBox(
-          height: 200,  // Ajustar altura del contenedor
+          height: 300, // Ajustar altura del contenedor
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: avisosDestacados.length,
@@ -129,12 +134,17 @@ class _PaginaInicioState extends State<PaginaInicio> {
   Widget formatoAviso(Aviso aviso, context) {
     return GestureDetector(
       onTap: () {
-        // Aquí puedes manejar la acción al tocar un aviso, si es necesario
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AvisoDetallePage(aviso: aviso),
+          ),
+        );
       },
       child: Container(
-        width: 200,  // Ajustar ancho del contenedor
+        width: 270, // Ajustar ancho del contenedor
         margin: const EdgeInsets.all(10),
-        padding: const EdgeInsets.all(10),  // Añadir padding para el texto
+        padding: const EdgeInsets.all(10), // Añadir padding para el texto
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
@@ -158,15 +168,29 @@ class _PaginaInicioState extends State<PaginaInicio> {
             Expanded(
               child: Text(
                 aviso.cuerpo,
-                maxLines: 5,
+                maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Text(
-                aviso.fecha,
-                style: const TextStyle(color: Colors.grey, fontSize: 10),
+            const SizedBox(height: 5), // Reduced space
+            if (aviso.imageUrl.isNotEmpty)
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  aviso.imageUrl,
+                  height: 190,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            Container(
+              margin: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  aviso.fecha,
+                  style: const TextStyle(color: Colors.grey, fontSize: 10),
+                ),
               ),
             ),
           ],
@@ -174,7 +198,6 @@ class _PaginaInicioState extends State<PaginaInicio> {
       ),
     );
   }
-
   Widget getDetalles(BuildContext context) {
     return Column(
       children: <Widget>[

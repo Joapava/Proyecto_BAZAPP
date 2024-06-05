@@ -22,13 +22,14 @@ class _MenuAdminState extends State<MenuAdmin> {
   int _totalVentas = 0;
   int _availableSpaces = 0;
   List<Expositor> _expositores = [];
+  bool _showVentasDelDia = true;
 
   @override
   void initState() {
     super.initState();
     _loadImages();
     _loadRecentTransactions();
-    _loadTotalVentas();
+    _loadTotalVentasDelDia();
     _loadAvailableSpaces();
     _loadExpositores();
   }
@@ -96,16 +97,29 @@ class _MenuAdminState extends State<MenuAdmin> {
     }).toList();
   }
 
-  Future<void> _loadTotalVentas() async {
+  Future<void> _loadTotalVentasDelDia() async {
     try {
-      int totalVentas = await DatosDB().getTotalVentas();
+      int totalVentas = await DatosDB().getTotalVentasDelDia();
       if (mounted) {
         setState(() {
           _totalVentas = totalVentas;
         });
       }
     } catch (e) {
-      print('Error loading total ventas: $e');
+      print('Error loading total ventas del día: $e');
+    }
+  }
+
+  Future<void> _loadTotalVentasDelMes() async {
+    try {
+      int totalVentas = await DatosDB().getTotalVentasDelMes();
+      if (mounted) {
+        setState(() {
+          _totalVentas = totalVentas;
+        });
+      }
+    } catch (e) {
+      print('Error loading total ventas del mes: $e');
     }
   }
 
@@ -141,6 +155,17 @@ class _MenuAdminState extends State<MenuAdmin> {
     }
   }
 
+  void _toggleVentas() {
+    setState(() {
+      _showVentasDelDia = !_showVentasDelDia;
+      if (_showVentasDelDia) {
+        _loadTotalVentasDelDia();
+      } else {
+        _loadTotalVentasDelMes();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -166,7 +191,14 @@ class _MenuAdminState extends State<MenuAdmin> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildStatCard('Ventas del día', '$_totalVentas', Icons.monetization_on),
+            GestureDetector(
+              onTap: _toggleVentas,
+              child: _buildStatCard(
+                _showVentasDelDia ? 'Ventas del día' : 'Ventas del mes',
+                '$_totalVentas',
+                Icons.monetization_on,
+              ),
+            ),
             _buildStatCard('Espacios disponibles', '$_availableSpaces', Icons.storage),
           ],
         ),
@@ -212,7 +244,7 @@ class _MenuAdminState extends State<MenuAdmin> {
         child: Column(
           children: [
             const ListTile(
-              title: Center(child: Text('Latest Transactions')),
+              title: Center(child: Text('Últimas Transacciones')),
             ),
             const Divider(),
             SizedBox(
