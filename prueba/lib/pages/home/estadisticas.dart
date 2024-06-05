@@ -1,9 +1,14 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:prueba/Persistencia/DatosDB.dart'; // Asegúrate de importar tu archivo de datos
+import 'package:prueba/Class/Expositor.dart';
+import 'package:prueba/Persistencia/DatosDB.dart';
+import 'package:prueba/Persistencia/Preferencias.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 class MenuAdmin extends StatefulWidget {
   const MenuAdmin({super.key});
 
@@ -16,6 +21,7 @@ class _MenuAdminState extends State<MenuAdmin> {
   List<Map<String, dynamic>> _recentTransactions = [];
   int _totalVentas = 0;
   int _availableSpaces = 0;
+  List<Expositor> _expositores = [];
 
   @override
   void initState() {
@@ -24,6 +30,20 @@ class _MenuAdminState extends State<MenuAdmin> {
     _loadRecentTransactions();
     _loadTotalVentas();
     _loadAvailableSpaces();
+    _loadExpositores();
+  }
+
+  Future<void> _loadExpositores() async {
+    try {
+      List<Expositor> expositores = await DatosDB().getExpositores();
+      if (mounted) {
+        setState(() {
+          _expositores = expositores;
+        });
+      }
+    } catch (e) {
+      print('Error loading expositores: $e');
+    }
   }
 
   Future<void> _loadImages() async {
@@ -106,7 +126,7 @@ class _MenuAdminState extends State<MenuAdmin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Estadisticas bazar'),
+        title: const Text('Estadísticas Bazar'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -127,7 +147,7 @@ class _MenuAdminState extends State<MenuAdmin> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildStatCard('Ventas del dia', '$_totalVentas', Icons.monetization_on),
+            _buildStatCard('Ventas del día', '$_totalVentas', Icons.monetization_on),
             _buildStatCard('Espacios disponibles', '$_availableSpaces', Icons.storage),
           ],
         ),
@@ -157,71 +177,59 @@ class _MenuAdminState extends State<MenuAdmin> {
     );
   }
 
-Widget _buildLatestTransactions(BuildContext context) {
-  _recentTransactions.sort((a, b) {
-    // Ordenar por fecha primero
-    DateTime dateA = DateFormat('dd/MM/yyyy').parse(a['fecha']);
-    DateTime dateB = DateFormat('dd/MM/yyyy').parse(b['fecha']);
-    int compare = dateB.compareTo(dateA);
-    if (compare != 0) {
-      return compare;
-    }
-    // Si las fechas son iguales, ordenar por hora
-    int timeAMinutes = _timeOfDayToMinutes(a['hora']);
-    int timeBMinutes = _timeOfDayToMinutes(b['hora']);
-    return timeBMinutes.compareTo(timeAMinutes);
-  });
+  Widget _buildLatestTransactions(BuildContext context) {
+    _recentTransactions.sort((a, b) {
+      // Convertir Timestamp a DateTime
+      DateTime dateA = (a['fecha_compra'] as Timestamp).toDate();
+      DateTime dateB = (b['fecha_compra'] as Timestamp).toDate();
+      
+      // Comparar fechas directamente
+      return dateB.compareTo(dateA);
+    });
 
-  return Padding(
-    padding: const EdgeInsets.all(10.0),
-    child: Card(
-      child: Column(
-        children: [
-          const ListTile(
-            title: Center(child: Text('Latest Transactions')),
-            // trailing: Icon(Icons.more_vert), // Quitar el icono de tres puntos
-          ),
-          const Divider(),
-          SizedBox(
-            height: 300,
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: _recentTransactions.length,
-              itemBuilder: (context, index) {
-                var transaction = _recentTransactions[index];
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      _imageUrls.isNotEmpty ? _imageUrls[index % _imageUrls.length] : 'https://via.placeholder.com/150',
-                    ),
-                  ),
-                  title: Text(transaction['nombre'] ?? 'Transaction $index'),
-                  subtitle: Text('Fecha: ${transaction['fecha']}, ${transaction['hora']}'),
-                  trailing: Text('-\$${transaction['total']}'),
-                );
-              },
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Card(
+        child: Column(
+          children: [
+            const ListTile(
+              title: Center(child: Text('Latest Transactions')),
             ),
-          ),
-        ],
+            const Divider(),
+            SizedBox(
+              height: 300,
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemCount: _recentTransactions.length,
+                itemBuilder: (context, index) {
+                  var transaction = _recentTransactions[index];
+                  String expositorId = transaction['id_expositor'];
+                  DateTime fechaCompra = (transaction['fecha_compra'] as Timestamp).toDate();
+                  String fechaFormateada = DateFormat('dd/MM/yyyy HH:mm').format(fechaCompra);
+
+                  Expositor? expositor;
+                  try {
+                    expositor = _expositores.firstWhere((expositor) => expositor.id == expositorId);
+                  } catch (e) {
+                    expositor = null;
+                  }
+
+                  String expositorNombreCompleto = expositor != null
+                      ? '${expositor.nombre} ${expositor.apellidos}'
+                      : 'Expositor no encontrado';
+
+                  return ListTile(
+                    title: Text(expositorNombreCompleto),
+                    subtitle: Text('Fecha: $fechaFormateada'),
+                    trailing: Text('+\$${transaction['precio_total']}'),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
-    ),
-  );
-}
-
-int _timeOfDayToMinutes(String time) {
-  int hours = int.parse(time.split(':')[0]);
-  int minutes = int.parse(time.split(':')[1].split(' ')[0]);
-  String period = time.split(' ')[1];
-
-  if (period == 'PM' && hours != 12) {
-    hours += 12;
+    );
   }
-  if (period == 'AM' && hours == 12) {
-    hours = 0;
-  }
-
-  return hours * 60 + minutes;
-}
-
 }

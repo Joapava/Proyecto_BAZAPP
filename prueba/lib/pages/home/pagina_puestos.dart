@@ -3,6 +3,7 @@ import 'package:prueba/Persistencia/DatosDB.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
 import 'package:prueba/components/generar_botones.dart';
 import 'package:prueba/components/informacion_compra_puesto.dart';
+import 'package:prueba/pages/home/PurchaseHistoryPage.dart';
 
 class PaginaPuestos extends StatefulWidget {
   const PaginaPuestos({super.key});
@@ -12,6 +13,9 @@ class PaginaPuestos extends StatefulWidget {
 }
 
 class _PaginaPuestosState extends State<PaginaPuestos> {
+  Preferencias prefs = Preferencias();
+  static const double precioPorPuesto = 200.0; // Precio unitario por puesto
+
   void updateState() {
     setState(() {});
   }
@@ -21,19 +25,56 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
     super.initState();
     initializePurchasedLocations();
   }
-// GUARDAR COMPRAS
 
+  void showPurchaseDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Compra Exitosa'),
+          content: const Text(
+              'Puesto comprado exitosamente. Puedes ver más detalles en el historial de compras.'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Ver Historial'),
+              onPressed: () async {
+                var expositorId = Preferencias().id;
+                var purchaseHistory =
+                    await DatosDB().getPurchaseHistory(expositorId);
+                Navigator.of(context).pop(); // Cerrar el diálogo
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        PurchaseHistoryPage(purchaseHistory: purchaseHistory),
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
-
-
- Future<void> initializePurchasedLocations() async {
+  Future<void> initializePurchasedLocations() async {
     await Preferencias.init();
     List<String> allOccupiedLocations =
         await DatosDB().getAllOccupiedLocations();
+    List<String> allDisabledLocations = await DatosDB().getDisabledLocations();
 
-    setState(() {
-      purchasedLocations = allOccupiedLocations;
-    });
+    if (mounted) {
+      setState(() {
+        purchasedLocations = allOccupiedLocations;
+        disabledLocations = allDisabledLocations;
+      });
+    }
   }
 
   // Función para generar etiquetas únicas con letras y números consecutivos
@@ -42,55 +83,64 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
         count, (index) => '$letter${start + index + 1}');
   }
 
-   @override
-Widget build(BuildContext context) {
-  return SafeArea(
-    child: Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                children: [
-                  significadoColorPuesto(),
-                  const SizedBox(height: 10),
-                  contenedorPuestos(updateState, constraints.maxWidth, constraints.maxHeight),
-                  const SizedBox(height: 10),
-                  visualizarInformacionCompta(),
-                  const SizedBox(height: 10),
-                  if (selectedLocations.isNotEmpty)
-                    ElevatedButton(
-                      onPressed: () async {
-                        await Preferencias.init();
-                        String expositorId = Preferencias().id;
-                        int total = selectedLocations.length * 200;
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(
+                    10.0), // Margen alrededor de la pantalla
+                child: Column(
+                  children: [
+                    significadoColorPuesto(),
+                    const SizedBox(height: 10), // Espacio entre elementos
+                    contenedorPuestos(updateState, constraints.maxWidth,
+                        constraints.maxHeight),
+                    const SizedBox(height: 10), // Espacio entre elementos
 
-                        // Guardar la compra en la colección "compra"
-                        await DatosDB().saveCompra(expositorId, total);
+                    if (prefs.lvl != 2) visualizarInformacionCompta(),
 
-                        // Guardar las ubicaciones compradas en la colección "registroEspacio"
-                        await DatosDB().savePurchasedLocations(selectedLocations, expositorId);
-
-                        // Actualizar el estado de los botones a gris (ocupado)
-                        setState(() {
-                          for (var label in selectedLocations) {
-                            purchasedLocations.add(label);
+                    const SizedBox(height: 10), // Espacio entre elementos
+                    if (selectedLocations.isNotEmpty && prefs.lvl != 2)
+                      ElevatedButton(
+                        onPressed: () async {
+                          if (selectedLocations.isNotEmpty) {
+                            double totalPrice = selectedLocations.length *
+                                precioPorPuesto; // Calcula el precio total
+                            await Preferencias
+                                .init(); // Inicializar Preferencias si no está hecho ya
+                            String expositorId = Preferencias().id;
+                            await DatosDB().savePurchasedLocations(
+                              selectedLocations,
+                              expositorId,
+                              totalPrice,
+                            ); // Guardar en Firebase
+                            if (mounted) {
+                              setState(() {
+                                purchasedLocations.addAll(
+                                    selectedLocations); // Actualiza la lista de ubicaciones compradas
+                                selectedLocations.clear();
+                              });
+                            }
+                            showPurchaseDialog(
+                                context); // Mostrar ventana emergente de compra exitosa
                           }
-                          selectedLocations.clear();
-                        });
-                      },
-                      child: const Text('Comprar', style: TextStyle(color: Colors.black)),
-                    )
-                ],
+                        },
+                        child: const Text('Comprar',
+                            style: TextStyle(color: Colors.black)),
+                      )
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget contenedorPuestos(
       Function updateCallback, double maxWidth, double maxHeight) {

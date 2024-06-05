@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:prueba/Class/aviso.dart';
 import 'package:prueba/Negocio/InsertarDatos.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
 import 'package:prueba/generated/l10n.dart';
@@ -22,11 +23,15 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
   List<Noticia> noticias = [];
   List<String> _imageUrls = [];
 
+    List<Aviso> avisos = [];
+
   @override
   void initState() {
     super.initState();
     _loadImages();
     _loadNoticias();
+
+      _loadAvisos();
   }
 
   Future<void> _loadNoticias() async {
@@ -34,6 +39,15 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
     if (mounted) {
       setState(() {
         noticias = noticiasCargadas;
+      });
+    }
+  }
+
+   Future<void> _loadAvisos() async {
+    List<Aviso> avisosCargados = await ValidarDatos().getAvisos();
+    if (mounted) {
+      setState(() {
+        avisos = avisosCargados;
       });
     }
   }
@@ -122,41 +136,45 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
   }
 
   Widget getDestacados(context) {
-    List<Noticia> noticiasDestacadas = noticias.take(3).toList();
+  // Filtrar los avisos que están activos
+  List<Aviso> avisosActivos = avisos.where((aviso) => aviso.estado == 'Activo').toList();
+  
+  // Tomar los primeros 3 avisos activos
+  List<Aviso> avisosDestacados = avisosActivos.take(3).toList();
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          margin: const EdgeInsets.fromLTRB(10, 20, 0, 0),
-          child: Text(
-            S.of(context).home_feactured,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-          ),
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Container(
+        margin: const EdgeInsets.fromLTRB(10, 20, 0, 0),
+        child: const Text(
+          "Destacados",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
-        SizedBox(
-          height: 300,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: noticiasDestacadas.length,
-            itemBuilder: (context, index) {
-              return formatoNoticia(noticiasDestacadas[index], context);
-            },
-          ),
+      ),
+      SizedBox(
+        height: 200,  // Ajustar altura del contenedor
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: avisosDestacados.length,
+          itemBuilder: (context, index) {
+            return formatoAviso(avisosDestacados[index], context);
+          },
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
 
-  Widget formatoNoticia(Noticia noticia, context) {
+  Widget formatoAviso(Aviso aviso, context) {
     return GestureDetector(
-      onTap: () => {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const PaginaNoticias()))
+      onTap: () {
+        // Aquí puedes manejar la acción al tocar un aviso, si es necesario
       },
       child: Container(
-        width: 270,
+        width: 200,  // Ajustar ancho del contenedor
         margin: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),  // Añadir padding para el texto
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
@@ -172,43 +190,25 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              margin: const EdgeInsets.fromLTRB(10, 5, 0, 5),
-              child: Text(noticia.nombrePerfil,
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+              aviso.titulo,
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(10, 0, 10, 5),
-              child: Text(noticia.cuerpoNoticia,
-                  overflow: TextOverflow.ellipsis, maxLines: 2),
-            ),
-            if (noticia.urlImagenNoticia.isNotEmpty)
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(10),
-                    bottomRight: Radius.circular(10),
-                  ),
-                  child: FutureBuilder<bool>(
-                    future: _imageExists(noticia.urlImagenNoticia),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError ||
-                          !snapshot.hasData ||
-                          !snapshot.data!) {
-                        return const Icon(Icons.broken_image);
-                      } else {
-                        return Image.network(
-                          noticia.urlImagenNoticia,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        );
-                      }
-                    },
-                  ),
-                ),
+            const SizedBox(height: 5),
+            Expanded(
+              child: Text(
+                aviso.cuerpo,
+                maxLines: 5,
+                overflow: TextOverflow.ellipsis,
               ),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Text(
+                aviso.fecha,
+                style: const TextStyle(color: Colors.grey, fontSize: 10),
+              ),
+            ),
           ],
         ),
       ),

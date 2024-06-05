@@ -42,18 +42,36 @@ class DatosDB {
     }
     return purchasedLocations;
   }
-
-  Future<void> savePurchasedLocations(
-      List<String> locations, String expositorId) async {
+Future<List<String>> getDisabledLocations() async {
     var db = FirebaseFirestore.instance;
-    for (String location in locations) {
-      await db.collection('registroEspacio').add({
-        'id_espacio': location,
-        'id_expositor': expositorId,
-      });
-    }
-  }
+    var snapshot = await db
+        .collection('espacio')
+        .where('disponibilidad', isEqualTo: 'deshabilitado')
+        .get();
 
+    List<String> disabledLocations = [];
+    for (var doc in snapshot.docs) {
+      var data = doc.data();
+      disabledLocations.add(data['id_espacio']);
+    }
+    return disabledLocations;
+  }
+ Future<void> savePurchasedLocations(
+  List<String> locations, String expositorId, double totalPrice) async {
+  var db = FirebaseFirestore.instance;
+
+  // Crea una copia de la lista para evitar modificaciones concurrentes
+  List<String> locationsCopy = List.from(locations);
+
+  for (String location in locationsCopy) {
+    await db.collection('compra').add({
+      'id_espacio': location,
+      'id_expositor': expositorId,
+      'fecha_compra': DateTime.now(),
+      'precio_total': totalPrice,
+    });
+  }
+}
   //Funcion que regresa los expositores que han sido creado en forma de lista
   Future<List<Expositor>> getExpositores() async {
     List<Expositor> listaExpositores = [];
@@ -294,7 +312,7 @@ class DatosDB {
     var db = FirebaseFirestore.instance;
     QuerySnapshot querySnapshot = await db
         .collection('compra')
-        .orderBy('fecha', descending: true)
+        .orderBy('fecha_compra', descending: true)
         .get(); // Quita el .limit(5)
 
     List<Map<String, dynamic>> transactions = [];
@@ -313,7 +331,7 @@ class DatosDB {
     int totalVentas = 0;
     for (var doc in querySnapshot.docs) {
       var data = doc.data() as Map<String, dynamic>;
-      totalVentas += (data['total'] as num).toInt(); // Convertir a int
+      totalVentas += (data['precio_total'] as num).toInt(); // Convertir a int
     }
     return totalVentas;
   }
@@ -325,8 +343,7 @@ class DatosDB {
 
     // Supongamos que tienes una colección "espacios" que contiene todos los espacios.
     QuerySnapshot allSpacesSnapshot = await db.collection('espacios').get();
-    QuerySnapshot registeredSpacesSnapshot =
-        await db.collection('registroEspacio').get();
+    QuerySnapshot registeredSpacesSnapshot = await db.collection('espacio').get();
 
     int totalSpaces = allSpacesSnapshot.size;
     int registeredSpaces = registeredSpacesSnapshot.size;
@@ -334,4 +351,69 @@ class DatosDB {
     int availableSpaces = 158 - registeredSpaces;
     return availableSpaces;
   }
+
+
+
+  //guardar comprasss
+
+  Future<List<Map<String, dynamic>>> getPurchaseHistory(
+      String expositorId) async {
+    var db = FirebaseFirestore.instance;
+    var snapshot = await db
+        .collection('registroEspacio')
+        .where('id_expositor', isEqualTo: expositorId)
+        .orderBy('fecha_compra', descending: true)
+        .get();
+
+    List<Map<String, dynamic>> purchaseHistory = [];
+    for (var doc in snapshot.docs) {
+      var data = doc.data();
+      purchaseHistory.add({
+        'id_espacio': data['id_espacio'],
+        'fecha_compra': data['fecha_compra'],
+        'precio_total': data['precio_total'],
+      });
+    }
+    return purchaseHistory;
+
+
+    
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  Future<void> enableLocation(String idEspacio) async {
+    var db = FirebaseFirestore.instance;
+    await db.collection('espacio').doc(idEspacio).update({
+      'disponibilidad': 'habilitado',
+    });
+  }
+
+  Future<void> disableLocation(String idEspacio) async {
+    var db = FirebaseFirestore.instance;
+    await db.collection('espacio').doc(idEspacio).set({
+      'id_espacio': idEspacio,
+      'disponibilidad': 'deshabilitado',
+    });
+  }
+
+
+
+  
+
 }

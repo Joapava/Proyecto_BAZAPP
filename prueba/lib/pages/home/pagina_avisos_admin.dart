@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:prueba/Class/aviso.dart';
 import 'package:prueba/Persistencia/DatosDB.dart';
@@ -83,6 +84,7 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
   }
 }
 
+
   void _eliminarAnuncio(String id) async {
     await db.deleteAviso(id);
     _loadAvisos();
@@ -159,6 +161,8 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
     );
   }
 
+// WIDGET DE ANUNCIOS CARGADOS
+
   Widget _buildAnunciosTable(List<Aviso> currentAnuncios) {
     return Card(
       shape: RoundedRectangleBorder(
@@ -207,7 +211,7 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
                         children: <Widget>[
                           Expanded(child: Text(currentAnuncios[index].titulo)),
                           Expanded(child: Text(currentAnuncios[index].fecha)),
-                        Expanded(
+                          Expanded(
   child: GestureDetector(
     onTap: () => _toggleEstado(currentAnuncios[index].id),
     child: Container(
