@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:prueba/Persistencia/DatosDB.dart'; // Asegúrate de importar DatosDB
+import 'package:prueba/Persistencia/Preferencias.dart'; // Asegúrate de importar Preferencias
 
 // Define una enumeración para la dirección de los botones.
 enum ButtonDirection { horizontal, vertical }
 
-// Variable global para mantener los lugares seleccionados y comprados.
+// Variable global para mantener los lugares seleccionados, comprados y deshabilitados.
 List<String> selectedLocations = [];
 List<String> purchasedLocations = [];
+List<String> disabledLocations = [];
 
 class ButtonWithColorChange extends StatefulWidget {
   final String label;
@@ -23,7 +26,6 @@ class ButtonWithColorChange extends StatefulWidget {
 
 class _ButtonWithColorChangeState extends State<ButtonWithColorChange> {
   bool isPressed = false;
-  bool isDisabled = false;
 
   void _toggleColor() {
     setState(() {
@@ -37,49 +39,69 @@ class _ButtonWithColorChangeState extends State<ButtonWithColorChange> {
     });
   }
 
-  void _disableButton() {
+  void _disableLocation() async {
     setState(() {
-      isDisabled = true;
-      purchasedLocations.add(widget.label);
-      widget.updateCallback();
+      disabledLocations.add(widget.label);
+      selectedLocations.remove(widget.label);
     });
+    await DatosDB().disableLocation(widget.label);
+    widget.updateCallback();
   }
 
-  void _showContextMenu(BuildContext context) async {
-    final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
-    final result = await showMenu(
+  void _enableLocation() async {
+    setState(() {
+      disabledLocations.remove(widget.label);
+    });
+    await DatosDB().enableLocation(widget.label);
+    widget.updateCallback();
+  }
+
+  void _showPopupMenu(BuildContext context, Offset offset) async {
+    Preferencias prefs = Preferencias();
+    if (prefs.lvl != 2)
+      return; // Solo permite a los administradores ver el menú
+
+    bool isDisabled = disabledLocations.contains(widget.label);
+
+    await showMenu(
       context: context,
-      position: RelativeRect.fromRect(
-        // Configura la posición del menú
-        Rect.fromLTWH(
-          100, // Puedes ajustar esto a tu preferencia
-          100, // Puedes ajustar esto a tu preferencia
-          50,
-          50,
-        ),
-        Offset.zero & overlay.size,
+      position:
+          RelativeRect.fromLTRB(offset.dx, offset.dy, offset.dx, offset.dy),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
       ),
       items: [
-        const PopupMenuItem<String>(
-          value: 'disable',
-          child: Text('Deshabilitar'),
-        ),
+        if (!isDisabled)
+          const PopupMenuItem(
+            value: 'disable',
+            child: Text('Deshabilitar'),
+          ),
+        if (isDisabled)
+          const PopupMenuItem(
+            value: 'enable',
+            child: Text('Habilitar'),
+          ),
       ],
-    );
-
-    if (result == 'disable') {
-      _disableButton();
-    }
+    ).then((value) {
+      if (value == 'disable') {
+        _disableLocation();
+      } else if (value == 'enable') {
+        _enableLocation();
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    bool isPurchased = purchasedLocations.contains(widget.label) || isDisabled;
+    bool isPurchased = purchasedLocations.contains(widget.label) ||
+        disabledLocations.contains(widget.label);
 
     return Tooltip(
       message: 'Espacio: 3x3',
       child: GestureDetector(
-        onLongPress: () => _showContextMenu(context),
+        onLongPressStart: (details) {
+          _showPopupMenu(context, details.globalPosition);
+        },
         child: Container(
           height: 25,
           width: 25,

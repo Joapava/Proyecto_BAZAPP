@@ -13,9 +13,8 @@ class PaginaPuestos extends StatefulWidget {
 }
 
 class _PaginaPuestosState extends State<PaginaPuestos> {
-    Preferencias prefs = Preferencias();
+  Preferencias prefs = Preferencias();
   static const double precioPorPuesto = 200.0; // Precio unitario por puesto
-
 
   void updateState() {
     setState(() {});
@@ -46,7 +45,8 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
               child: const Text('Ver Historial'),
               onPressed: () async {
                 var expositorId = Preferencias().id;
-                var purchaseHistory = await DatosDB().getPurchaseHistory(expositorId);
+                var purchaseHistory =
+                    await DatosDB().getPurchaseHistory(expositorId);
                 Navigator.of(context).pop(); // Cerrar el diálogo
                 Navigator.push(
                   context,
@@ -65,11 +65,14 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
 
   Future<void> initializePurchasedLocations() async {
     await Preferencias.init();
-    List<String> allOccupiedLocations = await DatosDB().getAllOccupiedLocations();
+    List<String> allOccupiedLocations =
+        await DatosDB().getAllOccupiedLocations();
+    List<String> allDisabledLocations = await DatosDB().getDisabledLocations();
 
     if (mounted) {
       setState(() {
         purchasedLocations = allOccupiedLocations;
+        disabledLocations = allDisabledLocations;
       });
     }
   }
@@ -88,23 +91,27 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
           builder: (context, constraints) {
             return SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(10.0), // Margen alrededor de la pantalla
+                padding: const EdgeInsets.all(
+                    10.0), // Margen alrededor de la pantalla
                 child: Column(
                   children: [
                     significadoColorPuesto(),
                     const SizedBox(height: 10), // Espacio entre elementos
-                    contenedorPuestos(updateState, constraints.maxWidth, constraints.maxHeight),
+                    contenedorPuestos(updateState, constraints.maxWidth,
+                        constraints.maxHeight),
                     const SizedBox(height: 10), // Espacio entre elementos
-                    
-                    if(prefs.lvl != 2) visualizarInformacionCompta(),
-                    
+
+                    if (prefs.lvl != 2) visualizarInformacionCompta(),
+
                     const SizedBox(height: 10), // Espacio entre elementos
                     if (selectedLocations.isNotEmpty && prefs.lvl != 2)
                       ElevatedButton(
                         onPressed: () async {
                           if (selectedLocations.isNotEmpty) {
-                            double totalPrice = selectedLocations.length * precioPorPuesto; // Calcula el precio total
-                            await Preferencias.init(); // Inicializar Preferencias si no está hecho ya
+                            double totalPrice = selectedLocations.length *
+                                precioPorPuesto; // Calcula el precio total
+                            await Preferencias
+                                .init(); // Inicializar Preferencias si no está hecho ya
                             String expositorId = Preferencias().id;
                             await DatosDB().savePurchasedLocations(
                               selectedLocations,
@@ -113,14 +120,17 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
                             ); // Guardar en Firebase
                             if (mounted) {
                               setState(() {
-                                purchasedLocations.addAll(selectedLocations); // Actualiza la lista de ubicaciones compradas
+                                purchasedLocations.addAll(
+                                    selectedLocations); // Actualiza la lista de ubicaciones compradas
                                 selectedLocations.clear();
                               });
                             }
-                            showPurchaseDialog(context); // Mostrar ventana emergente de compra exitosa
+                            showPurchaseDialog(
+                                context); // Mostrar ventana emergente de compra exitosa
                           }
                         },
-                        child: const Text('Comprar', style: TextStyle(color: Colors.black)),
+                        child: const Text('Comprar',
+                            style: TextStyle(color: Colors.black)),
                       )
                   ],
                 ),
@@ -132,7 +142,8 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
     );
   }
 
-  Widget contenedorPuestos(Function updateCallback, double maxWidth, double maxHeight) {
+  Widget contenedorPuestos(
+      Function updateCallback, double maxWidth, double maxHeight) {
     int startLabel = 0;
     return Container(
       decoration: BoxDecoration(

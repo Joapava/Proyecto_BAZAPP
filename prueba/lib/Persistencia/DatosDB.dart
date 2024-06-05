@@ -8,9 +8,37 @@ import 'package:prueba/Class/noticias_data.dart';
 import 'package:http/http.dart' as http;
 
 class DatosDB {
+  Future<void> enableLocation(String idEspacio) async {
+    var db = FirebaseFirestore.instance;
+    await db.collection('espacio').doc(idEspacio).update({
+      'disponibilidad': 'habilitado',
+    });
+  }
 
-  
-  Future<List<Map<String, dynamic>>> getPurchaseHistory( 
+  Future<void> disableLocation(String idEspacio) async {
+    var db = FirebaseFirestore.instance;
+    await db.collection('espacio').doc(idEspacio).set({
+      'id_espacio': idEspacio,
+      'disponibilidad': 'deshabilitado',
+    });
+  }
+
+  Future<List<String>> getDisabledLocations() async {
+    var db = FirebaseFirestore.instance;
+    var snapshot = await db
+        .collection('espacio')
+        .where('disponibilidad', isEqualTo: 'deshabilitado')
+        .get();
+
+    List<String> disabledLocations = [];
+    for (var doc in snapshot.docs) {
+      var data = doc.data();
+      disabledLocations.add(data['id_espacio']);
+    }
+    return disabledLocations;
+  }
+
+  Future<List<Map<String, dynamic>>> getPurchaseHistory(
       String expositorId) async {
     var db = FirebaseFirestore.instance;
     var snapshot = await db
