@@ -43,8 +43,7 @@ class PurchaseHistoryPage extends StatelessWidget {
     Map<String, Map<String, dynamic>> grouped = {};
 
     for (var purchase in purchases) {
-      String key =
-          '${purchase['fecha_compra']}_${purchase['precio_total']}'; // Crear una clave única por transacción
+      String key = '${purchase['fecha_compra'].toString()}_${purchase['precio_total']}'; // Crear una clave única por transacción
 
       if (!grouped.containsKey(key)) {
         grouped[key] = {
