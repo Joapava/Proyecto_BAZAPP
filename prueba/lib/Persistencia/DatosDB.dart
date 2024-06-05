@@ -120,23 +120,25 @@ Future<List<String>> getDisabledLocations() async {
     ntf = (await db.collection("expositores").doc(id).get()) as bool;
     return ntf;
   }
+Future<List<Noticia>> getNoticias() async {
+  var db = FirebaseFirestore.instance;
+  final QuerySnapshot result = await db.collection('noticias').get();
 
-  Future<List<Noticia>> getNoticias() async {
-    var db = FirebaseFirestore.instance;
-    final QuerySnapshot result = await db.collection('noticias').get();
+  final List<DocumentSnapshot> documents = result.docs;
+  List<Noticia> noticiasCargadas = [];
+  for (var doc in documents) {
+    var data = doc.data() as Map<String, dynamic>?;
 
-    final List<DocumentSnapshot> documents = result.docs;
-    List<Noticia> noticiasCargadas = [];
-    for (var doc in documents) {
-      String imageUrl = doc['urlImagenNoticia'];
+    if (data != null && data.containsKey('urlImagenNoticia') && data.containsKey('nombrePerfil') && data.containsKey('cuerpoNoticia')) {
+      String imageUrl = data['urlImagenNoticia'];
       bool exists = await _imageExists(imageUrl);
       if (exists) {
         noticiasCargadas.add(
           Noticia(
             doc.id,
             '',
-            doc['nombrePerfil'],
-            doc['cuerpoNoticia'],
+            data['nombrePerfil'],
+            data['cuerpoNoticia'],
             imageUrl,
           ),
         );
@@ -144,10 +146,12 @@ Future<List<String>> getDisabledLocations() async {
         // Eliminar noticia de Firebase si la imagen no existe
         await db.collection('noticias').doc(doc.id).delete();
       }
+    } else {
+      print("Warning: Missing required fields in document ${doc.id}");
     }
-    return noticiasCargadas;
   }
-
+  return noticiasCargadas;
+}
   Future<bool> _imageExists(String url) async {
     try {
       final response = await http.head(Uri.parse(url));
@@ -193,13 +197,13 @@ Future<List<String>> getDisabledLocations() async {
     db.collection("expositores").doc(id).set(expositor);
   }
 
-  Future setNoticia(Noticia nc) async {
+Future setNoticia(Noticia nc) async {
     var db = FirebaseFirestore.instance;
 
     final noticia = <String, dynamic>{
-      'nombre': nc.nombrePerfil,
-      'cuerpo': nc.cuerpoNoticia,
-      'imagenUrl': nc.urlImagenNoticia,
+      'nombrePerfil': nc.nombrePerfil,
+      'cuerpoNoticia': nc.cuerpoNoticia,
+      'urlImagenNoticia': nc.urlImagenNoticia,
     };
 
     db.collection("noticias").add(noticia).then(
@@ -208,14 +212,13 @@ Future<List<String>> getDisabledLocations() async {
       },
     );
   }
-
   Future setAviso(Aviso aviso) async {
     var db = FirebaseFirestore.instance;
     final avisoData = aviso.toMap();
     await db.collection("aviso").add(avisoData);
   }
 
-  Future<String> setImagen(File imageFile) async {
+ Future<String> setImagen(File imageFile) async {
     String fileName = 'Fotos/${DateTime.now().millisecondsSinceEpoch}.jpg';
     await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
     return await FirebaseStorage.instance.ref(fileName).getDownloadURL();
@@ -349,8 +352,8 @@ Future<int> getTotalVentas() async {
     // Print each document data for debugging
     print("Document data: $data");
 
-    // Creating a unique key based on the purchase date and exhibitor ID
-    String key = '${(data['fecha_compra'] as Timestamp).toDate().toLocal().toString().substring(0, 16)}_${data['id_expositor']}';
+    // Using id_compra to group transactions
+    String key = data['id_compra'];
 
     // Initialize the group if it doesn't exist
     if (!grouped.containsKey(key)) {
@@ -403,30 +406,32 @@ Future<int> getTotalVentas() async {
 
   //guardar comprasss
 
-  Future<List<Map<String, dynamic>>> getPurchaseHistory(
-      String expositorId) async {
-    var db = FirebaseFirestore.instance;
-    var snapshot = await db
-        .collection('compra')
-        .where('id_expositor', isEqualTo: expositorId)
-        .orderBy('fecha_compra', descending: true)
-        .get();
+  Future<List<Map<String, dynamic>>> getPurchaseHistory(String expositorId) async {
+  var db = FirebaseFirestore.instance;
+  var snapshot = await db
+      .collection('compra')
+      .where('id_expositor', isEqualTo: expositorId)
+      .orderBy('fecha_compra', descending: true)
+      .get();
 
-    List<Map<String, dynamic>> purchaseHistory = [];
-    for (var doc in snapshot.docs) {
-      var data = doc.data();
+  List<Map<String, dynamic>> purchaseHistory = [];
+  for (var doc in snapshot.docs) {
+    var data = doc.data();
+    
+    // Verificar que los campos necesarios no sean nulos
+    if (data['id_espacio'] != null && data['fecha_compra'] != null && data['precio_total'] != null && data['id_compra'] != null) {
       purchaseHistory.add({
+        'id_compra': data['id_compra'],
         'id_espacio': data['id_espacio'],
         'fecha_compra': data['fecha_compra'],
         'precio_total': data['precio_total'],
       });
+    } else {
+      print("Warning: Missing required fields in document ${doc.id}");
     }
-    return purchaseHistory;
-
-
-    
   }
-
+  return purchaseHistory;
+}
 
 
 

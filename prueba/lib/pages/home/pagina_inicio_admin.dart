@@ -63,7 +63,7 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
   }
 
   Future<void> _loadImages() async {
-    ListResult result = await FirebaseStorage.instance.ref('uploads').listAll();
+    ListResult result = await FirebaseStorage.instance.ref('Fotos').listAll();
     List<String> urls = [];
     for (var ref in result.items) {
       try {
@@ -80,16 +80,13 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
     }
   }
 
-  Future<void> _pickImage() async {
+ Future<void> _pickImage() async {
     final XFile? image =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image != null) {
       File imageFile = File(image.path);
-      String fileName = 'uploads/${DateTime.now().millisecondsSinceEpoch}.jpg';
       try {
-        await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
-        String downloadURL =
-            await FirebaseStorage.instance.ref(fileName).getDownloadURL();
+        String downloadURL = await InsertarDatos().setImagen(imageFile);
         if (mounted) {
           setState(() {
             _imageUrls.add(downloadURL);
@@ -100,7 +97,6 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
       }
     }
   }
-
   Future<void> _deleteImage(String imageUrl) async {
     try {
       // Eliminar la imagen de Firebase Storage

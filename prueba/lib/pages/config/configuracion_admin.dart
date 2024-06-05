@@ -1,4 +1,3 @@
-// ignore_for_file: non_constant_identifier_names
 import 'package:flutter/material.dart';
 import 'package:prueba/Persistencia/Auth.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
@@ -44,7 +43,8 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
             child: FittedBox(
               child: Text(
                 S.of(context).tittle_settings,
-                style: const TextStyle(fontFamily: 'Inter', fontSize: 20),
+                style: const TextStyle(
+                    fontFamily: 'Inter', fontSize: 20, color: Colors.black),
               ),
             ),
           ),
@@ -121,9 +121,7 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                 child: Text(
                   S.of(context).subtitle_box_policy,
                   style: const TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 18,
-                      color: Color.fromRGBO(113, 113, 113, 1)),
+                      fontFamily: 'Inter', fontSize: 18, color: Colors.black),
                 ),
               )
             ],
@@ -151,7 +149,7 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                     height: 35,
                     child: Row(
                       children: [
-                        const Icon(Icons.edit_document),
+                        const Icon(Icons.edit_document, color: Colors.black),
                         const SizedBox(
                           width: 5,
                         ),
@@ -161,13 +159,14 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                             style: const TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 18,
-                                color: Color.fromRGBO(113, 113, 113, 1)),
+                                color: Colors.black),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const Icon(Icons.arrow_forward_ios_outlined)
+                  const Icon(Icons.arrow_forward_ios_outlined,
+                      color: Colors.black)
                 ],
               ),
             ),
@@ -199,7 +198,7 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                       height: 35,
                       child: Row(
                         children: [
-                          const Icon(Icons.edit_document),
+                          const Icon(Icons.edit_document, color: Colors.black),
                           const SizedBox(
                             width: 5,
                           ),
@@ -209,13 +208,14 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                               style: const TextStyle(
                                   fontFamily: 'Inter',
                                   fontSize: 18,
-                                  color: Color.fromRGBO(113, 113, 113, 1)),
+                                  color: Colors.black),
                             ),
                           )
                         ],
                       ),
                     ),
-                    const Icon(Icons.arrow_forward_ios_outlined)
+                    const Icon(Icons.arrow_forward_ios_outlined,
+                        color: Colors.black)
                   ],
                 ),
               ))
@@ -240,7 +240,8 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
               FittedBox(
                 child: Text(
                   S.of(context).subtitle_box_account,
-                  style: const TextStyle(fontFamily: 'Inter', fontSize: 18),
+                  style: const TextStyle(
+                      fontFamily: 'Inter', fontSize: 18, color: Colors.black),
                 ),
               )
             ],
@@ -272,7 +273,7 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                     height: 35,
                     child: Row(
                       children: [
-                        const Icon(Icons.person_2_sharp),
+                        const Icon(Icons.person_2_sharp, color: Colors.black),
                         const SizedBox(
                           width: 5,
                         ),
@@ -282,13 +283,14 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                             style: const TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 18,
-                                color: Color.fromRGBO(109, 106, 106, 1)),
+                                color: Colors.black),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const Icon(Icons.arrow_forward_ios_outlined)
+                  const Icon(Icons.arrow_forward_ios_outlined,
+                      color: Colors.black)
                 ],
               ),
             ),
@@ -318,7 +320,7 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                     height: 35,
                     child: Row(
                       children: [
-                        const Icon(Icons.lock_person),
+                        const Icon(Icons.lock_person, color: Colors.black),
                         const SizedBox(
                           width: 5,
                         ),
@@ -328,13 +330,14 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                             style: const TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 18,
-                                color: Color.fromRGBO(109, 106, 106, 1)),
+                                color: Colors.black),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const Icon(Icons.arrow_forward_ios_outlined)
+                  const Icon(Icons.arrow_forward_ios_outlined,
+                      color: Colors.black)
                 ],
               ),
             ),
@@ -360,7 +363,8 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
               FittedBox(
                 child: Text(
                   'Generar',
-                  style: TextStyle(fontFamily: 'Inter', fontSize: 18),
+                  style: TextStyle(
+                      fontFamily: 'Inter', fontSize: 18, color: Colors.black),
                 ),
               )
             ],
@@ -385,7 +389,7 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                     height: 35,
                     child: Row(
                       children: [
-                        Icon(Icons.notification_add),
+                        Icon(Icons.notification_add, color: Colors.black),
                         SizedBox(
                           width: 5,
                         ),
@@ -395,13 +399,13 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                             style: TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 18,
-                                color: Color.fromRGBO(109, 106, 106, 1)),
+                                color: Colors.black),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  Icon(Icons.arrow_forward_ios_outlined)
+                  Icon(Icons.arrow_forward_ios_outlined, color: Colors.black)
                 ],
               ),
             ),
@@ -428,7 +432,7 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                     height: 35,
                     child: Row(
                       children: [
-                        Icon(Icons.add_to_photos),
+                        Icon(Icons.add_to_photos, color: Colors.black),
                         SizedBox(
                           width: 5,
                         ),
@@ -438,13 +442,13 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                             style: TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 18,
-                                color: Color.fromRGBO(109, 106, 106, 1)),
+                                color: Colors.black),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  Icon(Icons.arrow_forward_ios_outlined)
+                  Icon(Icons.arrow_forward_ios_outlined, color: Colors.black)
                 ],
               ),
             ),
@@ -470,7 +474,8 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
               FittedBox(
                 child: Text(
                   S.of(context).subtitle_box_app,
-                  style: const TextStyle(fontFamily: 'Inter', fontSize: 18),
+                  style: const TextStyle(
+                      fontFamily: 'Inter', fontSize: 18, color: Colors.black),
                 ),
               )
             ],
@@ -481,8 +486,6 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
             child: FloatingActionButton(
               heroTag: 'lenguaje',
               onPressed: () async {
-                if(S.current.tittle_settings == "Ajustes") perfs.lenguaje = "es_MX";
-                if(S.current.tittle_settings == "Settings") perfs.lenguaje = "en_US";
                 await Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -505,7 +508,8 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                     height: 35,
                     child: Row(
                       children: [
-                        const Icon(Icons.translate_outlined),
+                        const Icon(Icons.translate_outlined,
+                            color: Colors.black),
                         const SizedBox(
                           width: 5,
                         ),
@@ -515,13 +519,14 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                             style: const TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 18,
-                                color: Color.fromRGBO(109, 106, 106, 1)),
+                                color: Colors.black),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const Icon(Icons.arrow_forward_ios_outlined)
+                  const Icon(Icons.arrow_forward_ios_outlined,
+                      color: Colors.black)
                 ],
               ),
             ),
@@ -558,7 +563,7 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                     width: 320,
                     child: Row(
                       children: [
-                        const Icon(Icons.notifications),
+                        const Icon(Icons.notifications, color: Colors.black),
                         const SizedBox(
                           width: 5,
                         ),
@@ -568,13 +573,14 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                             style: const TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 18,
-                                color: Color.fromRGBO(109, 106, 106, 1)),
+                                color: Colors.black),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const Icon(Icons.arrow_forward_ios_outlined)
+                  const Icon(Icons.arrow_forward_ios_outlined,
+                      color: Colors.black)
                 ],
               ),
             ),
@@ -612,16 +618,15 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
               const FittedBox(
                 child: Text(
                   'Administrador',
-                  style: TextStyle(fontFamily: 'Inter', fontSize: 18),
+                  style: TextStyle(
+                      fontFamily: 'Inter', fontSize: 18, color: Colors.black),
                 ),
               ),
               FittedBox(
                 child: Text(
                   perfs.email,
                   style: const TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 16,
-                      color: Color.fromRGBO(88, 88, 88, 1)),
+                      fontFamily: 'Inter', fontSize: 16, color: Colors.black),
                 ),
               )
             ],

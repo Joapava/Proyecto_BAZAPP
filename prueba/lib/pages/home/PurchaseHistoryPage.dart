@@ -9,7 +9,7 @@ class PurchaseHistoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Agrupar compras por fecha de compra y precio total
+    // Agrupar compras por id_compra
     var groupedPurchases = _groupPurchasesByTransaction(purchaseHistory);
 
     return Scaffold(
@@ -43,14 +43,20 @@ class PurchaseHistoryPage extends StatelessWidget {
     Map<String, Map<String, dynamic>> grouped = {};
 
     for (var purchase in purchases) {
-      // Crear una clave única por transacción utilizando la fecha (sin segundos) y el precio total
-      String key = '${(purchase['fecha_compra'] as Timestamp).toDate().toLocal().toString().substring(0, 16)}_${purchase['precio_total']}';
+      // Verificar que los campos necesarios no sean nulos
+      if (purchase['id_compra'] == null || purchase['fecha_compra'] == null || purchase['id_espacio'] == null) {
+        print("Warning: Missing required fields in purchase: $purchase");
+        continue; // Saltar esta compra si faltan campos necesarios
+      }
+
+      // Usar id_compra como clave única
+      String key = purchase['id_compra'];
 
       if (!grouped.containsKey(key)) {
         grouped[key] = {
           'id_espacios': [],
           'fecha_compra': purchase['fecha_compra'],
-          'precio_total': purchase['precio_total'],
+          'precio_total': purchase['precio_total'] ?? 0.0, // Manejar precio_total null
         };
       }
       grouped[key]!['id_espacios'].add(purchase['id_espacio']);

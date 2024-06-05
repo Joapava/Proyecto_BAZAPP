@@ -46,7 +46,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
   }
 
   Future<void> _loadImages() async {
-    ListResult result = await FirebaseStorage.instance.ref('uploads').listAll();
+    ListResult result = await FirebaseStorage.instance.ref('Fotos').listAll();
     List<String> urls = [];
     for (var ref in result.items) {
       try {
