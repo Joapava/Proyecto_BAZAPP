@@ -59,11 +59,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Total cost:"),
         "message_error_login":
             MessageLookupByLibrary.simpleMessage("Incorrect email or password"),
-        "navbar_item_alerts": MessageLookupByLibrary.simpleMessage("AD"),
+        "navbar_item_ads": MessageLookupByLibrary.simpleMessage("Ads"),
         "navbar_item_home": MessageLookupByLibrary.simpleMessage("Home"),
         "navbar_item_locate": MessageLookupByLibrary.simpleMessage("Location"),
         "navbar_item_news": MessageLookupByLibrary.simpleMessage("News"),
-        "navbar_item_stacs": MessageLookupByLibrary.simpleMessage("Statistics"),
+        "navbar_item_resume": MessageLookupByLibrary.simpleMessage("Summary"),
         "navbar_item_user": MessageLookupByLibrary.simpleMessage("User"),
         "not_account":
             MessageLookupByLibrary.simpleMessage("Don\'t have an account?"),

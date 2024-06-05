@@ -30,9 +30,9 @@
 
     "navbar_item_home": "Inicio",
     "navbar_item_news": "Noticias",
-    "navbar_item_alerts": "Avisos",
+    "navbar_item_ads": "Avisos",
     "navbar_item_locate": "Ubicacion",
-    "navbar_item_stacs": "Estadisticas",
+    "navbar_item_resume": "Resumen",
     "navbar_item_user": "Usuario",
 
     "title_regiter": "Registro",

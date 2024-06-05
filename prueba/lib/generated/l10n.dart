@@ -330,11 +330,11 @@ class S {
     );
   }
 
-  /// `AD`
-  String get navbar_item_alerts {
+  /// `Ads`
+  String get navbar_item_ads {
     return Intl.message(
-      'AD',
-      name: 'navbar_item_alerts',
+      'Ads',
+      name: 'navbar_item_ads',
       desc: '',
       args: [],
     );
@@ -350,11 +350,11 @@ class S {
     );
   }
 
-  /// `Statistics`
-  String get navbar_item_stacs {
+  /// `Summary`
+  String get navbar_item_resume {
     return Intl.message(
-      'Statistics',
-      name: 'navbar_item_stacs',
+      'Summary',
+      name: 'navbar_item_resume',
       desc: '',
       args: [],
     );

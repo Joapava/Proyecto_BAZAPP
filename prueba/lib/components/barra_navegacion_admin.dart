@@ -58,10 +58,11 @@ class _BarraNavegacionAdminState extends State<BarraNavegacionAdmin> {
     return [
       navBarItem(S.of(context).navbar_item_home, 'lib/images/home.png', 0),
       navBarItem(S.of(context).navbar_item_news, 'lib/images/news.png', 1),
-      navBarItem(S.of(context).navbar_item_alerts, 'lib/images/alerta.png', 2),
+      navBarItem(S.of(context).navbar_item_ads, 'lib/images/alerta.png', 2),
       navBarItem(
           S.of(context).navbar_item_locate, 'lib/images/location.png', 3),
-      navBarItem(S.of(context).navbar_item_stacs, 'lib/images/analitica.png', 4),
+      navBarItem(
+          S.of(context).navbar_item_resume, 'lib/images/analitica.png', 4),
       navBarItem(S.of(context).navbar_item_user, 'lib/images/profile.png', 5),
       // Añade el nuevo ítem
     ];

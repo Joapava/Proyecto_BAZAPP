@@ -30,9 +30,9 @@
 
     "navbar_item_home": "Home",
     "navbar_item_news": "News",
-    "navbar_item_alerts": "AD",
+    "navbar_item_ads": "Ads",
     "navbar_item_locate": "Location",
-    "navbar_item_stacs": "Statistics",
+    "navbar_item_resume": "Summary",
     "navbar_item_user": "User",
 
     "title_regiter": "Signup",
