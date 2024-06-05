@@ -39,9 +39,7 @@ class BazzAppState extends State<BazzApp> {
 
   @override
   void initState() {
-    setState(() {
-      S.load(const Locale('es', 'MX'));
-    });
+    S.load(Locale('es', 'MX'));
     super.initState();
   }
 

@@ -5,7 +5,6 @@ import 'package:prueba/pages/home/pagina_noticias.dart';
 import 'package:prueba/pages/home/pagina_puestos.dart';
 import 'package:prueba/pages/home/pagina_avisos_admin.dart';
 import 'package:prueba/pages/home/estadisticas.dart'; // Asegúrate de importar la página de analítica
-import 'package:prueba/generated/l10n.dart';
 
 class BarraNavegacionAdmin extends StatefulWidget {
   const BarraNavegacionAdmin({super.key});
@@ -23,7 +22,7 @@ class _BarraNavegacionAdminState extends State<BarraNavegacionAdmin> {
     const PaginaPuestos(),
     const MenuAdmin(),
     const ConfiguracionAdmin(),
-    // Añade la página de analítica
+     // Añade la página de analítica
   ];
 
   void _onItemTapped(int index) {
@@ -56,15 +55,13 @@ class _BarraNavegacionAdminState extends State<BarraNavegacionAdmin> {
 
   List<Widget> _buildNavBarItems() {
     return [
-      navBarItem(S.of(context).navbar_item_home, 'lib/images/home.png', 0),
-      navBarItem(S.of(context).navbar_item_news, 'lib/images/news.png', 1),
-      navBarItem(S.of(context).navbar_item_ads, 'lib/images/alerta.png', 2),
-      navBarItem(
-          S.of(context).navbar_item_locate, 'lib/images/location.png', 3),
-      navBarItem(
-          S.of(context).navbar_item_resume, 'lib/images/analitica.png', 4),
-      navBarItem(S.of(context).navbar_item_user, 'lib/images/profile.png', 5),
-      // Añade el nuevo ítem
+      navBarItem('Inicio', 'lib/images/home.png', 0),
+      navBarItem('Noticias', 'lib/images/news.png', 1),
+      navBarItem('Avisos', 'lib/images/alerta.png', 2),
+      navBarItem('Ubicación', 'lib/images/location.png', 3),
+       navBarItem('Estadisticas', 'lib/images/analitica.png', 4), 
+      navBarItem('Usuario', 'lib/images/profile.png', 5),
+     // Añade el nuevo ítem
     ];
   }
 

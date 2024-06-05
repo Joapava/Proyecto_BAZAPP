@@ -46,7 +46,7 @@ class _agregar_noticiaState extends State<agregar_noticia> {
       if (image != null) {
         File imageFile = File(image.path);
         String fileName =
-            'noticias/${DateTime.now().millisecondsSinceEpoch}.jpg';
+            'uploads/${DateTime.now().millisecondsSinceEpoch}.jpg';
         await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
         String downloadURL =
             await FirebaseStorage.instance.ref(fileName).getDownloadURL();
@@ -80,216 +80,84 @@ class _agregar_noticiaState extends State<agregar_noticia> {
 
   @override
   Widget build(BuildContext context) {
-    double ancho = MediaQuery.of(context).size.width;
-    double altura = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color.fromRGBO(250, 250, 250, .98),
+        backgroundColor: Colors.white,
         body: SingleChildScrollView(
-            child: Column(
-          children: [
-            SizedBox(
-              height: altura * .06,
-            ),
-            regreso(),
-            SizedBox(
-              height: altura * .035,
-            ),
-            Center(
-              child: Container(
-                height: altura * .33,
-                width: ancho * .8,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: const Color.fromRGBO(255, 255, 255, 1)),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: altura * .01,
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _cuerpoController,
+                    maxLines: 5,
+                    decoration: InputDecoration(
+                      labelText: 'Cuerpo de la noticia',
+                      alignLabelWithHint: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey[100],
                     ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: ancho * .1,
-                        ),
-                        SizedBox(
-                          width: ancho * .5,
-                          child: const Text(
-                            'Crear Noticia',
-                            style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        SizedBox(
-                          width: ancho * .1,
-                        ),
-                        SizedBox(
-                          width: ancho * .064,
-                          height: altura * .032,
-                          child: FloatingActionButton(
-                            heroTag: 'deletedata',
-                            onPressed: () {
-                              setState(() {
-                                _cuerpoController.text = "";
-                                _imagenUrlNoticia = null;
-                              });
-                            },
-                            backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
-                            elevation: 0,
-                            child: Icon(
-                              Icons.close,
-                              color: Colors.grey[700],
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor ingrese el cuerpo de la noticia';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: _imagenUrlNoticia == null
+                        ? ElevatedButton.icon(
+                            onPressed: _pickImage,
+                            icon: const Icon(Icons.image, color: Colors.black),
+                            label: const Text('Seleccionar Imagen',
+                                style: TextStyle(color: Colors.black)),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromRGBO(168, 169, 171, 0.1),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                            ),
+                          )
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(
+                              _imagenUrlNoticia!,
+                              height: 200,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
                             ),
                           ),
-                        )
-                      ],
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton.icon(
+                    onPressed: _submitForm,
+                    icon: const Icon(Icons.send, color: Colors.black),
+                    label: const Text('Agregar Noticia',
+                        style: TextStyle(color: Colors.black)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromRGBO(168, 169, 171, 0.1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
                     ),
-                    Divider(
-                      endIndent: ancho * .02,
-                      indent: ancho * .02,
-                    ),
-                    cuerponoticia(),
-                    SizedBox(
-                      height: altura * .01,
-                    ),
-                    Divider(
-                      endIndent: ancho * .02,
-                      indent: ancho * .02,
-                    ),
-                    Row(
-                      children: [
-                        addimage(),
-                        SizedBox(
-                          width: ancho * .20,
-                        ),
-                        postnew()
-                      ],
-                    )
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        )),
-      ),
-    );
-  }
-
-  Widget regreso() {
-    return Row(
-      children: [
-        const SizedBox(
-          width: 20,
-        ),
-        SizedBox(
-          width: 40,
-          height: 40,
-          child: FloatingActionButton(
-            heroTag: 'back',
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
-            elevation: 0,
-            child: Image.asset('assets/arrow-back.png'),
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget postnew() {
-    double ancho = MediaQuery.of(context).size.width;
-    double altura = MediaQuery.of(context).size.height;
-    return Container(
-      width: ancho * .12,
-      height: altura * .032,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: const Color.fromRGBO(236, 119, 46, 1)),
-      child: FloatingActionButton(
-        onPressed: () {
-          _submitForm();
-        },
-        backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
-        elevation: 0,
-        child: const Text(
-          'Post',
-          style: TextStyle(fontFamily: 'Inter', color: Colors.white),
-        ),
-      ),
-    );
-  }
-
-  Widget addimage() {
-    double ancho = MediaQuery.of(context).size.width;
-    double altura = MediaQuery.of(context).size.height;
-    return SizedBox(
-      width: ancho * .45,
-      child: Row(
-        children: [
-          SizedBox(
-            width: ancho * .03,
-          ),
-          _imagenUrlNoticia == null
-              ? SizedBox(
-                  height: altura * .032,
-                  width: ancho * .10,
-                  child: FloatingActionButton(
-                    heroTag: 'pickimage',
-                    onPressed: () {
-                      _pickImage();
-                    },
-                    elevation: 0,
-                    backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
-                    child: Image.asset('assets/pick-image.png'),
-                  ),
-                )
-              : ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    _imagenUrlNoticia!,
-                    height: altura * .1,
-                    width: ancho * .4,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-        ],
-      ),
-    );
-  }
-
-  Widget cuerponoticia() {
-    double ancho = MediaQuery.of(context).size.width;
-    double altura = MediaQuery.of(context).size.height;
-    return SizedBox(
-      width: ancho * .73,
-      height: altura * .14,
-      child: Form(
-        key: _formKey,
-        child: TextFormField(
-          controller: _cuerpoController,
-          maxLines: 5,
-          decoration: const InputDecoration(
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide.none,
-              ),
-              hintText: '¿Qué hay de nuevo?',
-              focusedBorder: InputBorder.none,
-              border: InputBorder.none),
-          style: const TextStyle(
-            decoration: TextDecoration.none,
-            fontFamily: 'Inter',
-            fontSize: 15,
-          ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Ingresa el cuerpo de la noticia';
-            }
-            return null;
-          },
         ),
       ),
     );

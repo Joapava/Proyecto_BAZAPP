@@ -173,9 +173,9 @@ class DatosDB {
     var db = FirebaseFirestore.instance;
 
     final noticia = <String, dynamic>{
-      'nombrePerfil': nc.nombrePerfil,
-      'cuerpoNoticia': nc.cuerpoNoticia,
-      'urlImagenNoticia': nc.urlImagenNoticia,
+      'nombre': nc.nombrePerfil,
+      'cuerpo': nc.cuerpoNoticia,
+      'imagenUrl': nc.urlImagenNoticia,
     };
 
     db.collection("noticias").add(noticia).then(
@@ -324,8 +324,11 @@ class DatosDB {
     var db = FirebaseFirestore.instance;
 
     // Supongamos que tienes una colección "espacios" que contiene todos los espacios.
+    QuerySnapshot allSpacesSnapshot = await db.collection('espacios').get();
     QuerySnapshot registeredSpacesSnapshot =
         await db.collection('registroEspacio').get();
+
+    int totalSpaces = allSpacesSnapshot.size;
     int registeredSpaces = registeredSpacesSnapshot.size;
 
     int availableSpaces = 158 - registeredSpaces;

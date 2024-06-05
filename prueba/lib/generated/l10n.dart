@@ -330,31 +330,11 @@ class S {
     );
   }
 
-  /// `Ads`
-  String get navbar_item_ads {
-    return Intl.message(
-      'Ads',
-      name: 'navbar_item_ads',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Location`
   String get navbar_item_locate {
     return Intl.message(
       'Location',
       name: 'navbar_item_locate',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Summary`
-  String get navbar_item_resume {
-    return Intl.message(
-      'Summary',
-      name: 'navbar_item_resume',
       desc: '',
       args: [],
     );
