@@ -24,6 +24,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
       if (mounted) {
         _loadImages();
         _loadNoticias();
+
       }
     });
   }

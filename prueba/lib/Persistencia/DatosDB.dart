@@ -152,22 +152,25 @@ class DatosDB {
     return ntf;
   }
 
-  Future<List<Noticia>> getNoticias() async {
-    var db = FirebaseFirestore.instance;
-    final QuerySnapshot result = await db.collection('noticias').get();
+ Future<List<Noticia>> getNoticias() async {
+  var db = FirebaseFirestore.instance;
+  final QuerySnapshot result = await db.collection('noticias').get();
 
-    final List<DocumentSnapshot> documents = result.docs;
-    List<Noticia> noticiasCargadas = [];
-    for (var doc in documents) {
-      String imageUrl = doc['urlImagenNoticia'];
+  final List<DocumentSnapshot> documents = result.docs;
+  List<Noticia> noticiasCargadas = [];
+  for (var doc in documents) {
+    var data = doc.data() as Map<String, dynamic>?;
+
+    if (data != null && data.containsKey('urlImagenNoticia') && data.containsKey('nombrePerfil') && data.containsKey('cuerpoNoticia')) {
+      String imageUrl = data['urlImagenNoticia'];
       bool exists = await _imageExists(imageUrl);
       if (exists) {
         noticiasCargadas.add(
           Noticia(
             doc.id,
             '',
-            doc['nombrePerfil'],
-            doc['cuerpoNoticia'],
+            data['nombrePerfil'],
+            data['cuerpoNoticia'],
             imageUrl,
           ),
         );
@@ -175,9 +178,13 @@ class DatosDB {
         // Eliminar noticia de Firebase si la imagen no existe
         await db.collection('noticias').doc(doc.id).delete();
       }
+    } else {
+      print("Warning: Missing required fields in document ${doc.id}");
     }
-    return noticiasCargadas;
   }
+  return noticiasCargadas;
+}
+
 
   Future<List<String>> getImagenes() async {
     var db = FirebaseStorage.instance;
