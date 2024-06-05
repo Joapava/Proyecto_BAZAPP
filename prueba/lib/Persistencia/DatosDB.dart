@@ -8,11 +8,13 @@ import 'package:prueba/Class/noticias_data.dart';
 import 'package:http/http.dart' as http;
 
 class DatosDB {
-  Future<List<Map<String, dynamic>>> getPurchaseHistory(
+
+  
+  Future<List<Map<String, dynamic>>> getPurchaseHistory( 
       String expositorId) async {
     var db = FirebaseFirestore.instance;
     var snapshot = await db
-        .collection('registroEspacio')
+        .collection('compra')
         .where('id_expositor', isEqualTo: expositorId)
         .orderBy('fecha_compra', descending: true)
         .get();
@@ -31,7 +33,7 @@ class DatosDB {
 
   Future<List<String>> getAllOccupiedLocations() async {
     var db = FirebaseFirestore.instance;
-    var snapshot = await db.collection('registroEspacio').get();
+    var snapshot = await db.collection('compra').get();
 
     List<String> allOccupiedLocations = [];
     for (var doc in snapshot.docs) {
@@ -50,7 +52,7 @@ class DatosDB {
   Future<List<String>> getPurchasedLocations(String expositorId) async {
     var db = FirebaseFirestore.instance;
     var snapshot = await db
-        .collection('registroEspacio')
+        .collection('compra')
         .where('id_expositor', isEqualTo: expositorId)
         .get();
 
@@ -65,7 +67,7 @@ class DatosDB {
       List<String> locations, String expositorId, double totalPrice) async {
     var db = FirebaseFirestore.instance;
     for (String location in locations) {
-      await db.collection('registroEspacio').add({
+      await db.collection('compra').add({
         'id_espacio': location,
         'id_expositor': expositorId,
         'fecha_compra': DateTime.now(),

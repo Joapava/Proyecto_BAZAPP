@@ -13,7 +13,9 @@ class PaginaPuestos extends StatefulWidget {
 }
 
 class _PaginaPuestosState extends State<PaginaPuestos> {
+    Preferencias prefs = Preferencias();
   static const double precioPorPuesto = 200.0; // Precio unitario por puesto
+
 
   void updateState() {
     setState(() {});
@@ -93,9 +95,11 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
                     const SizedBox(height: 10), // Espacio entre elementos
                     contenedorPuestos(updateState, constraints.maxWidth, constraints.maxHeight),
                     const SizedBox(height: 10), // Espacio entre elementos
-                    visualizarInformacionCompta(),
+                    
+                    if(prefs.lvl != 2) visualizarInformacionCompta(),
+                    
                     const SizedBox(height: 10), // Espacio entre elementos
-                    if (selectedLocations.isNotEmpty)
+                    if (selectedLocations.isNotEmpty && prefs.lvl != 2)
                       ElevatedButton(
                         onPressed: () async {
                           if (selectedLocations.isNotEmpty) {
