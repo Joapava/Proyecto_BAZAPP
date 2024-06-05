@@ -13,7 +13,7 @@ import 'package:prueba/Persistencia/Preferencias.dart';
 class DatosDB {
   Future<List<String>> getAllOccupiedLocations() async {
     var db = FirebaseFirestore.instance;
-    var snapshot = await db.collection('registroEspacio').get();
+    var snapshot = await db.collection('compra').get();
 
     List<String> allOccupiedLocations = [];
     for (var doc in snapshot.docs) {
@@ -343,7 +343,7 @@ Future<List<String>> getDisabledLocations() async {
 
     // Supongamos que tienes una colección "espacios" que contiene todos los espacios.
     QuerySnapshot allSpacesSnapshot = await db.collection('espacios').get();
-    QuerySnapshot registeredSpacesSnapshot = await db.collection('espacio').get();
+    QuerySnapshot registeredSpacesSnapshot = await db.collection('compra').get();
 
     int totalSpaces = allSpacesSnapshot.size;
     int registeredSpaces = registeredSpacesSnapshot.size;
@@ -360,7 +360,7 @@ Future<List<String>> getDisabledLocations() async {
       String expositorId) async {
     var db = FirebaseFirestore.instance;
     var snapshot = await db
-        .collection('registroEspacio')
+        .collection('compra')
         .where('id_expositor', isEqualTo: expositorId)
         .orderBy('fecha_compra', descending: true)
         .get();

@@ -21,10 +21,14 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    initializePurchasedLocations();
-  }
+void initState() {
+  super.initState();
+  // Limpiar las listas cuando se inicializa el estado
+  selectedLocations.clear();
+  purchasedLocations.clear();
+  disabledLocations.clear();
+  initializePurchasedLocations();
+}
 
   void showPurchaseDialog(BuildContext context) {
     showDialog(
