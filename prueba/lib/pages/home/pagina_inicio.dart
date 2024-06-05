@@ -20,8 +20,12 @@ class _PaginaInicioState extends State<PaginaInicio> {
   @override
   void initState() {
     super.initState();
-    _loadImages();
-    _loadNoticias();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _loadImages();
+        _loadNoticias();
+      }
+    });
   }
 
   Future<void> _loadNoticias() async {

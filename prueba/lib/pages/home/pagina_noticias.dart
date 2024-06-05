@@ -22,38 +22,48 @@ class _PaginaNoticiasState extends State<PaginaNoticias> {
   @override
   void initState() {
     super.initState();
-    _loadNoticias();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _loadNoticias();
+      }
+    });
   }
 
   Future<void> _loadNoticias() async {
     List<Noticia> noticiasCargadas = await ValidarDatos().getNoticias();
-    setState(() {
-      noticias = noticiasCargadas;
-    });
+    if (mounted) {
+      setState(() {
+        noticias = noticiasCargadas;
+      });
+    }
   }
 
   void _agregarNuevaNoticia(Noticia nuevaNoticia) {
     InsertarDatos().setNoticia(nuevaNoticia);
 
-    setState(() {
-      noticias.add(
-        Noticia(
-          nuevaNoticia.id,
-          "lib/images-prueba/foto-bazar.jpg",
-          nuevaNoticia.nombrePerfil,
-          nuevaNoticia.cuerpoNoticia,
-          nuevaNoticia.urlImagenNoticia,
-        ),
-      );
-    });
+    if (mounted) {
+      setState(() {
+        noticias.add(
+          Noticia(
+            nuevaNoticia.id,
+            "lib/images-prueba/foto-bazar.jpg",
+            nuevaNoticia.nombrePerfil,
+            nuevaNoticia.cuerpoNoticia,
+            nuevaNoticia.urlImagenNoticia,
+          ),
+        );
+      });
+    }
   }
 
   Future<void> _eliminarNoticia(int index) async {
     Noticia noticia = noticias[index];
     await InsertarDatos().deleteNoticia(noticia); // Elimina de la base de datos
-    setState(() {
-      noticias.removeAt(index); // Elimina de la UI
-    });
+    if (mounted) {
+      setState(() {
+        noticias.removeAt(index); // Elimina de la UI
+      });
+    }
   }
 
   @override

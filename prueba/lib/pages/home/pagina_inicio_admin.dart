@@ -23,8 +23,16 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
   @override
   void initState() {
     super.initState();
-    _loadImages();
-    _loadNoticias();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _loadData();
+      }
+    });
+  }
+
+  Future<void> _loadData() async {
+    await _loadNoticias();
+    await _loadImages();
   }
 
   Future<void> _loadNoticias() async {
@@ -32,6 +40,15 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
     if (mounted) {
       setState(() {
         noticias = noticiasCargadas;
+      });
+    }
+  }
+
+  Future<void> _loadImages() async {
+    List<String> urls = await ValidarDatos().getImagenes();
+    if (mounted) {
+      setState(() {
+        _imageUrls = urls;
       });
     }
   }
@@ -46,14 +63,14 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
     }
   }
 
-  Future<void> _loadImages() async {
-    List<String> urls = await ValidarDatos().getImagenes();
-    if (mounted) {
-      setState(() {
-        _imageUrls = urls;
-      });
-    }
-  }
+  // Future<void> _loadImages() async {
+  //   List<String> urls = await ValidarDatos().getImagenes();
+  //   if (mounted) {
+  //     setState(() {
+  //       _imageUrls = urls;
+  //     });
+  //   }
+  // }
 
   Future<void> _pickImage() async {
     final XFile? image =

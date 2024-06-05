@@ -22,6 +22,27 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
     initializePurchasedLocations();
   }
 
+  void showPurchaseDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Compra Exitosa'),
+          content: Text(
+              'Puesto comprado exitosamente. Puedes ver más detalles en el historial de compras.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> initializePurchasedLocations() async {
     await Preferencias.init();
     List<String> allOccupiedLocations =
@@ -74,6 +95,8 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
                           setState(() {
                             selectedLocations.clear();
                           });
+                          showPurchaseDialog(
+                              context); // Mostrar ventana emergente de compra exitosa
                         },
                         child: const Text('Comprar',
                             style: TextStyle(color: Colors.black)),
