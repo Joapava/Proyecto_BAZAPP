@@ -3,6 +3,7 @@ import 'package:prueba/Persistencia/DatosDB.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
 import 'package:prueba/components/generar_botones.dart';
 import 'package:prueba/components/informacion_compra_puesto.dart';
+import 'package:prueba/pages/home/PurchaseHistoryPage%20.dart';
 
 class PaginaPuestos extends StatefulWidget {
   const PaginaPuestos({super.key});
@@ -12,6 +13,10 @@ class PaginaPuestos extends StatefulWidget {
 }
 
 class _PaginaPuestosState extends State<PaginaPuestos> {
+  static const double precioPorPuesto = 200.0; // Precio unitario por puesto
+  List<String> purchasedLocations = [];
+  List<String> selectedLocations = [];
+
   void updateState() {
     setState(() {});
   }
@@ -37,6 +42,22 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
                 Navigator.of(context).pop();
               },
             ),
+            TextButton(
+              child: Text('Ver Historial'),
+              onPressed: () async {
+                var expositorId = Preferencias().id;
+                var purchaseHistory =
+                    await DatosDB().getPurchaseHistory(expositorId);
+                Navigator.of(context).pop(); // Cerrar el diálogo
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        PurchaseHistoryPage(purchaseHistory: purchaseHistory),
+                  ),
+                );
+              },
+            ),
           ],
         );
       },
@@ -48,9 +69,11 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
     List<String> allOccupiedLocations =
         await DatosDB().getAllOccupiedLocations();
 
-    setState(() {
-      purchasedLocations = allOccupiedLocations;
-    });
+    if (mounted) {
+      setState(() {
+        purchasedLocations = allOccupiedLocations;
+      });
+    }
   }
 
   // Función para generar etiquetas únicas con letras y números consecutivos
@@ -81,22 +104,27 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
                     if (selectedLocations.isNotEmpty)
                       ElevatedButton(
                         onPressed: () async {
-                          setState(() {
-                            for (var label in selectedLocations) {
-                              purchasedLocations.add(label);
-                            }
-                          });
-                          await Preferencias
-                              .init(); // Inicializar Preferencias si no está hecho ya
-                          String expositorId = Preferencias().id;
-                          await DatosDB().savePurchasedLocations(
+                          if (selectedLocations.isNotEmpty) {
+                            double totalPrice = selectedLocations.length *
+                                precioPorPuesto; // Calcula el precio total
+                            await Preferencias
+                                .init(); // Inicializar Preferencias si no está hecho ya
+                            String expositorId = Preferencias().id;
+                            await DatosDB().savePurchasedLocations(
                               selectedLocations,
-                              expositorId); // Guardar en Firebase
-                          setState(() {
-                            selectedLocations.clear();
-                          });
-                          showPurchaseDialog(
-                              context); // Mostrar ventana emergente de compra exitosa
+                              expositorId,
+                              totalPrice,
+                            ); // Guardar en Firebase
+                            if (mounted) {
+                              setState(() {
+                                purchasedLocations.addAll(
+                                    selectedLocations); // Actualiza la lista de ubicaciones compradas
+                                selectedLocations.clear();
+                              });
+                            }
+                            showPurchaseDialog(
+                                context); // Mostrar ventana emergente de compra exitosa
+                          }
                         },
                         child: const Text('Comprar',
                             style: TextStyle(color: Colors.black)),
@@ -311,7 +339,7 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
 }
 
 Widget visualizarInformacionCompta() {
-  return informacionCompra();
+  return InformacionBarraCompra();
 }
 
 Widget significadoColorPuesto() {

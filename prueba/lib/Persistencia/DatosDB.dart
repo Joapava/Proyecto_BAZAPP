@@ -8,6 +8,27 @@ import 'package:prueba/Class/noticias_data.dart';
 import 'package:http/http.dart' as http;
 
 class DatosDB {
+  Future<List<Map<String, dynamic>>> getPurchaseHistory(
+      String expositorId) async {
+    var db = FirebaseFirestore.instance;
+    var snapshot = await db
+        .collection('registroEspacio')
+        .where('id_expositor', isEqualTo: expositorId)
+        .orderBy('fecha_compra', descending: true)
+        .get();
+
+    List<Map<String, dynamic>> purchaseHistory = [];
+    for (var doc in snapshot.docs) {
+      var data = doc.data();
+      purchaseHistory.add({
+        'id_espacio': data['id_espacio'],
+        'fecha_compra': data['fecha_compra'],
+        'precio_total': data['precio_total'],
+      });
+    }
+    return purchaseHistory;
+  }
+
   Future<List<String>> getAllOccupiedLocations() async {
     var db = FirebaseFirestore.instance;
     var snapshot = await db.collection('registroEspacio').get();
@@ -41,12 +62,14 @@ class DatosDB {
   }
 
   Future<void> savePurchasedLocations(
-      List<String> locations, String expositorId) async {
+      List<String> locations, String expositorId, double totalPrice) async {
     var db = FirebaseFirestore.instance;
     for (String location in locations) {
       await db.collection('registroEspacio').add({
         'id_espacio': location,
         'id_expositor': expositorId,
+        'fecha_compra': DateTime.now(),
+        'precio_total': totalPrice,
       });
     }
   }

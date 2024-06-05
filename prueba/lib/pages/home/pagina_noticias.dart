@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:prueba/Class/noticias_data.dart';
 import 'package:prueba/Negocio/InsertarDatos.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
 import 'package:prueba/Persistencia/Preferencias.dart';
 import 'package:prueba/components/agregar_noticia.dart';
-import 'package:prueba/Class/noticias_data.dart';
-// ignore: depend_on_referenced_packages
-import 'package:http/http.dart' as http;
 import 'package:prueba/pages/home/ImagenPagina.dart';
+import 'package:http/http.dart' as http;
 
 class PaginaNoticias extends StatefulWidget {
   const PaginaNoticias({super.key});
@@ -76,7 +75,9 @@ class _PaginaNoticiasState extends State<PaginaNoticias> {
             children: <Widget>[
               const Divider(),
               ListaNoticias(
-                  noticias: noticias, eliminarNoticia: _eliminarNoticia),
+                  noticias: noticias,
+                  eliminarNoticia: _eliminarNoticia,
+                  prefs: prefs),
             ],
           ),
         ),
@@ -112,9 +113,13 @@ class _PaginaNoticiasState extends State<PaginaNoticias> {
 class ListaNoticias extends StatelessWidget {
   final List<Noticia> noticias;
   final Function(int) eliminarNoticia;
+  final Preferencias prefs;
 
   const ListaNoticias(
-      {super.key, required this.noticias, required this.eliminarNoticia});
+      {super.key,
+      required this.noticias,
+      required this.eliminarNoticia,
+      required this.prefs});
 
   @override
   Widget build(BuildContext context) {
@@ -130,6 +135,7 @@ class ListaNoticias extends StatelessWidget {
           cuerpoNoticia: noticia.cuerpoNoticia,
           urlImagenNoticia: noticia.urlImagenNoticia,
           eliminarNoticia: eliminarNoticia,
+          prefs: prefs,
         );
       },
     );
@@ -142,6 +148,7 @@ class FormularioNoticia extends StatelessWidget {
   final String cuerpoNoticia;
   final String urlImagenNoticia;
   final Function(int) eliminarNoticia;
+  final Preferencias prefs;
 
   const FormularioNoticia({
     super.key,
@@ -150,38 +157,42 @@ class FormularioNoticia extends StatelessWidget {
     required this.cuerpoNoticia,
     required this.urlImagenNoticia,
     required this.eliminarNoticia,
+    required this.prefs,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Eliminar Noticia'),
-              content: const Text(
-                  '¿Estás seguro de que deseas eliminar esta noticia?'),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('Cancelar'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                TextButton(
-                  child: const Text('Eliminar'),
-                  onPressed: () async {
-                    await eliminarNoticia(
-                        index); // Elimina de la base de datos y UI
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
+        if (prefs.lvl == 2) {
+          // Solo permite eliminar si el nivel es 2
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Eliminar Noticia'),
+                content: const Text(
+                    '¿Estás seguro de que deseas eliminar esta noticia?'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Cancelar'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  TextButton(
+                    child: const Text('Eliminar'),
+                    onPressed: () async {
+                      await eliminarNoticia(
+                          index); // Elimina de la base de datos y UI
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
       },
       child: Container(
         margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
