@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Importar el paquete intl para el formato de fecha
+import 'package:cloud_firestore/cloud_firestore.dart'; // Importar Firestore para manejar los Timestamps
 
 class PurchaseHistoryPage extends StatelessWidget {
   final List<Map<String, dynamic>> purchaseHistory;
@@ -19,7 +20,7 @@ class PurchaseHistoryPage extends StatelessWidget {
         itemCount: groupedPurchases.length,
         itemBuilder: (context, index) {
           var transaction = groupedPurchases[index];
-          var timestamp = transaction['fecha_compra'];
+          var timestamp = transaction['fecha_compra'] as Timestamp;
           var dateTime = timestamp.toDate().toLocal(); // Convertir a hora local
           var formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(dateTime);
 
@@ -38,12 +39,12 @@ class PurchaseHistoryPage extends StatelessWidget {
     );
   }
 
-  List<Map<String, dynamic>> _groupPurchasesByTransaction(
-      List<Map<String, dynamic>> purchases) {
+  List<Map<String, dynamic>> _groupPurchasesByTransaction(List<Map<String, dynamic>> purchases) {
     Map<String, Map<String, dynamic>> grouped = {};
 
     for (var purchase in purchases) {
-      String key = '${purchase['fecha_compra'].toString()}_${purchase['precio_total']}'; // Crear una clave única por transacción
+      // Crear una clave única por transacción utilizando la fecha (sin segundos) y el precio total
+      String key = '${(purchase['fecha_compra'] as Timestamp).toDate().toLocal().toString().substring(0, 16)}_${purchase['precio_total']}';
 
       if (!grouped.containsKey(key)) {
         grouped[key] = {
