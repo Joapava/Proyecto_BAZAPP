@@ -98,6 +98,8 @@
     "news_body": "What's new?",
     "news_post": "Post",
     "news_error": "Enter the body of the news",
+    "news_alert_1": "Upload an image",
+    "news_alert_2": "to continue",
 
     "change_price_title": "Change of price",
     "change_price_subtitle_1": "Actual price",

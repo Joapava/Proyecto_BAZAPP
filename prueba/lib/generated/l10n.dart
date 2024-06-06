@@ -950,6 +950,26 @@ class S {
     );
   }
 
+  /// `Upload an image`
+  String get news_alert_1 {
+    return Intl.message(
+      'Upload an image',
+      name: 'news_alert_1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `to continue`
+  String get news_alert_2 {
+    return Intl.message(
+      'to continue',
+      name: 'news_alert_2',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Change of price`
   String get change_price_title {
     return Intl.message(

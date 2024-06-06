@@ -64,6 +64,68 @@ class _agregar_noticiaState extends State<agregar_noticia> {
     }
   }
 
+  _mostrarDialogo(BuildContext context) {
+    double ancho = MediaQuery.of(context).size.width;
+    double altura = MediaQuery.of(context).size.height;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+              backgroundColor: const Color.fromARGB(255, 53, 53, 53),
+              child: SizedBox(
+                height: altura * .25,
+                width: ancho * .7,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Image.asset('assets/advertencia.png',color: Colors.yellow[300],),
+                    SizedBox(
+                      height: altura * .010,
+                    ),
+                    FittedBox(
+                      child: Text(
+                        S.of(context).news_alert_1,
+                        style: const TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 16,
+                            color: Colors.white),
+                      ),
+                    ),
+                    FittedBox(
+                      child: Text(
+                        S.of(context).news_alert_2,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Inter',
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: altura * .015),
+                    Container(
+                      height: altura * .043,
+                      width: ancho * .2,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: FloatingActionButton(
+                        backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
+                        heroTag: 'dialogacpt',
+                        elevation: 0,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(S.of(context).alert_button),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+      },
+    );
+  }
+
   void _submitForm() {
     if (_formKey.currentState!.validate() && _imagenUrlNoticia != null) {
       Navigator.pop(
@@ -76,6 +138,8 @@ class _agregar_noticiaState extends State<agregar_noticia> {
           _imagenUrlNoticia!,
         ),
       );
+    }else if(_imagenUrlNoticia == null){
+      _mostrarDialogo(context);
     }
   }
 

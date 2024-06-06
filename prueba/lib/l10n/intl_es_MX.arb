@@ -98,6 +98,8 @@
     "news_body": "¿Qué hay de nuevo?",
     "news_post": "Publicar",
     "news_error": "Ingresa el cuerpo de la noticia",
+    "news_alert_1": "Cargue una imagen",
+    "news_alert_2": "para continuar",
 
     "change_price_title": "Cambio de precio",
     "change_price_subtitle_1": "Precio actual",

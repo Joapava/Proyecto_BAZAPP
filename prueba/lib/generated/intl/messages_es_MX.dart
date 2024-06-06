@@ -102,6 +102,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "navbar_item_news": MessageLookupByLibrary.simpleMessage("Noticias"),
         "navbar_item_resume": MessageLookupByLibrary.simpleMessage("Resumen"),
         "navbar_item_user": MessageLookupByLibrary.simpleMessage("Usuario"),
+        "news_alert_1":
+            MessageLookupByLibrary.simpleMessage("Cargue una imagen"),
+        "news_alert_2": MessageLookupByLibrary.simpleMessage("para continuar"),
         "news_body": MessageLookupByLibrary.simpleMessage("¿Qué hay de nuevo?"),
         "news_error": MessageLookupByLibrary.simpleMessage(
             "Ingresa el cuerpo de la noticia"),
