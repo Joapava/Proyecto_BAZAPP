@@ -730,6 +730,16 @@ class S {
     );
   }
 
+  /// `Ads`
+  String get home_ads {
+    return Intl.message(
+      'Ads',
+      name: 'home_ads',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Password reset`
   String get reset_password_title {
     return Intl.message(
@@ -1025,6 +1035,86 @@ class S {
     return Intl.message(
       'Total price:',
       name: 'shopping_history_label_3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete image`
+  String get delete_image_title {
+    return Intl.message(
+      'Delete image',
+      name: 'delete_image_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete this image?`
+  String get delete_image_body {
+    return Intl.message(
+      'Are you sure you want to delete this image?',
+      name: 'delete_image_body',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get delete_image_cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'delete_image_cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get delete_image_delete {
+    return Intl.message(
+      'Delete',
+      name: 'delete_image_delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete news`
+  String get delete_news_title {
+    return Intl.message(
+      'Delete news',
+      name: 'delete_news_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete this news?`
+  String get delete_news_body {
+    return Intl.message(
+      'Are you sure you want to delete this news?',
+      name: 'delete_news_body',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get delete_news_cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'delete_news_cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get delete_news_delete {
+    return Intl.message(
+      'Delete',
+      name: 'delete_news_delete',
       desc: '',
       args: [],
     );

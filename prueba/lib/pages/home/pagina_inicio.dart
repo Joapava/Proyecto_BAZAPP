@@ -8,6 +8,7 @@ import 'package:prueba/pages/home/aviso_detalle_page.dart';
 import 'package:prueba/pages/home/imagen_pagina.dart';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
+import 'package:prueba/generated/l10n.dart';
 
 class PaginaInicio extends StatefulWidget {
   const PaginaInicio({super.key});
@@ -113,9 +114,9 @@ class _PaginaInicioState extends State<PaginaInicio> {
       children: [
         Container(
           margin: const EdgeInsets.fromLTRB(10, 20, 0, 0),
-          child: const Text(
-            "Avisos",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          child: Text(
+            S.of(context).home_ads,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
         ),
         SizedBox(
@@ -206,9 +207,9 @@ class _PaginaInicioState extends State<PaginaInicio> {
           alignment: Alignment.topLeft,
           child: Container(
             margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
-            child: const Text(
-              "Detalles",
-              style: TextStyle(
+            child: Text(
+              S.of(context).home_details,
+              style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                   fontFamily: "Arial"),
@@ -285,9 +286,9 @@ class _PaginaInicioState extends State<PaginaInicio> {
             children: [
               Container(
                 margin: const EdgeInsets.fromLTRB(10, 30, 10, 5),
-                child: const Text(
-                  "Fotos",
-                  style: TextStyle(
+                child: Text(
+                  S.of(context).home_photos,
+                  style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontFamily: "Arial",
                       fontSize: 25),

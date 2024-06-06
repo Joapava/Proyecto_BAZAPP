@@ -59,7 +59,20 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Space maintenance"),
         "config_manage_title":
             MessageLookupByLibrary.simpleMessage("Mantenimiento"),
+        "delete_image_body": MessageLookupByLibrary.simpleMessage(
+            "Are you sure you want to delete this image?"),
+        "delete_image_cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "delete_image_delete": MessageLookupByLibrary.simpleMessage("Delete"),
+        "delete_image_title":
+            MessageLookupByLibrary.simpleMessage("Delete image"),
+        "delete_news_body": MessageLookupByLibrary.simpleMessage(
+            "Are you sure you want to delete this news?"),
+        "delete_news_cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "delete_news_delete": MessageLookupByLibrary.simpleMessage("Delete"),
+        "delete_news_title":
+            MessageLookupByLibrary.simpleMessage("Delete news"),
         "forget": MessageLookupByLibrary.simpleMessage("Forget your password?"),
+        "home_ads": MessageLookupByLibrary.simpleMessage("Ads"),
         "home_details": MessageLookupByLibrary.simpleMessage("Details"),
         "home_feactured": MessageLookupByLibrary.simpleMessage("Feactured"),
         "home_photos": MessageLookupByLibrary.simpleMessage("Photos"),

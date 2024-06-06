@@ -6,6 +6,7 @@ import 'package:prueba/Persistencia/Preferencias.dart';
 import 'package:prueba/components/agregar_noticia.dart';
 import 'package:prueba/pages/home/ImagenPagina.dart';
 import 'package:http/http.dart' as http;
+import 'package:prueba/generated/l10n.dart';
 
 class PaginaNoticias extends StatefulWidget {
   const PaginaNoticias({super.key});
@@ -176,18 +177,18 @@ class FormularioNoticia extends StatelessWidget {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: const Text('Eliminar Noticia'),
-                content: const Text(
-                    '¿Estás seguro de que deseas eliminar esta noticia?'),
+                title: Text(S.of(context).delete_image_title),
+                content: Text(
+                    S.of(context).delete_news_body),
                 actions: <Widget>[
                   TextButton(
-                    child: const Text('Cancelar'),
+                    child: Text(S.of(context).delete_news_cancel),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                   ),
                   TextButton(
-                    child: const Text('Eliminar'),
+                    child: Text(S.of(context).delete_news_delete),
                     onPressed: () async {
                       await eliminarNoticia(
                           index); // Elimina de la base de datos y UI

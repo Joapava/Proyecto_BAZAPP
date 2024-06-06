@@ -73,6 +73,7 @@
     "home_feactured": "Destacados",
     "home_details": "Detalles",
     "home_photos": "Fotos",
+    "home_ads": "Avisos",
 
     "reset_password_title": "Recuperacion de Contraseña",
     "reset_password_subtitle_1": "Favor de ingresar el correo",
@@ -107,5 +108,15 @@
     "shopping_history_title": "Historial de Compras",
     "shopping_history_label_1": "Lugares:",
     "shopping_history_label_2": "Fecha:",
-    "shopping_history_label_3": "Precio Total:"
+    "shopping_history_label_3": "Precio Total:",
+
+    "delete_image_title": "Eliminar imagen",
+    "delete_image_body": "¿Estás seguro de que deseas eliminar esta imagen?",
+    "delete_image_cancel": "Cancelar",
+    "delete_image_delete": "Eliminar",
+
+    "delete_news_title": "Eliminar Noticia",
+    "delete_news_body": "¿Estás seguro de que deseas eliminar esta noticia?",
+    "delete_news_cancel": "Cancelar",
+    "delete_news_delete": "Eliminar"
 }

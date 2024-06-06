@@ -373,18 +373,18 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: const Text('Eliminar Imagen'),
-                    content: const Text(
-                        '¿Estás seguro de que deseas eliminar esta imagen?'),
+                    title: Text(S.of(context).delete_image_title),
+                    content: Text(
+                        S.of(context).delete_image_body),
                     actions: <Widget>[
                       TextButton(
-                        child: const Text('Cancelar'),
+                        child: Text(S.of(context).delete_image_cancel),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
                       ),
                       TextButton(
-                        child: const Text('Eliminar'),
+                        child: Text(S.of(context).delete_image_delete),
                         onPressed: () {
                           Navigator.of(context).pop();
                           _deleteImage(imageUrl);

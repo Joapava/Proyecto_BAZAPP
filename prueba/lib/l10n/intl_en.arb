@@ -73,6 +73,7 @@
     "home_feactured": "Feactured",
     "home_details": "Details",
     "home_photos": "Photos",
+    "home_ads": "Ads",
 
     "reset_password_title": "Password reset",
     "reset_password_subtitle_1": "Please enter you email",
@@ -107,5 +108,15 @@
     "shopping_history_title": "Shopping history",
     "shopping_history_label_1": "Spaces:",
     "shopping_history_label_2": "Date:",
-    "shopping_history_label_3": "Total price:"
+    "shopping_history_label_3": "Total price:",
+
+    "delete_image_title": "Delete image",
+    "delete_image_body": "Are you sure you want to delete this image?",
+    "delete_image_cancel": "Cancel",
+    "delete_image_delete": "Delete",
+
+    "delete_news_title": "Delete news",
+    "delete_news_body": "Are you sure you want to delete this news?",
+    "delete_news_cancel": "Cancel",
+    "delete_news_delete": "Delete"
 }
