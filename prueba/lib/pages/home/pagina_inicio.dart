@@ -88,6 +88,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(250, 250, 250, .98),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[

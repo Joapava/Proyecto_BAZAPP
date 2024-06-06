@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:prueba/Class/noticias_data.dart';
+import 'package:prueba/generated/l10n.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class agregar_noticia extends StatefulWidget {
@@ -82,110 +83,112 @@ class _agregar_noticiaState extends State<agregar_noticia> {
   Widget build(BuildContext context) {
     double ancho = MediaQuery.of(context).size.width;
     double altura = MediaQuery.of(context).size.height;
-    return SafeArea(
-      child: Scaffold(
+    return  Scaffold(
         backgroundColor: const Color.fromRGBO(250, 250, 250, .98),
-        body: SingleChildScrollView(
-            child: Column(
-          children: [
-            SizedBox(
-              height: altura * .06,
-            ),
-            regreso(),
-            SizedBox(
-              height: altura * .035,
-            ),
-            Center(
-              child: Container(
-                height: altura * .33,
-                width: ancho * .8,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: const Color.fromRGBO(255, 255, 255, 1)),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: altura * .01,
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: ancho * .1,
-                        ),
-                        SizedBox(
-                          width: ancho * .5,
-                          child: const Text(
-                            'Crear Noticia',
-                            style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
+        body: SafeArea(
+          child: SingleChildScrollView(
+              child: Column(
+            children: [
+              SizedBox(
+                height: altura * .06,
+              ),
+              regreso(),
+              SizedBox(
+                height: altura * .035,
+              ),
+              Center(
+                child: Container(
+                  height: altura * .33,
+                  width: ancho * .8,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: const Color.fromRGBO(255, 255, 255, 1)),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: altura * .01,
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: ancho * .1,
                           ),
-                        ),
-                        SizedBox(
-                          width: ancho * .1,
-                        ),
-                        SizedBox(
-                          width: ancho * .064,
-                          height: altura * .032,
-                          child: FloatingActionButton(
-                            heroTag: 'deletedata',
-                            onPressed: () {
-                              setState(() {
-                                _cuerpoController.text = "";
-                                _imagenUrlNoticia = null;
-                              });
-                            },
-                            backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
-                            elevation: 0,
-                            child: Icon(
-                              Icons.close,
-                              color: Colors.grey[700],
+                          SizedBox(
+                            width: ancho * .5,
+                            child: Text(
+                              S.of(context).news_title,
+                              style: const TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
-                        )
-                      ],
-                    ),
-                    Divider(
-                      endIndent: ancho * .02,
-                      indent: ancho * .02,
-                    ),
-                    cuerponoticia(),
-                    SizedBox(
-                      height: altura * .01,
-                    ),
-                    Divider(
-                      endIndent: ancho * .02,
-                      indent: ancho * .02,
-                    ),
-                    Row(
-                      children: [
-                        addimage(),
-                        SizedBox(
-                          width: ancho * .20,
-                        ),
-                        postnew()
-                      ],
-                    )
-                  ],
+                          SizedBox(
+                            width: ancho * .1,
+                          ),
+                          SizedBox(
+                            width: ancho * .064,
+                            height: altura * .032,
+                            child: FloatingActionButton(
+                              heroTag: 'deletedata',
+                              onPressed: () {
+                                setState(() {
+                                  _cuerpoController.text = "";
+                                  _imagenUrlNoticia = null;
+                                });
+                              },
+                              backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
+                              elevation: 0,
+                              child: Icon(
+                                Icons.close,
+                                color: Colors.grey[700],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      Divider(
+                        endIndent: ancho * .02,
+                        indent: ancho * .02,
+                      ),
+                      cuerponoticia(),
+                      SizedBox(
+                        height: altura * .01,
+                      ),
+                      Divider(
+                        endIndent: ancho * .02,
+                        indent: ancho * .02,
+                      ),
+                      Row(
+                        children: [
+                          addimage(),
+                          SizedBox(
+                            width: ancho * .17,
+                          ),
+                          postnew()
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        )),
-      ),
-    );
+            ],
+          )),
+        ),
+      );
   }
 
   Widget regreso() {
+    double ancho = MediaQuery.of(context).size.width;
+    double altura = MediaQuery.of(context).size.height;
     return Row(
       children: [
-        const SizedBox(
-          width: 20,
+        SizedBox(
+          width: ancho * .025,
         ),
         SizedBox(
-          width: 40,
-          height: 40,
+          width: ancho * .07,
+          height: altura * .03,
           child: FloatingActionButton(
             heroTag: 'back',
             onPressed: () {
@@ -204,7 +207,7 @@ class _agregar_noticiaState extends State<agregar_noticia> {
     double ancho = MediaQuery.of(context).size.width;
     double altura = MediaQuery.of(context).size.height;
     return Container(
-      width: ancho * .12,
+      width: ancho * .15,
       height: altura * .032,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
@@ -215,9 +218,9 @@ class _agregar_noticiaState extends State<agregar_noticia> {
         },
         backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
         elevation: 0,
-        child: const Text(
-          'Post',
-          style: TextStyle(fontFamily: 'Inter', color: Colors.white),
+        child: Text(
+          S.of(context).news_post,
+          style: const TextStyle(fontFamily: 'Inter', color: Colors.white),
         ),
       ),
     );
@@ -272,11 +275,11 @@ class _agregar_noticiaState extends State<agregar_noticia> {
         child: TextFormField(
           controller: _cuerpoController,
           maxLines: 5,
-          decoration: const InputDecoration(
-              enabledBorder: UnderlineInputBorder(
+          decoration: InputDecoration(
+              enabledBorder: const UnderlineInputBorder(
                 borderSide: BorderSide.none,
               ),
-              hintText: '¿Qué hay de nuevo?',
+              hintText: S.of(context).news_body,
               focusedBorder: InputBorder.none,
               border: InputBorder.none),
           style: const TextStyle(
@@ -286,7 +289,7 @@ class _agregar_noticiaState extends State<agregar_noticia> {
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Ingresa el cuerpo de la noticia';
+              return S.of(context).news_error;
             }
             return null;
           },

@@ -23,6 +23,10 @@
     "subtitle_policy_privacy": "Privacy Policy",
     "subtitle_policy_term": "Terms and Conditions",
     "title_signout": "Sign out",
+    "config_manage_title": "Mantenimiento",
+    "config_create_subtitle_noti": "Notification",
+    "config_manage_subtitle_changeprice": "Change price (space)",
+    "config_manage_subtitle_spaces": "Space maintenance",
 
     "tittle_lang": "Select language",
     "search_box": "Search",
@@ -85,5 +89,10 @@
     "locate_total": "Total selected places:",
     "locate_total_cost": "Total cost:",
     "locate_selected_spaces": "Selected spaces:",
-    "locate_information": "Space 3x3 \n200 pesos (each)"
+    "locate_information": "Space 3x3 \n200 pesos (each)",
+
+    "news_title": "Create News",
+    "news_body": "What's new?",
+    "news_post": "Post",
+    "news_error": "Enter the body of the news"
 }

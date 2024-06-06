@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:prueba/Negocio/autenticar.dart';
 import 'package:prueba/generated/l10n.dart';
 import 'package:prueba/pages/config/configuracion.dart';
 import 'package:prueba/pages/home/pagina_inicio.dart';

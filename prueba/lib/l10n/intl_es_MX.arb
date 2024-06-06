@@ -23,6 +23,10 @@
     "subtitle_policy_privacy": "Politica de Privacidad",
     "subtitle_policy_term": "Terminos y Condiciones",
     "title_signout": "Cerrar Sesion",
+    "config_manage_title": "Mantenimiento",
+    "config_create_subtitle_noti": "Notificacion",
+    "config_manage_subtitle_changeprice": "Cambiar precio (espacio)",
+    "config_manage_subtitle_spaces": "Mantenimiento de espacios",
 
     "tittle_lang": "Seleccionar idioma",
     "search_box": "Buscar",
@@ -85,5 +89,10 @@
     "locate_total": "Total de lugares seleccionados:",
     "locate_total_cost": "Costo total:",
     "locate_selected_spaces": "Lugares seleccionados:",
-    "locate_information": "Espacios 3x3 \n200 pesos (cada uno)"
+    "locate_information": "Espacios 3x3 \n200 pesos (cada uno)",
+
+    "news_title": "Crear Noticia",
+    "news_body": "¿Qué hay de nuevo?",
+    "news_post": "Publicar",
+    "news_error": "Ingresa el cuerpo de la noticia"
 }

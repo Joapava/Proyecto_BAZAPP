@@ -32,9 +32,10 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
       _anuncios = avisos;
     });
   }
+
   void _showMaxLimitSnackbar() {
-    final snackBar = SnackBar(
-      content: const Text('Se ha alcanzado el límite máximo de anuncios (15)'),
+    const snackBar = SnackBar(
+      content: Text('Se ha alcanzado el límite máximo de anuncios (15)'),
       backgroundColor: Colors.red,
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -45,8 +46,6 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
       _showMaxLimitSnackbar();
       return;
     }
-
-
 
     final titulo = _tituloController.text.trim();
     final cuerpo = _cuerpoController.text.trim();
@@ -75,13 +74,14 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
   }
 
   void _toggleEstado(String id) async {
-  int index = _anuncios.indexWhere((aviso) => aviso.id == id);
-  if (index != -1) {
-    String nuevoEstado = _anuncios[index].estado == 'Inactivo' ? 'Activo' : 'Inactivo';
-    await db.updateAvisoEstado(id, nuevoEstado);
-    _loadAvisos();
+    int index = _anuncios.indexWhere((aviso) => aviso.id == id);
+    if (index != -1) {
+      String nuevoEstado =
+          _anuncios[index].estado == 'Inactivo' ? 'Activo' : 'Inactivo';
+      await db.updateAvisoEstado(id, nuevoEstado);
+      _loadAvisos();
+    }
   }
-}
 
   void _eliminarAnuncio(String id) async {
     await db.deleteAviso(id);
@@ -116,6 +116,7 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
     );
 
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(250, 250, 250, .98),
       appBar: AppBar(
         title: const Text('Administración de Anuncios'),
       ),
@@ -137,9 +138,9 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
   }
 
   Widget _buildHeader() {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const <Widget>[
+      children: <Widget>[
         Text(
           'BAZAR Vintage Clothing',
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -161,10 +162,11 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
 
   Widget _buildAnunciosTable(List<Aviso> currentAnuncios) {
     return Card(
+      color: const Color.fromRGBO(250, 250, 250, .98),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
-      elevation: 2,
+      elevation: 3,
       child: Container(
         padding: const EdgeInsets.all(8.0),
         height: 300,
@@ -172,31 +174,31 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Expanded(
+                const Expanded(
                   child: Text(
                     'Título',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
-                Expanded(
+                const Expanded(
                   child: Text(
                     'Fecha de creación',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
-                Expanded(
+                const Expanded(
                   child: Text(
                     'Estado',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.sort, color: Colors.grey),
+                  icon: const Icon(Icons.sort, color: Colors.grey),
                   onPressed: _ordenarAnuncios,
                 ),
               ],
             ),
-            Divider(),
+            const Divider(),
             Expanded(
               child: ListView.builder(
                 itemCount: currentAnuncios.length,
@@ -207,33 +209,37 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
                         children: <Widget>[
                           Expanded(child: Text(currentAnuncios[index].titulo)),
                           Expanded(child: Text(currentAnuncios[index].fecha)),
-                        Expanded(
-  child: GestureDetector(
-    onTap: () => _toggleEstado(currentAnuncios[index].id),
-    child: Container(
-      padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-      decoration: BoxDecoration(
-        color: currentAnuncios[index].estado == 'Activo'
-            ? Colors.green.withOpacity(0.1)
-            : Colors.red.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Text(
-        currentAnuncios[index].estado,
-        style: TextStyle(
-          color: currentAnuncios[index].estado == 'Activo'
-              ? Colors.green
-              : Colors.red,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    ),
-  ),
-),
-
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () =>
+                                  _toggleEstado(currentAnuncios[index].id),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 4.0, horizontal: 8.0),
+                                decoration: BoxDecoration(
+                                  color:
+                                      currentAnuncios[index].estado == 'Activo'
+                                          ? Colors.green.withOpacity(0.1)
+                                          : Colors.red.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Text(
+                                  currentAnuncios[index].estado,
+                                  style: TextStyle(
+                                    color: currentAnuncios[index].estado ==
+                                            'Activo'
+                                        ? Colors.green
+                                        : Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                           IconButton(
-                            icon: Icon(Icons.delete, color: Colors.red),
-                            onPressed: () => _eliminarAnuncio(currentAnuncios[index].id),
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                            onPressed: () =>
+                                _eliminarAnuncio(currentAnuncios[index].id),
                           ),
                         ],
                       ),
@@ -242,12 +248,12 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
                           Expanded(
                             child: Text(
                               _truncateText(currentAnuncios[index].cuerpo),
-                              style: TextStyle(color: Colors.grey),
+                              style: const TextStyle(color: Colors.grey),
                             ),
                           ),
                         ],
                       ),
-                      Divider(),
+                      const Divider(),
                     ],
                   );
                 },
@@ -259,7 +265,7 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
     );
   }
 
- Widget _buildPagination(int totalPages) {
+  Widget _buildPagination(int totalPages) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
@@ -269,10 +275,12 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
           child: ElevatedButton(
             onPressed: () => _goToPage(index),
             style: ElevatedButton.styleFrom(
-              backgroundColor: index == _currentPage ? Colors.black : Colors.white,
-              foregroundColor: index == _currentPage ? Colors.white : Colors.black,
-              shape: CircleBorder(),
-              padding: EdgeInsets.all(10),
+              backgroundColor:
+                  index == _currentPage ? Colors.black : Colors.white,
+              foregroundColor:
+                  index == _currentPage ? Colors.white : Colors.black,
+              shape: const CircleBorder(),
+              padding: const EdgeInsets.all(10),
             ),
             child: Text('${index + 1}'),
           ),
@@ -280,12 +288,13 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
       ),
     );
   }
+
   String _truncateText(String text) {
     const maxLength = 50;
-    return text.length > maxLength ? '${text.substring(0, maxLength)}...' : text;
+    return text.length > maxLength
+        ? '${text.substring(0, maxLength)}...'
+        : text;
   }
-
- 
 
   Widget _buildInputField() {
     return Column(
@@ -314,7 +323,9 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
               ),
             ),
             hintText: 'Cuerpo del anuncio',
-            errorText: _isCuerpoEmpty ? 'El cuerpo del anuncio no puede estar vacío' : null,
+            errorText: _isCuerpoEmpty
+                ? 'El cuerpo del anuncio no puede estar vacío'
+                : null,
           ),
           maxLines: 5,
         ),
@@ -327,7 +338,7 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
       child: FloatingActionButton(
         onPressed: _crearAnuncio,
         backgroundColor: Colors.black,
-        child: Icon(Icons.add, color: Colors.white),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }

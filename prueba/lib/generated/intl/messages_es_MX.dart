@@ -38,6 +38,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Confirmar contraseña"),
         "change_password_title":
             MessageLookupByLibrary.simpleMessage("Cambiar Contraseña"),
+        "config_create_subtitle_noti":
+            MessageLookupByLibrary.simpleMessage("Notificacion"),
+        "config_manage_subtitle_changeprice":
+            MessageLookupByLibrary.simpleMessage("Cambiar precio (espacio)"),
+        "config_manage_subtitle_spaces":
+            MessageLookupByLibrary.simpleMessage("Mantenimiento de espacios"),
+        "config_manage_title":
+            MessageLookupByLibrary.simpleMessage("Mantenimiento"),
         "forget":
             MessageLookupByLibrary.simpleMessage("¿Olvidaste tu contraseña?"),
         "home_details": MessageLookupByLibrary.simpleMessage("Detalles"),
@@ -67,6 +75,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "navbar_item_news": MessageLookupByLibrary.simpleMessage("Noticias"),
         "navbar_item_resume": MessageLookupByLibrary.simpleMessage("Resumen"),
         "navbar_item_user": MessageLookupByLibrary.simpleMessage("Usuario"),
+        "news_body": MessageLookupByLibrary.simpleMessage("¿Qué hay de nuevo?"),
+        "news_error": MessageLookupByLibrary.simpleMessage(
+            "Ingresa el cuerpo de la noticia"),
+        "news_post": MessageLookupByLibrary.simpleMessage("Publicar"),
+        "news_title": MessageLookupByLibrary.simpleMessage("Crear Noticia"),
         "not_account":
             MessageLookupByLibrary.simpleMessage("¿Aún no tienes cuenta?"),
         "placeholder_box_email":

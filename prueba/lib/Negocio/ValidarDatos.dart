@@ -28,6 +28,7 @@ class ValidarDatos {
         perfs.nombre = "${mayus(ex.nombre)} ${mayus(ex.apellidos)}";
         perfs.phone = ex.celular;
         perfs.notificaciones = ex.ntf;
+        await datosBazar();
         await administrador(id);
         return true;
       }
@@ -51,6 +52,18 @@ class ValidarDatos {
         perfs.lvl = ad.nivel;
       }
     }
+  }
+
+  Future<void> datosBazar() async {
+    final perfs = Preferencias();
+    var bazar = await DatosDB().getDataBazar();
+    if(bazar!=null){
+      print("entraaaaaaaaaaaaaaaaaaaa");
+      perfs.price = bazar.precio;
+      perfs.idBazar = bazar.id;
+      perfs.nameBazar = bazar.nombre;
+    }
+    
   }
 
   Future<bool> sindatosemail(String email) async {
@@ -93,8 +106,7 @@ class ValidarDatos {
     return await DatosDB().getImagenes();
   }
 
-  Future<List<Aviso>> getAvisos() async{
+  Future<List<Aviso>> getAvisos() async {
     return await DatosDB().getAvisos();
-
   }
 }

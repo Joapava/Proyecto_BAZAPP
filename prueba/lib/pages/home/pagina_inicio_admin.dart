@@ -103,6 +103,7 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(250, 250, 250, .98),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[

@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:prueba/Class/aviso.dart';
 import 'package:prueba/Class/Expositor.dart';
 import 'package:prueba/Class/administrador.dart';
+import 'package:prueba/Class/bazar.dart';
 import 'package:prueba/Class/noticias_data.dart';
 import 'package:http/http.dart' as http;
 import 'package:prueba/Persistencia/Preferencias.dart';
@@ -88,6 +89,21 @@ class DatosDB {
       }
     });
     return listaAdministrador;
+  }
+
+  Future<Bazar?> getDataBazar() async {
+    var db = FirebaseFirestore.instance;
+    await db.collection("datos_bazar").get().then((event) {
+      for (var doc in event.docs) {
+        var data = doc.data();
+        Bazar bazar = Bazar(
+            precio: data['precio_espacio'],
+            nombre: data['nombre'],
+            id: data['id']);
+            return bazar;
+      }
+    });
+    return null;
   }
 
   Future<bool> getNotificacion(String id) async {
@@ -211,7 +227,7 @@ class DatosDB {
     return listaAvisos;
   }
 
-  Future<List<String>> getImagenes() async{
+  Future<List<String>> getImagenes() async {
     var db = FirebaseStorage.instance;
     ListResult result = await db.ref('Fotos').listAll();
     List<String> urls = [];

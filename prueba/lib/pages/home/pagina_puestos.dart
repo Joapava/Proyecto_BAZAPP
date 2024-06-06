@@ -24,10 +24,7 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
   }
 // GUARDAR COMPRAS
 
-
-
-
- Future<void> initializePurchasedLocations() async {
+  Future<void> initializePurchasedLocations() async {
     await Preferencias.init();
     List<String> allOccupiedLocations =
         await DatosDB().getAllOccupiedLocations();
@@ -43,55 +40,59 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
         count, (index) => '$letter${start + index + 1}');
   }
 
-   @override
-Widget build(BuildContext context) {
-  return SafeArea(
-    child: Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                children: [
-                  significadoColorPuesto(),
-                  const SizedBox(height: 10),
-                  contenedorPuestos(updateState, constraints.maxWidth, constraints.maxHeight),
-                  const SizedBox(height: 10),
-                  visualizarInformacionCompta(),
-                  const SizedBox(height: 10),
-                  if (selectedLocations.isNotEmpty)
-                    ElevatedButton(
-                      onPressed: () async {
-                        await Preferencias.init();
-                        String expositorId = Preferencias().id;
-                        int total = selectedLocations.length * 200;
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: const Color.fromRGBO(250, 250, 250, .98),
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  children: [
+                    significadoColorPuesto(),
+                    const SizedBox(height: 10),
+                    contenedorPuestos(updateState, constraints.maxWidth,
+                        constraints.maxHeight),
+                    const SizedBox(height: 10),
+                    visualizarInformacionCompta(),
+                    const SizedBox(height: 10),
+                    if (selectedLocations.isNotEmpty)
+                      ElevatedButton(
+                        onPressed: () async {
+                          await Preferencias.init();
+                          String expositorId = Preferencias().id;
+                          int total = selectedLocations.length * 200;
 
-                        // Guardar la compra en la colección "compra"
-                        await DatosDB().saveCompra(expositorId, total);
+                          // Guardar la compra en la colección "compra"
+                          await DatosDB().saveCompra(expositorId, total);
 
-                        // Guardar las ubicaciones compradas en la colección "registroEspacio"
-                        await DatosDB().savePurchasedLocations(selectedLocations, expositorId);
+                          // Guardar las ubicaciones compradas en la colección "registroEspacio"
+                          await DatosDB().savePurchasedLocations(
+                              selectedLocations, expositorId);
 
-                        // Actualizar el estado de los botones a gris (ocupado)
-                        setState(() {
-                          for (var label in selectedLocations) {
-                            purchasedLocations.add(label);
-                          }
-                          selectedLocations.clear();
-                        });
-                      },
-                      child: const Text('Comprar', style: TextStyle(color: Colors.black)),
-                    )
-                ],
+                          // Actualizar el estado de los botones a gris (ocupado)
+                          setState(() {
+                            for (var label in selectedLocations) {
+                              purchasedLocations.add(label);
+                            }
+                            selectedLocations.clear();
+                          });
+                        },
+                        child: const Text('Comprar',
+                            style: TextStyle(color: Colors.black)),
+                      )
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget contenedorPuestos(
       Function updateCallback, double maxWidth, double maxHeight) {

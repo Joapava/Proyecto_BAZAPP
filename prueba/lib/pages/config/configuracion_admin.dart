@@ -8,6 +8,7 @@ import 'package:prueba/pages/config/Application/lenguaje.dart';
 import 'package:prueba/pages/config/Application/notificaciones.dart';
 import 'package:prueba/pages/config/Account/password.dart';
 import 'package:prueba/pages/config/Account/perfil.dart';
+import 'package:prueba/pages/config/Maintenance/chageprice.dart';
 import 'package:prueba/pages/config/Politicas/politicas.dart';
 import 'package:prueba/pages/config/Politicas/terminos.dart';
 import 'package:prueba/pages/Login/login.dart';
@@ -25,7 +26,7 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(250, 250, 250, 1),
+      backgroundColor: const Color.fromRGBO(250, 250, 250, .98),
       body: SafeArea(
           child: SingleChildScrollView(
         child: principal(),
@@ -352,15 +353,15 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
           borderRadius: BorderRadius.circular(15), color: Colors.white),
       child: Column(
         children: [
-          const Row(
+          Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 15,
               ),
               FittedBox(
                 child: Text(
-                  'Generar',
-                  style: TextStyle(fontFamily: 'Inter', fontSize: 18),
+                  S.of(context).config_manage_title,
+                  style: const TextStyle(fontFamily: 'Inter', fontSize: 18),
                 ),
               )
             ],
@@ -370,14 +371,17 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
             height: 35,
             child: FloatingActionButton(
               heroTag: 'gnotificacion',
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const ChangePrice()));
+              },
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0)),
               backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
               elevation: 0,
-              child: const Row(
+              child: Row(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     width: 35,
                   ),
                   SizedBox(
@@ -385,14 +389,14 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                     height: 35,
                     child: Row(
                       children: [
-                        Icon(Icons.notification_add),
-                        SizedBox(
+                        const Icon(Icons.price_change_outlined),
+                        const SizedBox(
                           width: 5,
                         ),
                         FittedBox(
                           child: Text(
-                            'Notificacion',
-                            style: TextStyle(
+                            S.of(context).config_manage_subtitle_changeprice,
+                            style: const TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 18,
                                 color: Color.fromRGBO(109, 106, 106, 1)),
@@ -401,7 +405,7 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                       ],
                     ),
                   ),
-                  Icon(Icons.arrow_forward_ios_outlined)
+                  const Icon(Icons.arrow_forward_ios_outlined)
                 ],
               ),
             ),
@@ -410,7 +414,7 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
             width: 400,
             height: 35,
             child: FloatingActionButton(
-              heroTag: 'ganuncio',
+              heroTag: 'buttonspace',
               onPressed: () {},
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
@@ -418,9 +422,9 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                       bottomRight: Radius.circular(15))),
               backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
               elevation: 0,
-              child: const Row(
+              child: Row(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     width: 35,
                   ),
                   SizedBox(
@@ -428,14 +432,14 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                     height: 35,
                     child: Row(
                       children: [
-                        Icon(Icons.add_to_photos),
-                        SizedBox(
+                        const Icon(Icons.settings_applications_sharp),
+                        const SizedBox(
                           width: 5,
                         ),
                         FittedBox(
                           child: Text(
-                            'Aviso',
-                            style: TextStyle(
+                            S.of(context).config_manage_subtitle_spaces,
+                            style: const TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 18,
                                 color: Color.fromRGBO(109, 106, 106, 1)),
@@ -481,8 +485,8 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
             child: FloatingActionButton(
               heroTag: 'lenguaje',
               onPressed: () async {
-                if(S.current.tittle_settings == "Ajustes") perfs.lenguaje = "es_MX";
-                if(S.current.tittle_settings == "Settings") perfs.lenguaje = "en_US";
+                if (S.current.tittle_settings == "Ajustes") perfs.lenguaje = "es_MX";
+                if (S.current.tittle_settings == "Settings") perfs.lenguaje = "en_US";
                 await Navigator.push(
                     context,
                     MaterialPageRoute(

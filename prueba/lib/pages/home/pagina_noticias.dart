@@ -60,11 +60,11 @@ class _PaginaNoticiasState extends State<PaginaNoticias> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: const Color.fromRGBO(250, 250, 250, .98),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Divider(),
               ListaNoticias(
                   noticias: noticias, eliminarNoticia: _eliminarNoticia),
             ],

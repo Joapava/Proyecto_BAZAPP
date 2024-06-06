@@ -280,6 +280,46 @@ class S {
     );
   }
 
+  /// `Mantenimiento`
+  String get config_manage_title {
+    return Intl.message(
+      'Mantenimiento',
+      name: 'config_manage_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notification`
+  String get config_create_subtitle_noti {
+    return Intl.message(
+      'Notification',
+      name: 'config_create_subtitle_noti',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change price (space)`
+  String get config_manage_subtitle_changeprice {
+    return Intl.message(
+      'Change price (space)',
+      name: 'config_manage_subtitle_changeprice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Space maintenance`
+  String get config_manage_subtitle_spaces {
+    return Intl.message(
+      'Space maintenance',
+      name: 'config_manage_subtitle_spaces',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Select language`
   String get tittle_lang {
     return Intl.message(
@@ -835,6 +875,46 @@ class S {
     return Intl.message(
       'Space 3x3 \n200 pesos (each)',
       name: 'locate_information',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create News`
+  String get news_title {
+    return Intl.message(
+      'Create News',
+      name: 'news_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `What's new?`
+  String get news_body {
+    return Intl.message(
+      'What\'s new?',
+      name: 'news_body',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Post`
+  String get news_post {
+    return Intl.message(
+      'Post',
+      name: 'news_post',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter the body of the news`
+  String get news_error {
+    return Intl.message(
+      'Enter the body of the news',
+      name: 'news_error',
       desc: '',
       args: [],
     );
