@@ -90,7 +90,7 @@ class _agregar_noticiaState extends State<agregar_noticia> {
               child: Column(
             children: [
               SizedBox(
-                height: altura * .06,
+                height: altura * .03,
               ),
               regreso(),
               SizedBox(

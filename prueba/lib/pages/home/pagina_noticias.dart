@@ -68,6 +68,7 @@ class _PaginaNoticiasState extends State<PaginaNoticias> {
 
   @override
   Widget build(BuildContext context) {
+    double altura = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color.fromRGBO(250, 250, 250, .98),
@@ -75,7 +76,9 @@ class _PaginaNoticiasState extends State<PaginaNoticias> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Divider(),
+              SizedBox(
+                height: altura * .02,
+              ),
               ListaNoticias(
                   noticias: noticias,
                   eliminarNoticia: _eliminarNoticia,
