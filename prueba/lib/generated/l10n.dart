@@ -170,6 +170,16 @@ class S {
     );
   }
 
+  /// `Shopping history`
+  String get buy_history {
+    return Intl.message(
+      'Shopping history',
+      name: 'buy_history',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Settings`
   String get tittle_settings {
     return Intl.message(
@@ -870,11 +880,21 @@ class S {
     );
   }
 
-  /// `Space 3x3 \n200 pesos (each)`
-  String get locate_information {
+  /// `Space 3x3 \n{price} pesos (each)`
+  String locate_information(Object price) {
     return Intl.message(
-      'Space 3x3 \n200 pesos (each)',
+      'Space 3x3 \n$price pesos (each)',
       name: 'locate_information',
+      desc: '',
+      args: [price],
+    );
+  }
+
+  /// `Buy`
+  String get locate_button {
+    return Intl.message(
+      'Buy',
+      name: 'locate_button',
       desc: '',
       args: [],
     );
@@ -915,6 +935,96 @@ class S {
     return Intl.message(
       'Enter the body of the news',
       name: 'news_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change of price`
+  String get change_price_title {
+    return Intl.message(
+      'Change of price',
+      name: 'change_price_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Actual price`
+  String get change_price_subtitle_1 {
+    return Intl.message(
+      'Actual price',
+      name: 'change_price_subtitle_1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New price`
+  String get change_price_subtitle_2 {
+    return Intl.message(
+      'New price',
+      name: 'change_price_subtitle_2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `It has been updated`
+  String get change_price_alert {
+    return Intl.message(
+      'It has been updated',
+      name: 'change_price_alert',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `the price with success`
+  String get change_price_alert_2 {
+    return Intl.message(
+      'the price with success',
+      name: 'change_price_alert_2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shopping history`
+  String get shopping_history_title {
+    return Intl.message(
+      'Shopping history',
+      name: 'shopping_history_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Spaces:`
+  String get shopping_history_label_1 {
+    return Intl.message(
+      'Spaces:',
+      name: 'shopping_history_label_1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date:`
+  String get shopping_history_label_2 {
+    return Intl.message(
+      'Date:',
+      name: 'shopping_history_label_2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total price:`
+  String get shopping_history_label_3 {
+    return Intl.message(
+      'Total price:',
+      name: 'shopping_history_label_3',
       desc: '',
       args: [],
     );

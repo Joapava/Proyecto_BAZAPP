@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 import 'package:prueba/Class/administrador.dart';
 import 'package:prueba/Class/aviso.dart';
+import 'package:prueba/Class/bazar.dart';
 import 'package:prueba/Class/noticias_data.dart';
 import 'package:prueba/Persistencia/Auth.dart';
 import 'package:prueba/Persistencia/DatosDB.dart';
@@ -56,14 +57,14 @@ class ValidarDatos {
 
   Future<void> datosBazar() async {
     final perfs = Preferencias();
-    var bazar = await DatosDB().getDataBazar();
-    if(bazar!=null){
-      print("entraaaaaaaaaaaaaaaaaaaa");
-      perfs.price = bazar.precio;
-      perfs.idBazar = bazar.id;
-      perfs.nameBazar = bazar.nombre;
+    List<Bazar> bazar = await DatosDB().getDataBazar();
+    for (var bz in bazar) {
+      if (bz.id == 'vDo6Kzqik8J366EKs61S') {
+        perfs.price = bz.precio;
+        perfs.idBazar = bz.id;
+        perfs.nameBazar = bz.nombre;
+      }
     }
-    
   }
 
   Future<bool> sindatosemail(String email) async {

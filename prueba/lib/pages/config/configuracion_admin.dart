@@ -356,9 +356,9 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
           borderRadius: BorderRadius.circular(15), color: Colors.white),
       child: Column(
         children: [
-          Row(
+          const Row(
             children: [
-              const SizedBox(
+              SizedBox(
                 width: 15,
               ),
               FittedBox(
@@ -393,8 +393,8 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                     height: 35,
                     child: Row(
                       children: [
-                        Icon(Icons.notification_add, color: Colors.black),
-                        SizedBox(
+                        const Icon(Icons.price_change_outlined, color: Colors.black),
+                        const SizedBox(
                           width: 5,
                         ),
                         FittedBox(
@@ -409,7 +409,7 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                       ],
                     ),
                   ),
-                  Icon(Icons.arrow_forward_ios_outlined, color: Colors.black)
+                  const Icon(Icons.arrow_forward_ios_outlined, color: Colors.black)
                 ],
               ),
             ),
@@ -436,8 +436,8 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                     height: 35,
                     child: Row(
                       children: [
-                        Icon(Icons.add_to_photos, color: Colors.black),
-                        SizedBox(
+                        const Icon(Icons.add_to_photos, color: Colors.black),
+                        const SizedBox(
                           width: 5,
                         ),
                         FittedBox(
@@ -452,7 +452,7 @@ class _ConfiguracionAdminState extends State<ConfiguracionAdmin> {
                       ],
                     ),
                   ),
-                  Icon(Icons.arrow_forward_ios_outlined, color: Colors.black)
+                  const Icon(Icons.arrow_forward_ios_outlined, color: Colors.black)
                 ],
               ),
             ),

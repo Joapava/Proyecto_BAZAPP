@@ -20,6 +20,8 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'es_MX';
 
+  static String m0(price) => "Espacios 3x3 \n${price} pesos (cada uno)";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "alert_button": MessageLookupByLibrary.simpleMessage("Aceptar"),
@@ -32,12 +34,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "buttom_cancel": MessageLookupByLibrary.simpleMessage("Cancelar"),
         "button_save": MessageLookupByLibrary.simpleMessage("Guardar"),
         "button_send": MessageLookupByLibrary.simpleMessage("Enviar"),
+        "buy_history":
+            MessageLookupByLibrary.simpleMessage("Historial de Compras"),
         "change_password_placeholder_password":
             MessageLookupByLibrary.simpleMessage("Contraseña nueva"),
         "change_password_placeholder_passwordvry":
             MessageLookupByLibrary.simpleMessage("Confirmar contraseña"),
         "change_password_title":
             MessageLookupByLibrary.simpleMessage("Cambiar Contraseña"),
+        "change_price_alert":
+            MessageLookupByLibrary.simpleMessage("Se ha actualizado"),
+        "change_price_alert_2":
+            MessageLookupByLibrary.simpleMessage("el precio con exito"),
+        "change_price_subtitle_1":
+            MessageLookupByLibrary.simpleMessage("Precio actual"),
+        "change_price_subtitle_2":
+            MessageLookupByLibrary.simpleMessage("Precio nuevo"),
+        "change_price_title":
+            MessageLookupByLibrary.simpleMessage("Cambio de precio"),
         "config_create_subtitle_noti":
             MessageLookupByLibrary.simpleMessage("Notificacion"),
         "config_manage_subtitle_changeprice":
@@ -51,14 +65,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "home_details": MessageLookupByLibrary.simpleMessage("Detalles"),
         "home_feactured": MessageLookupByLibrary.simpleMessage("Destacados"),
         "home_photos": MessageLookupByLibrary.simpleMessage("Fotos"),
+        "locate_button": MessageLookupByLibrary.simpleMessage("Comprar"),
         "locate_entry": MessageLookupByLibrary.simpleMessage("Entrada"),
         "locate_indication_1":
             MessageLookupByLibrary.simpleMessage("Disponible"),
         "locate_indication_2":
             MessageLookupByLibrary.simpleMessage("Seleccionado"),
         "locate_indication_3": MessageLookupByLibrary.simpleMessage("Ocupado"),
-        "locate_information": MessageLookupByLibrary.simpleMessage(
-            "Espacios 3x3 \n200 pesos (cada uno)"),
+        "locate_information": m0,
         "locate_resume_buy":
             MessageLookupByLibrary.simpleMessage("Resumen de la Compra"),
         "locate_selected_spaces":
@@ -136,6 +150,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "reset_password_title":
             MessageLookupByLibrary.simpleMessage("Recuperacion de Contraseña"),
         "search_box": MessageLookupByLibrary.simpleMessage("Buscar"),
+        "shopping_history_label_1":
+            MessageLookupByLibrary.simpleMessage("Lugares:"),
+        "shopping_history_label_2":
+            MessageLookupByLibrary.simpleMessage("Fecha:"),
+        "shopping_history_label_3":
+            MessageLookupByLibrary.simpleMessage("Precio Total:"),
+        "shopping_history_title":
+            MessageLookupByLibrary.simpleMessage("Historial de Compras"),
         "subtitle_1": MessageLookupByLibrary.simpleMessage(
             "Bienvenido de nuevo! Por favor ingresa tus datos"),
         "subtitle_account_password":

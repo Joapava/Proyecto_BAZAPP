@@ -11,6 +11,7 @@
     "not_account": "¿Aún no tienes cuenta?",
     "register": "Registrate aqui",
     "message_error_login": "Correo o contraseña incorrectos",
+    "buy_history": "Historial de Compras",
 
     "tittle_settings": "Ajustes",
     "subtitle_box_app": "Aplicacion",
@@ -89,10 +90,22 @@
     "locate_total": "Total de lugares seleccionados:",
     "locate_total_cost": "Costo total:",
     "locate_selected_spaces": "Lugares seleccionados:",
-    "locate_information": "Espacios 3x3 \n200 pesos (cada uno)",
+    "locate_information": "Espacios 3x3 \n{price} pesos (cada uno)",
+    "locate_button":"Comprar",
 
     "news_title": "Crear Noticia",
     "news_body": "¿Qué hay de nuevo?",
     "news_post": "Publicar",
-    "news_error": "Ingresa el cuerpo de la noticia"
+    "news_error": "Ingresa el cuerpo de la noticia",
+
+    "change_price_title": "Cambio de precio",
+    "change_price_subtitle_1": "Precio actual",
+    "change_price_subtitle_2": "Precio nuevo",
+    "change_price_alert": "Se ha actualizado",
+    "change_price_alert_2": "el precio con exito",
+
+    "shopping_history_title": "Historial de Compras",
+    "shopping_history_label_1": "Lugares:",
+    "shopping_history_label_2": "Fecha:",
+    "shopping_history_label_3": "Precio Total:"
 }

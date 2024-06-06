@@ -13,9 +13,9 @@ class PaginaPuestos extends StatefulWidget {
   State<PaginaPuestos> createState() => _PaginaPuestosState();
 }
 
-class _PaginaPuestosState extends State<PaginaPuestos> {
+class _PaginaPuestosState extends State<PaginaPuestos> {// Precio unitario por puesto
+
   Preferencias prefs = Preferencias();
-  static const double precioPorPuesto = 200.0; // Precio unitario por puesto
 
   void updateState() {
     setState(() {});
@@ -115,7 +115,7 @@ void initState() {
                         onPressed: () async {
                           if (selectedLocations.isNotEmpty) {
                             double totalPrice = selectedLocations.length *
-                                precioPorPuesto; // Calcula el precio total
+                                prefs.price.toDouble(); // Calcula el precio total
                             await Preferencias
                                 .init(); // Inicializar Preferencias si no está hecho ya
                             String expositorId = Preferencias().id;
@@ -135,8 +135,8 @@ void initState() {
                                 context); // Mostrar ventana emergente de compra exitosa
                           }
                         },
-                        child: const Text('Comprar',
-                            style: TextStyle(color: Colors.black)),
+                        child: Text(S.current.locate_button,
+                            style: const TextStyle(color: Colors.black)),
                       )
                   ],
                 ),
@@ -348,7 +348,7 @@ void initState() {
 }
 
 Widget visualizarInformacionCompta() {
-  return informacionCompra();
+  return informacionCompra(Preferencias());
 }
 
 Widget significadoColorPuesto() {

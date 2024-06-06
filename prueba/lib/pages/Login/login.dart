@@ -184,8 +184,8 @@ class _BoxCentral extends State<BoxCentral> {
       return FittedBox(
         child: Text(
           S.of(context).message_error_login,
-          style:
-              const TextStyle(color: Colors.red, fontFamily: 'Inter', fontSize: 18),
+          style: const TextStyle(
+              color: Colors.red, fontFamily: 'Inter', fontSize: 18),
         ),
       );
     }
@@ -338,7 +338,7 @@ class _BoxCentral extends State<BoxCentral> {
             String id = await Autenticar().iniciarsesion(
                 email: emailcontrol.text, pwd: passwordcontrol.text);
             if (id.isNotEmpty) {
-             await ValidarDatos().datoslogin(id);
+              await ValidarDatos().datoslogin(id);
               funcion_ingreso();
             } else {
               setState(() {
@@ -432,19 +432,23 @@ class _BoxCentral extends State<BoxCentral> {
 
   // ignore: non_constant_identifier_names
   Widget botones_inicio() {
+    Preferencias prefs = Preferencias();
     return SizedBox(
       width: 240,
       height: 60,
       child: Center(
         child: FloatingActionButton(
           onPressed: () async {
-            bool registrado = await Autenticar().google();
-            if (registrado) {
-              funcion_ingreso();
-            } else {
-              Authgoole().singout();
-              funcion_registro();
-            }
+            try {
+              bool registrado = await Autenticar().google();
+              if (registrado) {
+                await ValidarDatos().datoslogin(prefs.id);
+                funcion_ingreso();
+              } else {
+                Authgoole().singout();
+                funcion_registro();
+              }
+            } catch (_) {}
           },
           heroTag: 'btngoogle',
           backgroundColor: const Color.fromARGB(117, 87, 87, 95),

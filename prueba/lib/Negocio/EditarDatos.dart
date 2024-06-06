@@ -21,4 +21,13 @@ class EditarDatos {
   void cambiarcorreo(String id, String correo){
     DatosDB().editarcorreo(id, correo);
   }
+
+  void cambiarprecio(String id, int price){
+    try {
+      DatosDB().updatePrice(id, price);
+    } catch (_) {
+      print('Error en la actualizacio de precio');
+    }
+    
+  }
 }

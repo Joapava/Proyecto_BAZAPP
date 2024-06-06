@@ -116,19 +116,20 @@ Future<List<String>> getDisabledLocations() async {
     return listaAdministrador;
   }
 
-  Future<Bazar?> getDataBazar() async {
+  Future<List<Bazar>> getDataBazar() async {
+    List<Bazar> datos = [];
     var db = FirebaseFirestore.instance;
     await db.collection("datos_bazar").get().then((event) {
-      for (var doc in event.docs) {
-        var data = doc.data();
-        Bazar bazar = Bazar(
+      for(var doc in event.docs){
+        var data = doc;
+          Bazar bazar = Bazar(
             precio: data['precio_espacio'],
             nombre: data['nombre'],
             id: data['id']);
-            return bazar;
+          datos.add(bazar);
       }
     });
-    return null;
+    return datos;
   }
 
   Future<bool> getNotificacion(String id) async {
@@ -282,6 +283,13 @@ Future setNoticia(Noticia nc) async {
       'fecha': nuevoEstado == 'Activo'
           ? DateFormat('dd-MM-yyyy').format(DateTime.now())
           : 'N/A',
+    });
+  }
+
+  Future<void> updatePrice(String id,int price) async{
+    var db = FirebaseFirestore.instance;
+    await db.collection("datos_bazar").doc(id).update({
+      'precio_espacio': price
     });
   }
 

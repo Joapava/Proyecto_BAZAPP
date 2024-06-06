@@ -10,6 +10,7 @@ import 'package:prueba/pages/config/Politicas/politicas.dart';
 import 'package:prueba/pages/config/Politicas/terminos.dart';
 import 'package:prueba/pages/Login/login.dart';
 import 'package:prueba/pages/home/PurchaseHistoryPage.dart';
+import 'package:prueba/generated/l10n.dart';
 
 class Configuracion extends StatefulWidget {
   const Configuracion({super.key});
@@ -38,11 +39,11 @@ class _ConfiguracionState extends State<Configuracion> {
       child: Column(
         children: [
           const SizedBox(height: 35),
-          const Center(
+          Center(
             child: FittedBox(
               child: Text(
-                'Ajustes',
-                style: TextStyle(
+                S.of(context).tittle_settings,
+                style: const TextStyle(
                     fontFamily: 'Inter', fontSize: 20, color: Colors.black),
               ),
             ),
@@ -75,11 +76,11 @@ class _ConfiguracionState extends State<Configuracion> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const Login()));
               },
-              child: const Center(
+              child: Center(
                 child: FittedBox(
                   child: Text(
-                    'Cerrar Sesion',
-                    style: TextStyle(
+                    S.of(context).title_signout,
+                    style: const TextStyle(
                         fontFamily: 'Inter', fontSize: 18, color: Colors.black),
                   ),
                 ),
@@ -112,21 +113,21 @@ class _ConfiguracionState extends State<Configuracion> {
             ),
           );
         },
-        child: const Row(
+        child: Row(
           children: [
-            SizedBox(width: 35),
-            Icon(Icons.history, color: Colors.black),
-            SizedBox(width: 10),
+            const SizedBox(width: 35),
+            const Icon(Icons.history, color: Colors.black),
+            const SizedBox(width: 10),
             FittedBox(
               child: Text(
-                'Historial de Compras',
-                style: TextStyle(
+                S.of(context).buy_history,
+                style: const TextStyle(
                     fontFamily: 'Inter', fontSize: 18, color: Colors.black),
               ),
             ),
-            Spacer(),
-            Icon(Icons.arrow_forward_ios_outlined, color: Colors.black),
-            SizedBox(width: 15),
+            const Spacer(),
+            const Icon(Icons.arrow_forward_ios_outlined, color: Colors.black),
+            const SizedBox(width: 15),
           ],
         ),
       ),
@@ -141,13 +142,13 @@ class _ConfiguracionState extends State<Configuracion> {
           borderRadius: BorderRadius.circular(15), color: Colors.white),
       child: Column(
         children: [
-          const Row(
+          Row(
             children: [
-              SizedBox(width: 15),
+              const SizedBox(width: 15),
               FittedBox(
                 child: Text(
-                  'Politica, Terminos y Condiciones',
-                  style: TextStyle(
+                  S.of(context).subtitle_box_policy,
+                  style: const TextStyle(
                       fontFamily: 'Inter', fontSize: 18, color: Colors.black),
                 ),
               )
@@ -166,20 +167,20 @@ class _ConfiguracionState extends State<Configuracion> {
                   borderRadius: BorderRadius.circular(0)),
               backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
               elevation: 0,
-              child: const Row(
+              child: Row(
                 children: [
-                  SizedBox(width: 35),
+                  const SizedBox(width: 35),
                   SizedBox(
                     width: 320,
                     height: 35,
                     child: Row(
                       children: [
-                        Icon(Icons.edit_document, color: Colors.black),
-                        SizedBox(width: 5),
+                        const Icon(Icons.edit_document, color: Colors.black),
+                        const SizedBox(width: 5),
                         FittedBox(
                           child: Text(
-                            'Politica de Privacidad',
-                            style: TextStyle(
+                            S.of(context).subtitle_policy_privacy,
+                            style: const TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 18,
                                 color: Colors.black),
@@ -188,7 +189,8 @@ class _ConfiguracionState extends State<Configuracion> {
                       ],
                     ),
                   ),
-                  Icon(Icons.arrow_forward_ios_outlined, color: Colors.black)
+                  const Icon(Icons.arrow_forward_ios_outlined,
+                      color: Colors.black)
                 ],
               ),
             ),
@@ -210,20 +212,20 @@ class _ConfiguracionState extends State<Configuracion> {
                         bottomRight: Radius.circular(15))),
                 backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
                 elevation: 0,
-                child: const Row(
+                child: Row(
                   children: [
-                    SizedBox(width: 35),
+                    const SizedBox(width: 35),
                     SizedBox(
                       width: 320,
                       height: 35,
                       child: Row(
                         children: [
-                          Icon(Icons.edit_document, color: Colors.black),
-                          SizedBox(width: 5),
+                          const Icon(Icons.edit_document, color: Colors.black),
+                          const SizedBox(width: 5),
                           FittedBox(
                             child: Text(
-                              'Terminos y Condiciones',
-                              style: TextStyle(
+                              S.of(context).subtitle_policy_term,
+                              style: const TextStyle(
                                   fontFamily: 'Inter',
                                   fontSize: 18,
                                   color: Colors.black),
@@ -232,7 +234,8 @@ class _ConfiguracionState extends State<Configuracion> {
                         ],
                       ),
                     ),
-                    Icon(Icons.arrow_forward_ios_outlined, color: Colors.black)
+                    const Icon(Icons.arrow_forward_ios_outlined,
+                        color: Colors.black)
                   ],
                 ),
               ))
@@ -249,13 +252,13 @@ class _ConfiguracionState extends State<Configuracion> {
           borderRadius: BorderRadius.circular(15), color: Colors.white),
       child: Column(
         children: [
-          const Row(
+          Row(
             children: [
-              SizedBox(width: 15),
+              const SizedBox(width: 15),
               FittedBox(
                 child: Text(
-                  'Cuenta',
-                  style: TextStyle(
+                  S.of(context).subtitle_box_account,
+                  style: const TextStyle(
                       fontFamily: 'Inter', fontSize: 18, color: Colors.black),
                 ),
               )
@@ -276,20 +279,20 @@ class _ConfiguracionState extends State<Configuracion> {
                   borderRadius: BorderRadius.circular(0)),
               backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
               elevation: 0,
-              child: const Row(
+              child: Row(
                 children: [
-                  SizedBox(width: 35),
+                  const SizedBox(width: 35),
                   SizedBox(
                     width: 320,
                     height: 35,
                     child: Row(
                       children: [
-                        Icon(Icons.person_2_sharp, color: Colors.black),
-                        SizedBox(width: 5),
+                        const Icon(Icons.person_2_sharp, color: Colors.black),
+                        const SizedBox(width: 5),
                         FittedBox(
                           child: Text(
-                            'Perfil',
-                            style: TextStyle(
+                            S.of(context).subtitle_account_profile,
+                            style: const TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 18,
                                 color: Colors.black),
@@ -298,7 +301,8 @@ class _ConfiguracionState extends State<Configuracion> {
                       ],
                     ),
                   ),
-                  Icon(Icons.arrow_forward_ios_outlined, color: Colors.black)
+                  const Icon(Icons.arrow_forward_ios_outlined,
+                      color: Colors.black)
                 ],
               ),
             ),
@@ -318,20 +322,20 @@ class _ConfiguracionState extends State<Configuracion> {
                       bottomRight: Radius.circular(15))),
               backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
               elevation: 0,
-              child: const Row(
+              child: Row(
                 children: [
-                  SizedBox(width: 35),
+                  const SizedBox(width: 35),
                   SizedBox(
                     width: 320,
                     height: 35,
                     child: Row(
                       children: [
-                        Icon(Icons.lock_person, color: Colors.black),
-                        SizedBox(width: 5),
+                        const Icon(Icons.lock_person, color: Colors.black),
+                        const SizedBox(width: 5),
                         FittedBox(
                           child: Text(
-                            'Contraseña',
-                            style: TextStyle(
+                            S.of(context).subtitle_account_password,
+                            style: const TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 18,
                                 color: Colors.black),
@@ -340,7 +344,8 @@ class _ConfiguracionState extends State<Configuracion> {
                       ],
                     ),
                   ),
-                  Icon(Icons.arrow_forward_ios_outlined, color: Colors.black)
+                  const Icon(Icons.arrow_forward_ios_outlined,
+                      color: Colors.black)
                 ],
               ),
             ),
@@ -358,13 +363,13 @@ class _ConfiguracionState extends State<Configuracion> {
           borderRadius: BorderRadius.circular(15), color: Colors.white),
       child: Column(
         children: [
-          const Row(
+          Row(
             children: [
-              SizedBox(width: 15),
+              const SizedBox(width: 15),
               FittedBox(
                 child: Text(
-                  'Aplicacion',
-                  style: TextStyle(
+                  S.of(context).subtitle_box_app,
+                  style: const TextStyle(
                       fontFamily: 'Inter', fontSize: 18, color: Colors.black),
                 ),
               )
@@ -375,30 +380,34 @@ class _ConfiguracionState extends State<Configuracion> {
             height: 35,
             child: FloatingActionButton(
               heroTag: 'lenguaje',
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                await Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Lenguaje(perfs: perfs)));
+                        builder: (context) => Lenguaje(
+                              perfs: perfs,
+                            )));
+                setState(() {});
               },
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0)),
-              backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
+              backgroundColor: Color.fromARGB(0, 97, 95, 95),
               elevation: 0,
-              child: const Row(
+              child: Row(
                 children: [
-                  SizedBox(width: 35),
+                  const SizedBox(width: 35),
                   SizedBox(
                     width: 320,
                     height: 35,
                     child: Row(
                       children: [
-                        Icon(Icons.translate_outlined, color: Colors.black),
-                        SizedBox(width: 5),
+                        const Icon(Icons.translate_outlined,
+                            color: Colors.black),
+                        const SizedBox(width: 5),
                         FittedBox(
                           child: Text(
-                            'Lenguaje',
-                            style: TextStyle(
+                            S.of(context).subtitle_app_lang,
+                            style: const TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 18,
                                 color: Colors.black),
@@ -407,7 +416,8 @@ class _ConfiguracionState extends State<Configuracion> {
                       ],
                     ),
                   ),
-                  Icon(Icons.arrow_forward_ios_outlined, color: Colors.black)
+                  const Icon(Icons.arrow_forward_ios_outlined,
+                      color: Colors.black)
                 ],
               ),
             ),
@@ -434,20 +444,20 @@ class _ConfiguracionState extends State<Configuracion> {
                       bottomRight: Radius.circular(15))),
               backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
               elevation: 0,
-              child: const Row(
+              child: Row(
                 children: [
-                  SizedBox(width: 35),
+                  const SizedBox(width: 35),
                   SizedBox(
                     height: 35,
                     width: 320,
                     child: Row(
                       children: [
-                        Icon(Icons.notifications, color: Colors.black),
-                        SizedBox(width: 5),
+                        const Icon(Icons.notifications, color: Colors.black),
+                        const SizedBox(width: 5),
                         FittedBox(
                           child: Text(
-                            'Notificaciones',
-                            style: TextStyle(
+                            S.of(context).subtitle_app_noti,
+                            style: const TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 18,
                                 color: Colors.black),
@@ -456,7 +466,8 @@ class _ConfiguracionState extends State<Configuracion> {
                       ],
                     ),
                   ),
-                  Icon(Icons.arrow_forward_ios_outlined, color: Colors.black)
+                  const Icon(Icons.arrow_forward_ios_outlined,
+                      color: Colors.black)
                 ],
               ),
             ),

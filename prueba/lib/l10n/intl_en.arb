@@ -11,6 +11,7 @@
     "not_account": "Don't have an account?",
     "register": "Signup",
     "message_error_login": "Incorrect email or password",
+    "buy_history": "Shopping history",
 
     "tittle_settings": "Settings",
     "subtitle_box_app": "App",
@@ -89,10 +90,22 @@
     "locate_total": "Total selected places:",
     "locate_total_cost": "Total cost:",
     "locate_selected_spaces": "Selected spaces:",
-    "locate_information": "Space 3x3 \n200 pesos (each)",
+    "locate_information": "Space 3x3 \n{price} pesos (each)",
+    "locate_button":"Buy",
 
     "news_title": "Create News",
     "news_body": "What's new?",
     "news_post": "Post",
-    "news_error": "Enter the body of the news"
+    "news_error": "Enter the body of the news",
+
+    "change_price_title": "Change of price",
+    "change_price_subtitle_1": "Actual price",
+    "change_price_subtitle_2": "New price",
+    "change_price_alert": "It has been updated",
+    "change_price_alert_2": "the price with success",
+
+    "shopping_history_title": "Shopping history",
+    "shopping_history_label_1": "Spaces:",
+    "shopping_history_label_2": "Date:",
+    "shopping_history_label_3": "Total price:"
 }

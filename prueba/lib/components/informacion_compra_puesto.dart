@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:prueba/Persistencia/Preferencias.dart';
 import 'package:prueba/components/generar_botones.dart';
 import 'package:prueba/generated/l10n.dart';
 
 class InformacionBarraCompra extends StatelessWidget {
-  const InformacionBarraCompra({super.key});
+  final Preferencias perfs;
+  const InformacionBarraCompra({super.key, required this.perfs});
 
   @override
   Widget build(BuildContext context) {
-    return informacionCompra();
+    return informacionCompra(perfs);
   }
 }
 
-Widget informacionCompra() {
-  int totalSelected = selectedLocations.length;
-  int totalPrice = totalSelected * 200;
+Widget informacionCompra(Preferencias prefs) {
 
+  int totalSelected = selectedLocations.length;
+  int totalPrice = totalSelected * prefs.price;
   return Container(
     width:
         550, // Aseguramos que el ancho sea el mismo que el contenedor de puestos
@@ -42,7 +44,7 @@ Widget informacionCompra() {
               ),
             ],
           ),
-          Text(S.current.locate_information, style: const TextStyle(
+          Text(S.current.locate_information('${prefs.price}'), style: const TextStyle(
             fontFamily: 'Inter',
             fontSize: 17,
             fontWeight: FontWeight.bold,
