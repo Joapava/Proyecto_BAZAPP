@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+// import 'package:intl/intl.dart';
 
 import 'package:prueba/Class/aviso.dart';
 import 'package:prueba/Persistencia/DatosDB.dart';
@@ -20,6 +24,9 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
   bool _isTituloEmpty = false;
   bool _isCuerpoEmpty = false;
 
+  File? _image;
+  final ImagePicker _picker = ImagePicker();
+
   @override
   void initState() {
     super.initState();
@@ -31,6 +38,17 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
     setState(() {
       _anuncios = avisos;
     });
+  }
+
+// Method to pick an image
+  Future<void> _pickImage() async {
+    final XFile? pickedFile =
+        await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
   }
 
   void _showMaxLimitSnackbar() {
@@ -53,24 +71,68 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
     setState(() {
       _isTituloEmpty = titulo.isEmpty;
       _isCuerpoEmpty = cuerpo.isEmpty;
+    });
 
-      if (!_isTituloEmpty && !_isCuerpoEmpty) {
-        Aviso nuevoAviso = Aviso(
-          id: '',
-          titulo: titulo,
-          cuerpo: cuerpo,
-          fecha: 'N/A',
-          estado: 'Inactivo',
-        );
-        db.setAviso(nuevoAviso).then((_) {
-          _loadAvisos();
-          _tituloController.clear();
-          _cuerpoController.clear();
+    if (!_isTituloEmpty && !_isCuerpoEmpty) {
+      String imageUrl = '';
+      if (_image != null) {
+        imageUrl = await db.setImagenAvisos(_image!); // Usa el nuevo método
+      }
+
+      Aviso nuevoAviso = Aviso(
+        id: '',
+        titulo: titulo,
+        cuerpo: cuerpo,
+        fecha: 'N/A',
+        estado: 'Inactivo',
+        imageUrl: imageUrl, // Add this line
+      );
+
+      db.setAviso(nuevoAviso).then((_) {
+        _loadAvisos();
+        _tituloController.clear();
+        _cuerpoController.clear();
+        setState(() {
           _isTituloEmpty = false;
           _isCuerpoEmpty = false;
+          _image = null;
         });
-      }
-    });
+      });
+    }
+  }
+
+// Add a button to pick an image
+  Widget _buildImagePicker() {
+    return Column(
+      children: [
+        if (_image != null)
+          Container(
+            margin: const EdgeInsets.symmetric(
+                vertical: 15.0), // Add vertical margin
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.file(
+                _image!,
+                width: double
+                    .infinity, // Make image take full width of the container
+                height: 250, // Increase the height of the image
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ElevatedButton(
+          onPressed: _pickImage,
+          child: const Text(
+            'Seleccionar Imagen',
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      ],
+    );
   }
 
   void _toggleEstado(String id) async {
@@ -128,6 +190,7 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
             _buildAnunciosTable(currentAnuncios),
             _buildPagination(totalPages),
             _buildInputField(),
+            _buildImagePicker(), // Add this line
             const SizedBox(height: 10),
             _buildAddButton(),
             const SizedBox(height: 10),
@@ -159,6 +222,8 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
       ],
     );
   }
+
+// WIDGET DE ANUNCIOS CARGADOS
 
   Widget _buildAnunciosTable(List<Aviso> currentAnuncios) {
     return Card(
@@ -214,7 +279,7 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
                               onTap: () =>
                                   _toggleEstado(currentAnuncios[index].id),
                               child: Container(
-                                padding: const EdgeInsets.symmetric(
+                                padding: EdgeInsets.symmetric(
                                     vertical: 4.0, horizontal: 8.0),
                                 decoration: BoxDecoration(
                                   color:
@@ -237,7 +302,7 @@ class _PaginaAvisosAdminState extends State<PaginaAvisosAdmin> {
                             ),
                           ),
                           IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
+                            icon: Icon(Icons.delete, color: Colors.red),
                             onPressed: () =>
                                 _eliminarAnuncio(currentAnuncios[index].id),
                           ),

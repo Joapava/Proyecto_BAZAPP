@@ -10,12 +10,15 @@ import 'package:prueba/Class/bazar.dart';
 import 'package:prueba/Class/noticias_data.dart';
 import 'package:http/http.dart' as http;
 import 'package:prueba/Persistencia/Preferencias.dart';
+import 'package:uuid/uuid.dart';
 
 class DatosDB {
+   final Uuid _uuid = Uuid();
+  
   Future<List<String>> getAllOccupiedLocations() async {
     var db = FirebaseFirestore.instance;
-    var snapshot = await db.collection('registroEspacio').get();
-
+    var snapshot = await db.collection('compra').get();
+  
     List<String> allOccupiedLocations = [];
     for (var doc in snapshot.docs) {
       var data = doc.data();
@@ -43,18 +46,40 @@ class DatosDB {
     }
     return purchasedLocations;
   }
-
-  Future<void> savePurchasedLocations(
-      List<String> locations, String expositorId) async {
+Future<List<String>> getDisabledLocations() async {
     var db = FirebaseFirestore.instance;
-    for (String location in locations) {
-      await db.collection('registroEspacio').add({
+    var snapshot = await db
+        .collection('espacio')
+        .where('disponibilidad', isEqualTo: 'deshabilitado')
+        .get();
+
+    List<String> disabledLocations = [];
+    for (var doc in snapshot.docs) {
+      var data = doc.data();
+      disabledLocations.add(data['id_espacio']);
+    }
+    return disabledLocations;
+  }
+ 
+  Future<void> savePurchasedLocations(List<String> locations, String expositorId, double totalPrice) async {
+    var db = FirebaseFirestore.instance;
+
+    // Generar un identificador único para la compra
+    String idCompra = _uuid.v4();
+
+    // Crea una copia de la lista para evitar modificaciones concurrentes
+    List<String> locationsCopy = List.from(locations);
+
+    for (String location in locationsCopy) {
+      await db.collection('compra').add({
         'id_espacio': location,
         'id_expositor': expositorId,
+        'fecha_compra': DateTime.now(),
+        'precio_total': totalPrice,
+        'id_compra': idCompra,  // Agrega el identificador de compra
       });
     }
   }
-
   //Funcion que regresa los expositores que han sido creado en forma de lista
   Future<List<Expositor>> getExpositores() async {
     List<Expositor> listaExpositores = [];
@@ -112,23 +137,25 @@ class DatosDB {
     ntf = (await db.collection("expositores").doc(id).get()) as bool;
     return ntf;
   }
+Future<List<Noticia>> getNoticias() async {
+  var db = FirebaseFirestore.instance;
+  final QuerySnapshot result = await db.collection('noticias').get();
 
-  Future<List<Noticia>> getNoticias() async {
-    var db = FirebaseFirestore.instance;
-    final QuerySnapshot result = await db.collection('noticias').get();
+  final List<DocumentSnapshot> documents = result.docs;
+  List<Noticia> noticiasCargadas = [];
+  for (var doc in documents) {
+    var data = doc.data() as Map<String, dynamic>?;
 
-    final List<DocumentSnapshot> documents = result.docs;
-    List<Noticia> noticiasCargadas = [];
-    for (var doc in documents) {
-      String imageUrl = doc['urlImagenNoticia'];
+    if (data != null && data.containsKey('urlImagenNoticia') && data.containsKey('nombrePerfil') && data.containsKey('cuerpoNoticia')) {
+      String imageUrl = data['urlImagenNoticia'];
       bool exists = await _imageExists(imageUrl);
       if (exists) {
         noticiasCargadas.add(
           Noticia(
             doc.id,
             '',
-            doc['nombrePerfil'],
-            doc['cuerpoNoticia'],
+            data['nombrePerfil'],
+            data['cuerpoNoticia'],
             imageUrl,
           ),
         );
@@ -136,10 +163,12 @@ class DatosDB {
         // Eliminar noticia de Firebase si la imagen no existe
         await db.collection('noticias').doc(doc.id).delete();
       }
+    } else {
+      print("Warning: Missing required fields in document ${doc.id}");
     }
-    return noticiasCargadas;
   }
-
+  return noticiasCargadas;
+}
   Future<bool> _imageExists(String url) async {
     try {
       final response = await http.head(Uri.parse(url));
@@ -149,7 +178,7 @@ class DatosDB {
       return false;
     }
   }
-
+ 
   Future<void> deleteNoticia(String id, String imageUrl) async {
     var db = FirebaseFirestore.instance;
     final FirebaseStorage storage = FirebaseStorage.instance;
@@ -185,7 +214,7 @@ class DatosDB {
     db.collection("expositores").doc(id).set(expositor);
   }
 
-  Future setNoticia(Noticia nc) async {
+Future setNoticia(Noticia nc) async {
     var db = FirebaseFirestore.instance;
 
     final noticia = <String, dynamic>{
@@ -200,14 +229,13 @@ class DatosDB {
       },
     );
   }
-
   Future setAviso(Aviso aviso) async {
     var db = FirebaseFirestore.instance;
     final avisoData = aviso.toMap();
     await db.collection("aviso").add(avisoData);
   }
 
-  Future<String> setImagen(File imageFile) async {
+ Future<String> setImagen(File imageFile) async {
     String fileName = 'Fotos/${DateTime.now().millisecondsSinceEpoch}.jpg';
     await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
     return await FirebaseStorage.instance.ref(fileName).getDownloadURL();
@@ -310,7 +338,7 @@ class DatosDB {
     var db = FirebaseFirestore.instance;
     QuerySnapshot querySnapshot = await db
         .collection('compra')
-        .orderBy('fecha', descending: true)
+        .orderBy('fecha_compra', descending: true)
         .get(); // Quita el .limit(5)
 
     List<Map<String, dynamic>> transactions = [];
@@ -320,31 +348,189 @@ class DatosDB {
     return transactions;
   }
 
-//OBTENER EL TOTAL DE VENTAS
+Future<int> getTotalVentasDelMes() async {
+  var db = FirebaseFirestore.instance;
+  DateTime now = DateTime.now();
+  DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
+  DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
 
-  Future<int> getTotalVentas() async {
-    var db = FirebaseFirestore.instance;
-    QuerySnapshot querySnapshot = await db.collection('compra').get();
+  QuerySnapshot querySnapshot = await db
+      .collection('compra')
+      .where('fecha_compra', isGreaterThanOrEqualTo: Timestamp.fromDate(firstDayOfMonth))
+      .where('fecha_compra', isLessThanOrEqualTo: Timestamp.fromDate(lastDayOfMonth))
+      .get();
 
-    int totalVentas = 0;
-    for (var doc in querySnapshot.docs) {
-      var data = doc.data() as Map<String, dynamic>;
-      totalVentas += (data['total'] as num).toInt(); // Convertir a int
-    }
-    return totalVentas;
+  if (querySnapshot.docs.isEmpty) {
+    print("No documents found in 'compra' collection for the current month.");
+    return 0;
   }
 
+  Map<String, Map<String, dynamic>> grouped = {};
+
+  for (var doc in querySnapshot.docs) {
+    var data = doc.data() as Map<String, dynamic>;
+    print("Document data: $data");
+    String key = data['id_compra'];
+
+    if (!grouped.containsKey(key)) {
+      grouped[key] = {
+        'id_espacios': [],
+        'fecha_compra': data['fecha_compra'],
+        'precio_total': 0.0,
+      };
+
+      if (data['precio_total'] != null) {
+        grouped[key]!['precio_total'] = (data['precio_total'] as num).toDouble();
+      } else {
+        print("Warning: precio_total is null for document: ${doc.id}");
+      }
+    }
+
+    grouped[key]!['id_espacios'].add(data['id_espacio']);
+  }
+
+  print("Grouped data: $grouped");
+  double totalVentas = grouped.values.fold(0.0, (sum, transaction) => sum + transaction['precio_total']);
+  print("Total ventas del mes: $totalVentas");
+
+  return totalVentas.toInt();
+}
+
+
+
+// Método para obtener el total de ventas agrupadas por transacción
+Future<int> getTotalVentasDelDia() async {
+  var db = FirebaseFirestore.instance;
+  DateTime now = DateTime.now();
+  DateTime startOfDay = DateTime(now.year, now.month, now.day);
+  DateTime endOfDay = DateTime(now.year, now.month, now.day, 23, 59, 59);
+
+  QuerySnapshot querySnapshot = await db
+      .collection('compra')
+      .where('fecha_compra', isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay))
+      .where('fecha_compra', isLessThanOrEqualTo: Timestamp.fromDate(endOfDay))
+      .get();
+
+  if (querySnapshot.docs.isEmpty) {
+    print("No documents found in 'compra' collection for the current day.");
+    return 0;
+  }
+
+  Map<String, Map<String, dynamic>> grouped = {};
+
+  for (var doc in querySnapshot.docs) {
+    var data = doc.data() as Map<String, dynamic>;
+    print("Document data: $data");
+    String key = data['id_compra'];
+
+    if (!grouped.containsKey(key)) {
+      grouped[key] = {
+        'id_espacios': [],
+        'fecha_compra': data['fecha_compra'],
+        'precio_total': 0.0,
+      };
+
+      if (data['precio_total'] != null) {
+        grouped[key]!['precio_total'] = (data['precio_total'] as num).toDouble();
+      } else {
+        print("Warning: precio_total is null for document: ${doc.id}");
+      }
+    }
+
+    grouped[key]!['id_espacios'].add(data['id_espacio']);
+  }
+
+  print("Grouped data: $grouped");
+  double totalVentas = grouped.values.fold(0.0, (sum, transaction) => sum + transaction['precio_total']);
+  print("Total ventas del día: $totalVentas");
+
+  return totalVentas.toInt();
+}
+Future<String> setImagenAvisos(File imageFile) async {
+    String fileName = 'Avisos/${DateTime.now().millisecondsSinceEpoch}.jpg';
+    await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
+    return await FirebaseStorage.instance.ref(fileName).getDownloadURL();
+  }
 //OBTENER TODOS LOS ESPACIOS DISPONIBLES
 
   Future<int> getAvailableSpacesCount() async {
     var db = FirebaseFirestore.instance;
 
     // Supongamos que tienes una colección "espacios" que contiene todos los espacios.
-    QuerySnapshot registeredSpacesSnapshot =
-        await db.collection('registroEspacio').get();
+    QuerySnapshot allSpacesSnapshot = await db.collection('espacios').get();
+    QuerySnapshot registeredSpacesSnapshot = await db.collection('compra').get();
+
+    int totalSpaces = allSpacesSnapshot.size;
     int registeredSpaces = registeredSpacesSnapshot.size;
 
     int availableSpaces = 158 - registeredSpaces;
     return availableSpaces;
   }
+
+
+
+  //guardar comprasss
+
+  Future<List<Map<String, dynamic>>> getPurchaseHistory(String expositorId) async {
+  var db = FirebaseFirestore.instance;
+  var snapshot = await db
+      .collection('compra')
+      .where('id_expositor', isEqualTo: expositorId)
+      .orderBy('fecha_compra', descending: true)
+      .get();
+
+  List<Map<String, dynamic>> purchaseHistory = [];
+  for (var doc in snapshot.docs) {
+    var data = doc.data();
+    
+    // Verificar que los campos necesarios no sean nulos
+    if (data['id_espacio'] != null && data['fecha_compra'] != null && data['precio_total'] != null && data['id_compra'] != null) {
+      purchaseHistory.add({
+        'id_compra': data['id_compra'],
+        'id_espacio': data['id_espacio'],
+        'fecha_compra': data['fecha_compra'],
+        'precio_total': data['precio_total'],
+      });
+    } else {
+      print("Warning: Missing required fields in document ${doc.id}");
+    }
+  }
+  return purchaseHistory;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  Future<void> enableLocation(String idEspacio) async {
+    var db = FirebaseFirestore.instance;
+    await db.collection('espacio').doc(idEspacio).update({
+      'disponibilidad': 'habilitado',
+    });
+  }
+
+  Future<void> disableLocation(String idEspacio) async {
+    var db = FirebaseFirestore.instance;
+    await db.collection('espacio').doc(idEspacio).set({
+      'id_espacio': idEspacio,
+      'disponibilidad': 'deshabilitado',
+    });
+  }
+
+
+
+  
+
 }

@@ -2,12 +2,14 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:prueba/Class/aviso.dart';
 import 'package:prueba/Negocio/InsertarDatos.dart';
 import 'package:prueba/Negocio/ValidarDatos.dart';
 import 'package:prueba/generated/l10n.dart';
+import 'package:prueba/pages/home/aviso_detalle_page.dart';
 import 'package:prueba/pages/home/imagen_pagina.dart';
 import 'package:prueba/Class/noticias_data.dart';
-import 'package:prueba/pages/home/pagina_noticias.dart';
+// import 'package:prueba/pages/home/pagina_noticias.dart';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
@@ -22,11 +24,14 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
   List<Noticia> noticias = [];
   List<String> _imageUrls = [];
 
+  List<Aviso> avisos = [];
+
   @override
   void initState() {
     super.initState();
     _loadImages();
     _loadNoticias();
+    _loadAvisos();
   }
 
   Future<void> _loadNoticias() async {
@@ -34,6 +39,15 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
     if (mounted) {
       setState(() {
         noticias = noticiasCargadas;
+      });
+    }
+  }
+
+  Future<void> _loadAvisos() async {
+    List<Aviso> avisosCargados = await ValidarDatos().getAvisos();
+    if (mounted) {
+      setState(() {
+        avisos = avisosCargados;
       });
     }
   }
@@ -49,7 +63,7 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
   }
 
   Future<void> _loadImages() async {
-    ListResult result = await FirebaseStorage.instance.ref('uploads').listAll();
+    ListResult result = await FirebaseStorage.instance.ref('Fotos').listAll();
     List<String> urls = [];
     for (var ref in result.items) {
       try {
@@ -71,11 +85,9 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image != null) {
       File imageFile = File(image.path);
-      String fileName = 'uploads/${DateTime.now().millisecondsSinceEpoch}.jpg';
       try {
-        await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
-        String downloadURL =
-            await FirebaseStorage.instance.ref(fileName).getDownloadURL();
+        String downloadURL = await InsertarDatos()
+            .setImagenAviso(imageFile); // Usa setImagenAviso
         if (mounted) {
           setState(() {
             _imageUrls.add(downloadURL);
@@ -123,25 +135,30 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
   }
 
   Widget getDestacados(context) {
-    List<Noticia> noticiasDestacadas = noticias.take(3).toList();
+    // Filtrar los avisos que están activos
+    List<Aviso> avisosActivos =
+        avisos.where((aviso) => aviso.estado == 'Activo').toList();
+
+    // Tomar los primeros 3 avisos activos
+    List<Aviso> avisosDestacados = avisosActivos.take(3).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           margin: const EdgeInsets.fromLTRB(10, 20, 0, 0),
-          child: Text(
-            S.of(context).home_feactured,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          child: const Text(
+            "Avisos",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
         ),
         SizedBox(
-          height: 300,
+          height: 300, // Ajustar altura del contenedor
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: noticiasDestacadas.length,
+            itemCount: avisosDestacados.length,
             itemBuilder: (context, index) {
-              return formatoNoticia(noticiasDestacadas[index], context);
+              return formatoAviso(avisosDestacados[index], context);
             },
           ),
         ),
@@ -149,15 +166,20 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
     );
   }
 
-  Widget formatoNoticia(Noticia noticia, context) {
+  Widget formatoAviso(Aviso aviso, context) {
     return GestureDetector(
-      onTap: () => {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const PaginaNoticias()))
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AvisoDetallePage(aviso: aviso),
+          ),
+        );
       },
       child: Container(
-        width: 270,
+        width: 270, // Ajustar ancho del contenedor
         margin: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10), // Añadir padding para el texto
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
@@ -173,43 +195,39 @@ class _PaginaInicioAdminState extends State<PaginaInicioAdmin> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              margin: const EdgeInsets.fromLTRB(10, 5, 0, 5),
-              child: Text(noticia.nombrePerfil,
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+              aviso.titulo,
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(10, 0, 10, 5),
-              child: Text(noticia.cuerpoNoticia,
-                  overflow: TextOverflow.ellipsis, maxLines: 2),
+            const SizedBox(height: 5),
+            Expanded(
+              child: Text(
+                aviso.cuerpo,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-            if (noticia.urlImagenNoticia.isNotEmpty)
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(10),
-                    bottomRight: Radius.circular(10),
-                  ),
-                  child: FutureBuilder<bool>(
-                    future: _imageExists(noticia.urlImagenNoticia),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError ||
-                          !snapshot.hasData ||
-                          !snapshot.data!) {
-                        return const Icon(Icons.broken_image);
-                      } else {
-                        return Image.network(
-                          noticia.urlImagenNoticia,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        );
-                      }
-                    },
-                  ),
+            const SizedBox(height: 5), // Reduced space
+            if (aviso.imageUrl.isNotEmpty)
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  aviso.imageUrl,
+                  height: 190,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
                 ),
               ),
+            Container(
+              margin: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  aviso.fecha,
+                  style: const TextStyle(color: Colors.grey, fontSize: 10),
+                ),
+              ),
+            ),
           ],
         ),
       ),

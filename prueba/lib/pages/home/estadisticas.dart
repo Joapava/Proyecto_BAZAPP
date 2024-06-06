@@ -1,9 +1,13 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:prueba/Persistencia/DatosDB.dart'; // Asegúrate de importar tu archivo de datos
+import 'package:prueba/Class/Expositor.dart';
+import 'package:prueba/Persistencia/DatosDB.dart';
+import 'package:prueba/Persistencia/Preferencias.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuAdmin extends StatefulWidget {
   const MenuAdmin({super.key});
@@ -17,14 +21,30 @@ class _MenuAdminState extends State<MenuAdmin> {
   List<Map<String, dynamic>> _recentTransactions = [];
   int _totalVentas = 0;
   int _availableSpaces = 0;
+  List<Expositor> _expositores = [];
+  bool _showVentasDelDia = true;
 
   @override
   void initState() {
     super.initState();
     _loadImages();
     _loadRecentTransactions();
-    _loadTotalVentas();
+    _loadTotalVentasDelDia();
     _loadAvailableSpaces();
+    _loadExpositores();
+  }
+
+  Future<void> _loadExpositores() async {
+    try {
+      List<Expositor> expositores = await DatosDB().getExpositores();
+      if (mounted) {
+        setState(() {
+          _expositores = expositores;
+        });
+      }
+    } catch (e) {
+      print('Error loading expositores: $e');
+    }
   }
 
   Future<void> _loadImages() async {
@@ -53,6 +73,7 @@ class _MenuAdminState extends State<MenuAdmin> {
       if (mounted) {
         setState(() {
           _recentTransactions = transactions;
+          _recentTransactions = _groupTransactionsByCompra(_recentTransactions);
         });
       }
     } catch (e) {
@@ -60,16 +81,47 @@ class _MenuAdminState extends State<MenuAdmin> {
     }
   }
 
-  Future<void> _loadTotalVentas() async {
+  List<Map<String, dynamic>> _groupTransactionsByCompra(List<Map<String, dynamic>> transactions) {
+    Map<String, List<Map<String, dynamic>>> groupedTransactions = {};
+
+    for (var transaction in transactions) {
+      String idCompra = transaction['id_compra'];
+      if (!groupedTransactions.containsKey(idCompra)) {
+        groupedTransactions[idCompra] = [];
+      }
+      groupedTransactions[idCompra]!.add(transaction);
+    }
+
+    return groupedTransactions.values.map((group) {
+      var firstTransaction = group.first;
+      firstTransaction['espacios_comprados'] = group.map((t) => t['id_espacio']).toList();
+      return firstTransaction;
+    }).toList();
+  }
+
+  Future<void> _loadTotalVentasDelDia() async {
     try {
-      int totalVentas = await DatosDB().getTotalVentas();
+      int totalVentas = await DatosDB().getTotalVentasDelDia();
       if (mounted) {
         setState(() {
           _totalVentas = totalVentas;
         });
       }
     } catch (e) {
-      print('Error loading total ventas: $e');
+      print('Error loading total ventas del día: $e');
+    }
+  }
+
+  Future<void> _loadTotalVentasDelMes() async {
+    try {
+      int totalVentas = await DatosDB().getTotalVentasDelMes();
+      if (mounted) {
+        setState(() {
+          _totalVentas = totalVentas;
+        });
+      }
+    } catch (e) {
+      print('Error loading total ventas del mes: $e');
     }
   }
 
@@ -108,12 +160,23 @@ class _MenuAdminState extends State<MenuAdmin> {
     }
   }
 
+  void _toggleVentas() {
+    setState(() {
+      _showVentasDelDia = !_showVentasDelDia;
+      if (_showVentasDelDia) {
+        _loadTotalVentasDelDia();
+      } else {
+        _loadTotalVentasDelMes();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(250, 250, 250, .98),
       appBar: AppBar(
-        title: const Text('Estadisticas bazar'),
+        title: const Text('Estadísticas Bazar'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -134,10 +197,15 @@ class _MenuAdminState extends State<MenuAdmin> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildStatCard(
-                'Ventas del dia', '$_totalVentas', Icons.monetization_on),
-            _buildStatCard(
-                'Espacios disponibles', '$_availableSpaces', Icons.storage),
+            GestureDetector(
+              onTap: _toggleVentas,
+              child: _buildStatCard(
+                _showVentasDelDia ? 'Ventas del día' : 'Ventas del mes',
+                '$_totalVentas',
+                Icons.monetization_on,
+              ),
+            ),
+            _buildStatCard('Espacios disponibles', '$_availableSpaces', Icons.storage),
           ],
         ),
       ),
@@ -170,28 +238,21 @@ class _MenuAdminState extends State<MenuAdmin> {
 
   Widget _buildLatestTransactions(BuildContext context) {
     _recentTransactions.sort((a, b) {
-      // Ordenar por fecha primero
-      DateTime dateA = DateFormat('dd/MM/yyyy').parse(a['fecha']);
-      DateTime dateB = DateFormat('dd/MM/yyyy').parse(b['fecha']);
-      int compare = dateB.compareTo(dateA);
-      if (compare != 0) {
-        return compare;
-      }
-      // Si las fechas son iguales, ordenar por hora
-      int timeAMinutes = _timeOfDayToMinutes(a['hora']);
-      int timeBMinutes = _timeOfDayToMinutes(b['hora']);
-      return timeBMinutes.compareTo(timeAMinutes);
+      // Convertir Timestamp a DateTime
+      DateTime dateA = (a['fecha_compra'] as Timestamp).toDate();
+      DateTime dateB = (b['fecha_compra'] as Timestamp).toDate();
+      
+      // Comparar fechas directamente
+      return dateB.compareTo(dateA);
     });
 
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Card(
-        color: const Color.fromRGBO(250, 250, 250, .98),
         child: Column(
           children: [
             const ListTile(
-              title: Center(child: Text('Latest Transactions')),
-              // trailing: Icon(Icons.more_vert), // Quitar el icono de tres puntos
+              title: Center(child: Text('Últimas Transacciones')),
             ),
             const Divider(),
             SizedBox(
@@ -202,18 +263,33 @@ class _MenuAdminState extends State<MenuAdmin> {
                 itemCount: _recentTransactions.length,
                 itemBuilder: (context, index) {
                   var transaction = _recentTransactions[index];
+                  String expositorId = transaction['id_expositor'];
+                  DateTime fechaCompra = (transaction['fecha_compra'] as Timestamp).toDate();
+                  String fechaFormateada = DateFormat('dd/MM/yyyy HH:mm').format(fechaCompra);
+
+                  Expositor? expositor;
+                  try {
+                    expositor = _expositores.firstWhere((expositor) => expositor.id == expositorId);
+                  } catch (e) {
+                    expositor = null;
+                  }
+
+                  String expositorNombreCompleto = expositor != null
+                      ? '${expositor.nombre} ${expositor.apellidos}'
+                      : 'Expositor no encontrado';
+
+                  List<String> espaciosComprados = List<String>.from(transaction['espacios_comprados'] ?? []);
+
                   return ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        _imageUrls.isNotEmpty
-                            ? _imageUrls[index % _imageUrls.length]
-                            : 'https://via.placeholder.com/150',
-                      ),
+                    title: Text(expositorNombreCompleto),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Fecha: $fechaFormateada'),
+                        Text('Espacios: ${espaciosComprados.join(", ")}'),
+                      ],
                     ),
-                    title: Text(transaction['nombre'] ?? 'Transaction $index'),
-                    subtitle: Text(
-                        'Fecha: ${transaction['fecha']}, ${transaction['hora']}'),
-                    trailing: Text('-\$${transaction['total']}'),
+                    trailing: Text('+\$${transaction['precio_total']}'),
                   );
                 },
               ),
@@ -222,20 +298,5 @@ class _MenuAdminState extends State<MenuAdmin> {
         ),
       ),
     );
-  }
-
-  int _timeOfDayToMinutes(String time) {
-    int hours = int.parse(time.split(':')[0]);
-    int minutes = int.parse(time.split(':')[1].split(' ')[0]);
-    String period = time.split(' ')[1];
-
-    if (period == 'PM' && hours != 12) {
-      hours += 12;
-    }
-    if (period == 'AM' && hours == 12) {
-      hours = 0;
-    }
-
-    return hours * 60 + minutes;
   }
 }

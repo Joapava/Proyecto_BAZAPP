@@ -4,6 +4,7 @@ import 'package:prueba/Persistencia/Preferencias.dart';
 import 'package:prueba/components/generar_botones.dart';
 import 'package:prueba/components/informacion_compra_puesto.dart';
 import 'package:prueba/generated/l10n.dart';
+import 'package:prueba/pages/home/PurchaseHistoryPage.dart';
 
 class PaginaPuestos extends StatefulWidget {
   const PaginaPuestos({super.key});
@@ -13,25 +14,72 @@ class PaginaPuestos extends StatefulWidget {
 }
 
 class _PaginaPuestosState extends State<PaginaPuestos> {
+  Preferencias prefs = Preferencias();
+  static const double precioPorPuesto = 200.0; // Precio unitario por puesto
+
   void updateState() {
     setState(() {});
   }
 
   @override
-  void initState() {
-    super.initState();
-    initializePurchasedLocations();
+void initState() {
+  super.initState();
+  // Limpiar las listas cuando se inicializa el estado
+  selectedLocations.clear();
+  purchasedLocations.clear();
+  disabledLocations.clear();
+  initializePurchasedLocations();
+}
+
+  void showPurchaseDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Compra Exitosa'),
+          content: const Text(
+              'Puesto comprado exitosamente. Puedes ver más detalles en el historial de compras.'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Ver Historial'),
+              onPressed: () async {
+                var expositorId = Preferencias().id;
+                var purchaseHistory =
+                    await DatosDB().getPurchaseHistory(expositorId);
+                Navigator.of(context).pop(); // Cerrar el diálogo
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        PurchaseHistoryPage(purchaseHistory: purchaseHistory),
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
-// GUARDAR COMPRAS
 
   Future<void> initializePurchasedLocations() async {
     await Preferencias.init();
     List<String> allOccupiedLocations =
         await DatosDB().getAllOccupiedLocations();
+    List<String> allDisabledLocations = await DatosDB().getDisabledLocations();
 
-    setState(() {
-      purchasedLocations = allOccupiedLocations;
-    });
+    if (mounted) {
+      setState(() {
+        purchasedLocations = allOccupiedLocations;
+        disabledLocations = allDisabledLocations;
+      });
+    }
   }
 
   // Función para generar etiquetas únicas con letras y números consecutivos
@@ -49,37 +97,43 @@ class _PaginaPuestosState extends State<PaginaPuestos> {
           builder: (context, constraints) {
             return SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(
+                    10.0), // Margen alrededor de la pantalla
                 child: Column(
                   children: [
                     significadoColorPuesto(),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 10), // Espacio entre elementos
                     contenedorPuestos(updateState, constraints.maxWidth,
                         constraints.maxHeight),
-                    const SizedBox(height: 10),
-                    visualizarInformacionCompta(),
-                    const SizedBox(height: 10),
-                    if (selectedLocations.isNotEmpty)
+                    const SizedBox(height: 10), // Espacio entre elementos
+
+                    if (prefs.lvl != 2) visualizarInformacionCompta(),
+
+                    const SizedBox(height: 10), // Espacio entre elementos
+                    if (selectedLocations.isNotEmpty && prefs.lvl != 2)
                       ElevatedButton(
                         onPressed: () async {
-                          await Preferencias.init();
-                          String expositorId = Preferencias().id;
-                          int total = selectedLocations.length * 200;
-
-                          // Guardar la compra en la colección "compra"
-                          await DatosDB().saveCompra(expositorId, total);
-
-                          // Guardar las ubicaciones compradas en la colección "registroEspacio"
-                          await DatosDB().savePurchasedLocations(
-                              selectedLocations, expositorId);
-
-                          // Actualizar el estado de los botones a gris (ocupado)
-                          setState(() {
-                            for (var label in selectedLocations) {
-                              purchasedLocations.add(label);
+                          if (selectedLocations.isNotEmpty) {
+                            double totalPrice = selectedLocations.length *
+                                precioPorPuesto; // Calcula el precio total
+                            await Preferencias
+                                .init(); // Inicializar Preferencias si no está hecho ya
+                            String expositorId = Preferencias().id;
+                            await DatosDB().savePurchasedLocations(
+                              selectedLocations,
+                              expositorId,
+                              totalPrice,
+                            ); // Guardar en Firebase
+                            if (mounted) {
+                              setState(() {
+                                purchasedLocations.addAll(
+                                    selectedLocations); // Actualiza la lista de ubicaciones compradas
+                                selectedLocations.clear();
+                              });
                             }
-                            selectedLocations.clear();
-                          });
+                            showPurchaseDialog(
+                                context); // Mostrar ventana emergente de compra exitosa
+                          }
                         },
                         child: const Text('Comprar',
                             style: TextStyle(color: Colors.black)),
